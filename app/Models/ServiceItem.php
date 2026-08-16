@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class ServiceItem extends Model
+{
+    protected $fillable = [
+        'service_id', 'title', 'image', 'description', 'sort', 'status',
+        'whatsapp', 'wa_message',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'status' => 'boolean',
+        ];
+    }
+
+    public function service(): BelongsTo
+    {
+        return $this->belongsTo(Service::class);
+    }
+}
