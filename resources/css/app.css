@@ -774,6 +774,12 @@
     .fancybox__button svg {
         filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
     }
+    @media (hover: none), (max-width: 768px) {
+        .fancybox__container .f-button.is-arrow.is-prev,
+        .fancybox__container .f-button.is-arrow.is-next {
+            display: none;
+        }
+    }
 
     /* --- Bottom Spacing for Bottom Nav (App-like) --- */
     .nav-dot {
@@ -935,6 +941,134 @@
     @keyframes wa-progress-slide {
         0% { left: -40%; }
         100% { left: 100%; }
+    }
+
+    /* ===== Dashboard loading (filter periode & tanggal) ===== */
+    .dash-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        z-index: 100;
+        overflow: hidden;
+        background: rgba(5, 150, 105, 0.15);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+    .dash-progress.active {
+        opacity: 1;
+    }
+    .dash-progress::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 45%;
+        border-radius: 9999px;
+        background: linear-gradient(90deg, #10b981, #2563eb, #c9a227);
+        box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+        animation: dash-progress-slide 1s ease-in-out infinite;
+    }
+    .dash-progress::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+        animation: dash-progress-sheen 1.4s linear infinite;
+    }
+    @keyframes dash-progress-slide {
+        0% { left: -45%; }
+        100% { left: 100%; }
+    }
+    @keyframes dash-progress-sheen {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+
+    .dash-loading-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 90;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+    }
+    .dash-loading-overlay.active {
+        opacity: 1;
+    }
+    .dash-loading-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px 24px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow: 0 18px 45px rgba(2, 40, 26, 0.14);
+    }
+    .dash-spinner {
+        width: 30px;
+        height: 30px;
+        border-radius: 9999px;
+        background: conic-gradient(from 0deg, #10b981, #2563eb, #c9a227, #10b981);
+        -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 0);
+        mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 0);
+        animation: dash-spin 0.9s linear infinite;
+    }
+    @keyframes dash-spin {
+        to { transform: rotate(360deg); }
+    }
+    .dash-loading-text {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1f2937;
+        letter-spacing: 0.02em;
+    }
+    .dash-dots::after {
+        content: '';
+        animation: dash-dots 1.2s steps(4, end) infinite;
+    }
+    @keyframes dash-dots {
+        0% { content: ''; }
+        25% { content: '.'; }
+        50% { content: '..'; }
+        75% { content: '...'; }
+    }
+
+    .dash-dim {
+        transition: opacity 0.25s ease, filter 0.25s ease;
+        opacity: 0.6;
+        filter: blur(1px);
+        pointer-events: none;
+    }
+
+    .skeleton-shimmer {
+        position: relative;
+        overflow: hidden;
+        background: #e5e7eb;
+        border-radius: 6px;
+    }
+    .skeleton-shimmer::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+        animation: dash-skeleton 1.4s ease-in-out infinite;
+        transform: translateX(-100%);
+    }
+    @keyframes dash-skeleton {
+        100% { transform: translateX(100%); }
     }
     .btn-secondary { background: white; color: #374151; border: 1.5px solid #e5e7eb; }
     .btn-secondary:hover { background: #f9fafb; border-color: #d1d5db; }

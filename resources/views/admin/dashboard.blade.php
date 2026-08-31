@@ -3,10 +3,13 @@
 @section('page_title', 'Dashboard')
 
 @section('content')
+<div id="dashProgressBar" class="dash-progress" role="status" aria-live="polite"><span class="sr-only">Memuat data dashboard...</span></div>
+<div id="dashLoadingOverlay" class="dash-loading-overlay" aria-hidden="true">
+    <div class="dash-loading-card">
+        <div class="dash-spinner" aria-hidden="true"></div>
+    </div>
+</div>
 <div id="dashboardApp" x-data="{ show: true }" x-transition.opacity.duration.600ms>
-
-    {{-- ============ Indikator Loading (garis tipis, muncul saat fetch) ============ --}}
-    <div id="dashLoadingBar" class="hidden wa-progress mb-4" aria-hidden="true"></div>
 
     {{-- ============ Filter Waktu (AJAX) ============ --}}
     <div id="dashFilterBar" class="bg-white border border-gray-200 border-l-4 border-emerald-500/30 rounded-xl shadow-sm px-4 py-3 mb-6 flex flex-wrap items-center gap-3">
@@ -66,7 +69,7 @@
                 value-id="cardVisitorValue"
                 delta-id="cardVisitorDelta"
                 footer-id="cardVisitorTotalFooter"
-                hint="IP unik per hari · {{ $periodLabelLower }}"
+                hint="Pengunjung (IP unik per hari) · {{ $periodLabelLower }}"
                 footer="Total {{ number_format($totalVisitors, 0, ',', '.') }}"
                 :delta="$visitorChange" :delta-positive="$visitorChange >= 0">
                 <x-slot:icon><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></x-slot:icon>
@@ -78,7 +81,7 @@
                 value-id="cardTrafficValue"
                 delta-id="cardTrafficDelta"
                 footer-id="cardTrafficTotalFooter"
-                hint="Pengisi form, {{ $periodLabelLower }} · terekam per layanan"
+                hint="Pengunjung yang mengisi form konsultasi (1 baris per pengisian) · {{ $periodLabelLower }}"
                 footer="Total {{ number_format($totalTraffic, 0, ',', '.') }}"
                 :delta="$trafficChange" :delta-positive="$trafficChange >= 0">
                 <x-slot:icon><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></x-slot:icon>
@@ -90,23 +93,9 @@
                 value-id="cardLeadsValue"
                 delta-id="cardLeadsDelta"
                 footer-id="cardLeadsTotalFooter"
-                hint="Pengisi form, no HP unik · {{ $periodLabelLower }}"
+                hint="Orang dengan nomor HP unik — nomor sama menambah field counts · {{ $periodLabelLower }}"
                 footer="Total {{ number_format($totalLeads, 0, ',', '.') }}"
                 :delta="$leadChange" :delta-positive="$leadChange >= 0">
-                <x-slot:icon><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></x-slot:icon>
-            </x-admin.stat-card>
-
-            <x-admin.stat-card label="Total Traffic" :value="number_format($totalTraffic, 0, ',', '.')" tone="violet"
-                value-id="cardTotalTraffic"
-                footer-id="cardTotalTrafficFooter"
-                footer="{{ $periodTraffic }} {{ $periodLabelLower }}">
-                <x-slot:icon><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></x-slot:icon>
-            </x-admin.stat-card>
-
-            <x-admin.stat-card label="Total Leads" :value="number_format($totalLeads, 0, ',', '.')" tone="teal"
-                value-id="cardTotalLeads"
-                footer-id="cardTotalLeadsFooter"
-                footer="{{ $periodLeads }} baru {{ $periodLabelLower }}">
                 <x-slot:icon><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></x-slot:icon>
             </x-admin.stat-card>
 
@@ -114,6 +103,20 @@
                 value-id="cardServicesValue"
                 footer="Total layanan tersedia">
                 <x-slot:icon><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></x-slot:icon>
+            </x-admin.stat-card>
+
+            <x-admin.stat-card label="Total Traffic" :value="number_format($totalTraffic, 0, ',', '.')" tone="violet"
+                value-id="cardTotalTraffic"
+                footer-id="cardTotalTrafficFooter"
+                footer="{{ ucfirst($periodLabelLower) }}: {{ $periodTraffic }} konsultasi">
+                <x-slot:icon><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></x-slot:icon>
+            </x-admin.stat-card>
+
+            <x-admin.stat-card label="Total Leads" :value="number_format($totalLeads, 0, ',', '.')" tone="teal"
+                value-id="cardTotalLeads"
+                footer-id="cardTotalLeadsFooter"
+                footer="{{ ucfirst($periodLabelLower) }}: {{ $periodLeads }} lead baru">
+                <x-slot:icon><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></x-slot:icon>
             </x-admin.stat-card>
         </div>
     </section>
@@ -126,7 +129,7 @@
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col">
-                <div class="p-5 pb-1 flex-1 flex flex-col">
+                <div class="p-5 pb-1 flex-1 flex flex-col relative">
                     <div class="flex items-center justify-between gap-3">
                         <h3 class="text-sm font-semibold text-gray-700 flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -141,7 +144,7 @@
                 <div class="h-1.5 rounded-b-xl bg-emerald-600"></div>
             </div>
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col">
-                <div class="p-5 flex-1 flex flex-col">
+                <div class="p-5 flex-1 flex flex-col relative">
                     <div class="flex items-center justify-between gap-3">
                         <h3 class="text-sm font-semibold text-gray-700 flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
@@ -237,7 +240,7 @@
         function step(ts) {
             if (startTime === null) startTime = ts;
             var p = Math.min((ts - startTime) / dur, 1);
-            var eased = 1 - Math.pow(1 - p, 3);
+            var eased = 1 - Math.pow(1 - p, 4);
             el.textContent = fmtNum(Math.round(start + (target - start) * eased));
             if (p < 1) requestAnimationFrame(step);
             else el.textContent = fmtNum(target);
@@ -245,11 +248,25 @@
         requestAnimationFrame(step);
     }
 
-    function setValue(id, num) {
+    var cardValueTargets = {};
+
+    function setValueQuiet(id, num) {
         var el = document.getElementById(id);
         if (!el) return;
-        var start = parseInt(el.textContent.replace(/\./g, ''), 10) || 0;
-        animateValue(el, start, num, 600);
+        cardValueTargets[id] = {
+            prev: parseInt(el.textContent.replace(/\./g, ''), 10) || 0,
+            target: num
+        };
+    }
+
+    function animateCardValuesFromPrev() {
+        ['cardTrafficValue', 'cardLeadsValue', 'cardServicesValue', 'cardVisitorValue', 'cardTotalTraffic', 'cardTotalLeads'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            var info = cardValueTargets[id];
+            if (!info) return;
+            animateValue(el, info.prev, info.target, 700);
+        });
     }
 
     function animateCardValues(ids) {
@@ -331,6 +348,22 @@
         el.innerHTML = html;
     }
 
+    function renderRecentLeadsLoading() {
+        var el = document.getElementById('recentLeadsList');
+        if (!el) return;
+        var html = '';
+        for (var i = 0; i < 4; i++) {
+            html += '<div class="flex items-center justify-between gap-3 px-3 sm:px-4 py-3">'
+                + '<div class="min-w-0 flex-1 space-y-2">'
+                + '<div class="h-3.5 w-32 skeleton-shimmer"></div>'
+                + '<div class="h-3 w-40 skeleton-shimmer opacity-70"></div>'
+                + '</div>'
+                + '<div class="h-5 w-16 skeleton-shimmer" style="border-radius:9999px"></div>'
+                + '</div>';
+        }
+        el.innerHTML = html;
+    }
+
     var currentData = null;
     var fetchBusy = false;
     var lastParams = null;
@@ -348,22 +381,19 @@
                 ? '<svg class="animate-spin h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg><span>Memuat...</span>'
                 : '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg><span>Filter</span>';
         }
-        var bar = document.getElementById('dashLoadingBar');
-        if (bar) bar.classList.toggle('hidden', !value);
+        var progress = document.getElementById('dashProgressBar');
+        if (progress) progress.classList.toggle('active', value);
+        var overlay = document.getElementById('dashLoadingOverlay');
+        if (overlay) overlay.classList.toggle('active', value);
+        var app = document.getElementById('dashboardApp');
+        if (app) app.classList.toggle('dash-dim', value);
 
-        document.querySelectorAll('.stat-value-text').forEach(function(el) {
-            if (value) {
-                el.classList.add('animate-pulse', 'bg-gray-200', 'text-transparent', 'rounded-md', 'w-20', 'h-8', 'inline-block');
-                el.classList.remove('text-gray-900');
-            } else {
-                el.classList.remove('animate-pulse', 'bg-gray-200', 'text-transparent', 'rounded-md', 'w-20', 'h-8', 'inline-block');
-                el.classList.add('text-gray-900');
-            }
-        });
+        if (value) renderRecentLeadsLoading();
     }
 
     function dashboardFetch(params) {
         if (fetchBusy) return;
+        var startAt = Date.now();
         setFilterBusy(true);
         var url = '{{ route('admin.dashboard.data') }}?' + new URLSearchParams(params).toString();
         fetch(url)
@@ -383,11 +413,22 @@
             })
             .catch(function (e) {
                 console.error('Dashboard fetch error:', e);
+                if (currentData && currentData.recentLeads) {
+                    renderRecentLeads(currentData.recentLeads);
+                }
                 if (typeof Swal !== 'undefined') {
                     Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: 'Gagal memuat data dashboard', showConfirmButton: false, timer: 3000 });
                 }
             })
-            .finally(function () { setFilterBusy(false); });
+            .finally(function () {
+                var elapsed = Date.now() - startAt;
+                if (elapsed < 300) {
+                    setTimeout(function () { setFilterBusy(false); animateCardValuesFromPrev(); }, 300 - elapsed);
+                } else {
+                    setFilterBusy(false);
+                    animateCardValuesFromPrev();
+                }
+            });
     }
 
     function updateDom(d) {
@@ -399,22 +440,22 @@
         setText('infoPeriodLabel', d.hasCustomRange ? 'Periode Ini' : d.periodLabel);
 
         setText('cardTrafficLabel', 'Traffic ' + d.periodLabel);
-        setText('cardTrafficHint', 'Pengisi form, ' + d.periodLabelLower + ' · terekam per layanan');
-        setValue('cardTrafficValue', d.periodTraffic);
+        setText('cardTrafficHint', 'Pengunjung yang mengisi form konsultasi (1 baris per pengisian) · ' + d.periodLabelLower);
+        setValueQuiet('cardTrafficValue', d.periodTraffic);
         updateDelta('cardTrafficDelta', d.trafficChange, d.trafficChange >= 0);
 
         setText('cardLeadsLabel', 'Leads ' + d.periodLabel);
-        setText('cardLeadsHint', 'Pengisi form, no HP unik · ' + d.periodLabelLower);
-        setValue('cardLeadsValue', d.periodLeads);
+        setText('cardLeadsHint', 'Orang dengan nomor HP unik — nomor sama menambah field counts · ' + d.periodLabelLower);
+        setValueQuiet('cardLeadsValue', d.periodLeads);
         updateDelta('cardLeadsDelta', d.leadChange, d.leadChange >= 0);
 
-        setValue('cardTotalTraffic', d.totalTraffic);
-        setText('cardTotalTrafficFooter', d.periodTraffic + ' ' + d.periodLabelLower);
-        setValue('cardTotalLeads', d.totalLeads);
-        setText('cardTotalLeadsFooter', d.periodLeads + ' baru ' + d.periodLabelLower);
+        setValueQuiet('cardTotalTraffic', d.totalTraffic);
+        setText('cardTotalTrafficFooter', d.periodLabelLower.charAt(0).toUpperCase() + d.periodLabelLower.slice(1) + ': ' + d.periodTraffic + ' konsultasi');
+        setValueQuiet('cardTotalLeads', d.totalLeads);
+        setText('cardTotalLeadsFooter', d.periodLabelLower.charAt(0).toUpperCase() + d.periodLabelLower.slice(1) + ': ' + d.periodLeads + ' lead baru');
         setText('cardVisitorLabel', 'Visitor ' + d.periodLabel);
-        setText('cardVisitorHint', 'IP unik per hari · ' + d.periodLabelLower);
-        setValue('cardVisitorValue', d.periodVisitors);
+        setText('cardVisitorHint', 'Pengunjung (IP unik per hari) · ' + d.periodLabelLower);
+        setValueQuiet('cardVisitorValue', d.periodVisitors);
         updateDelta('cardVisitorDelta', d.visitorChange, d.visitorChange >= 0);
 
         setText('cardVisitorTotalFooter', 'Total ' + d.totalVisitors.toLocaleString('id-ID'));
@@ -444,7 +485,7 @@
         return {
             type: 'bar',
             data: {
-                labels: d.visitorChartCategories,
+                labels: (d.leadChartCategories || d.visitorChartCategories || []),
                 datasets: TREND_SERIES.map(function (s) {
                     return { label: s.label, data: d[s.key], backgroundColor: s.color, borderRadius: 3, borderSkipped: false, maxBarThickness: isDay ? 26 : 12, barPercentage: 0.85, categoryPercentage: 0.75 };
                 })
@@ -541,6 +582,17 @@
             chartInstances[id] = new Chart(el.querySelector('canvas'), config);
         } catch (e) {
             console.error('Chart init error:', e);
+            chartInstances[id] = null;
+        }
+    }
+
+    function buildChartSafely(id, configFn, isEmpty, emptyText) {
+        try {
+            var config = configFn ? configFn() : null;
+            if (config) buildChart(id, config, isEmpty, emptyText);
+        } catch (e) {
+            console.error('Chart render error (' + id + '):', e);
+            emptyMessage(id, 'Grafik gagal dimuat.');
         }
     }
 
@@ -550,6 +602,21 @@
         });
     }
 
+    function ensureChartAvailable(callback, attempt) {
+        attempt = attempt || 0;
+        if (typeof Chart !== 'undefined') {
+            callback();
+            return;
+        }
+        if (attempt >= 10) {
+            ['trendChart', 'sumberChart'].forEach(function (id) {
+                emptyMessage(id, 'Grafik tidak dapat dimuat (library chart belum tersedia).');
+            });
+            return;
+        }
+        setTimeout(function () { ensureChartAvailable(callback, attempt + 1); }, 250);
+    }
+
     function renderCharts(d) {
         if (typeof Chart === 'undefined') {
             ['trendChart', 'sumberChart'].forEach(function (id) {
@@ -557,23 +624,19 @@
             });
             return;
         }
-        try {
-            destroyCharts();
-            var trendEmpty = TREND_SERIES.every(function (s) {
-                return (d[s.key] || []).reduce(function (a, b) { return a + b; }, 0) === 0;
-            });
-            buildChart('trendChart', trendOptions(d), trendEmpty, 'Belum ada data pada periode ini.');
-            buildChart('sumberChart', sumberOptions(d), Object.keys(d.visitsBySumber).length === 0, 'Belum ada konsultasi pada periode ini.');
-            renderSumberSummary(d);
-            renderTrendLegend(d);
-        } catch (e) {
-            console.error('Chart render error:', e);
-        }
+        destroyCharts();
+        var trendEmpty = TREND_SERIES.every(function (s) {
+            return (d[s.key] || []).reduce(function (a, b) { return a + b; }, 0) === 0;
+        });
+        buildChartSafely('trendChart', function () { return trendOptions(d); }, trendEmpty, 'Belum ada data pada periode ini.');
+        buildChartSafely('sumberChart', function () { return sumberOptions(d); }, Object.keys(d.visitsBySumber).length === 0, 'Belum ada konsultasi pada periode ini.');
+        renderSumberSummary(d);
+        renderTrendLegend(d);
     }
 
     document.addEventListener('DOMContentLoaded', function () {
         currentData = {
-            visitorChartCategories: @json($leadChartCategories),
+            leadChartCategories: @json($leadChartCategories),
             visitorChartData: @json($visitorChartData),
             trafficChartData: @json($trafficChartData),
             leadChartData: @json($leadChartData),
@@ -604,6 +667,7 @@
 
         document.querySelectorAll('.period-btn').forEach(function (btn) {
             btn.addEventListener('click', function () {
+                highlightPeriod(this.dataset.period, false);
                 dashboardFetch({ filter: this.dataset.period });
             });
         });
@@ -629,7 +693,13 @@
 
         animateCardValues(['cardTrafficValue', 'cardLeadsValue', 'cardServicesValue', 'cardVisitorValue', 'cardTotalTraffic', 'cardTotalLeads']);
 
-        renderCharts(currentData);
+        ensureChartAvailable(function () { renderCharts(currentData); });
+
+        window.addEventListener('pageshow', function (e) {
+            if (e.persisted) {
+                ensureChartAvailable(function () { renderCharts(currentData); });
+            }
+        });
     });
     </script>
 @endpush

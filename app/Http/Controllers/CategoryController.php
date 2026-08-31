@@ -14,19 +14,16 @@ class CategoryController extends Controller
             ->with(['serviceItems' => fn ($q) => $q->where('status', true)->orderBy('sort')])
             ->paginate(12);
 
-        if ($category->slug === 'transportasi') {
-            return view('categories.show_transportasis', compact('category', 'services'));
-        }
-
-        $formSlugs = ['laundry', 'buggy-car', 'kursi-roda-umroh', 'fotografer', 'penukaran-uang', 'muthawif'];
-        if (in_array($category->slug, $formSlugs, true)) {
+        if ($category->pageType() === 'form') {
             $services = $category->services()->where('status', true)->get();
             return view('categories.show_form', compact('category', 'services'));
         }
 
-        $view = $category->isCatalog()
-            ? 'categories.show_catalog'
-            : 'categories.show';
+        $view = match ($category->pageType()) {
+            'transport' => 'categories.show_transportasis',
+            'catalog' => 'categories.show_catalog',
+            default => 'categories.show',
+        };
 
         return view($view, compact('category', 'services'));
     }

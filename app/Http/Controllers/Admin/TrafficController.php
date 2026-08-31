@@ -11,21 +11,37 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class TrafficController extends Controller
 {
+    protected function type(Request $request): string
+    {
+        return $request->input('type', 'kunjungan') === 'leads' ? 'leads' : 'kunjungan';
+    }
+
+    protected function typeIsLead(Request $request): bool
+    {
+        return $this->type($request) === 'leads';
+    }
+
     protected function filteredQuery(Request $request)
     {
-        $query = Traffic::where('is_lead', true)->latest()->with('customer');
+        $isLead = $this->typeIsLead($request);
+
+        $query = Traffic::where('is_lead', $isLead)->latest();
 
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('nama', 'like', "%{$search}%")
-                  ->orWhere('no_hp', 'like', "%{$search}%")
-                  ->orWhere('category', 'like', "%{$search}%")
-                  ->orWhere('service', 'like', "%{$search}%");
+            $query->where(function ($q) use ($search, $isLead) {
+                if ($isLead) {
+                    $q->where('nama', 'like', "%{$search}%")
+                      ->orWhere('no_hp', 'like', "%{$search}%");
+                }
+                $q->orWhere('category', 'like', "%{$search}%")
+                  ->orWhere('service', 'like', "%{$search}%")
+                  ->orWhere('menu', 'like', "%{$search}%")
+                  ->orWhere('url', 'like', "%{$search}%");
             });
         }
 
-        if ($request->filled('status')) {
+        if ($isLead && $request->filled('status')) {
             $query->where('status', $request->status);
         }
 
@@ -46,27 +62,32 @@ class TrafficController extends Controller
 
     public function index(Request $request)
     {
-        $traffics = $this->filteredQuery($request)->paginate(25)->withQueryString();
+        $perPage = in_array((int) $request->input('per_page', 25), [25, 50, 100, 200], true)
+            ? (int) $request->input('per_page')
+            : 25;
+
+        $traffics = $this->filteredQuery($request)->paginate($perPage)->withQueryString();
 
         $statuses = ['baru', 'pelanggan', 'dihubungi', 'konversi', 'batal'];
         $devices = ['Desktop', 'Mobile', 'Tablet'];
+        $type = $this->type($request);
 
-        return view('admin.traffics.index', compact('traffics', 'statuses', 'devices'));
+        return view('admin.traffics.index', compact('traffics', 'statuses', 'devices', 'type'));
     }
 
     public function destroy(Traffic $traffic)
     {
-        abort_unless($traffic->is_lead, 404);
-
         $traffic->delete();
 
-        return redirect()->route('admin.traffics.index')->with('success', 'Data traffic dihapus.');
+        return redirect()->route('admin.traffics.index', ['type' => $this->type(request())])
+            ->with('success', 'Data traffic dihapus.');
     }
 
     public function exportExcel(Request $request)
     {
         $traffics = $this->filteredQuery($request)->get();
-        $filename = 'traffic-leads-' . now()->format('Y-m-d-His') . '.xlsx';
+        $type = $this->typeIsLead($request) ? 'leads' : 'kunjungan';
+        $filename = 'traffic-' . $type . '-' . now()->format('Y-m-d-His') . '.xlsx';
 
         return Excel::download(new TrafficExport($traffics), $filename);
     }
@@ -82,11 +103,13 @@ class TrafficController extends Controller
     {
         $traffics = $this->filteredQuery($request)->get();
 
+        $type = $this->typeIsLead($request) ? 'leads' : 'kunjungan';
+
         $pdf = Pdf::loadView('admin.traffics.export-pdf', [
             'traffics' => $traffics,
             'exportedAt' => now()->format('d M Y H:i'),
         ])->setPaper('a4', 'landscape');
 
-        return $pdf->stream('traffic-leads-' . now()->format('Y-m-d-His') . '.pdf');
+        return $pdf->stream('traffic-' . $type . '-' . now()->format('Y-m-d-His') . '.pdf');
     }
 }

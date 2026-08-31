@@ -24,6 +24,7 @@ class AdminCatalogTest extends TestCase
             'name' => 'Hotel',
             'slug' => 'hotel',
             'is_catalog' => true,
+            'page_type' => 'catalog',
             'group_label' => 'Kota',
             'item_label' => 'Hotel',
         ]);

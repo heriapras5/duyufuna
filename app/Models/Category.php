@@ -15,6 +15,7 @@ class Category extends Model
         'subtitle',
         'sort',
         'is_catalog',
+        'page_type',
         'group_label',
         'item_label',
         'description',
@@ -44,12 +45,17 @@ class Category extends Model
 
     public function scopeCatalog(Builder $query): Builder
     {
-        return $query->where('is_catalog', true);
+        return $query->where('page_type', 'catalog');
     }
 
     public function isCatalog(): bool
     {
-        return (bool) $this->is_catalog;
+        return $this->pageType() === 'catalog';
+    }
+
+    public function pageType(): string
+    {
+        return $this->page_type ?: 'cards';
     }
 
     public function groupLabel(): string

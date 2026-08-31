@@ -2,6 +2,7 @@
 @section('title', 'Edit Layanan - ' . $service->title)
 @section('page_title', 'Edit Layanan')
 @section('content')
+@php $isFormMode = $service->category?->pageType() === 'form'; @endphp
 <div class="flex items-center gap-4 mb-6">
     <a href="{{ route('admin.categories.show', $service->category_id) }}" class="btn btn-secondary btn-sm">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
@@ -28,23 +29,28 @@
                     <div class="space-y-5">
                         <x-admin.input name="title" label="Nama Layanan" required :value="$service->title" />
                         <x-admin.slug-preview source="title" base="service" />
+                        <x-admin.textarea name="short_description" label="Deskripsi Singkat" rows="2" maxlength="255" placeholder="Teks singkat yang tampil di halaman publik" :value="old('short_description', $service->short_description)" help="Maksimal 255 karakter. Teks ini tampil pada pemilih layanan di halaman konsultasi." />
                     </div>
                     <x-admin.switch name="status" label="Tampilkan di halaman publik" :checked="$service->status" help="Nonaktifkan untuk menyembunyikan layanan sementara." />
                 </div>
+                @if(!$isFormMode)
                 <div class="mt-5 pt-5 border-t border-gray-100">
                     <x-admin.image-upload name="image" label="Gambar" :existing="$service->image" hint="Ditampilkan pada kartu layanan di halaman kategori. Format: JPG, PNG, WEBP. Maks 2MB." />
                 </div>
                 <div class="mt-5 pt-5 border-t border-gray-100">
                     <x-admin.emoji-input name="icon" label="Ikon Alternatif (emoji)" help="Ditampilkan jika layanan tidak memiliki gambar. Kosongkan untuk memakai ikon kategori." :value="old('icon', $service->icon)" />
                 </div>
+                @endif
             </x-admin.form-card>
 
+            @if(!$isFormMode)
             <x-admin.form-card title="Deskripsi" description="Satu deskripsi lengkap layanan." tone="amber">
                 <x-slot:icon>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
                 </x-slot:icon>
                 <x-admin.summernote name="description" label="Deskripsi" :value="old('description', $service->description)" />
             </x-admin.form-card>
+            @endif
 
             @if($service->category?->isCatalog())
             <x-admin.form-card title="Sub-Layanan Katalog" description="Kategori ini dikelola sebagai katalog — sub-layanan dikelola per grup." tone="blue">
@@ -75,6 +81,7 @@
                 </div>
             </x-admin.form-card>
 
+            @if(!$isFormMode)
             <x-admin.form-card title="SEO" description="Meta informasi untuk mesin pencari (opsional).">
                 <div class="space-y-5">
                     <x-admin.input name="meta_title" label="Meta Title" placeholder="Judul untuk mesin pencari" :value="old('meta_title', $service->meta_title)" />
@@ -82,6 +89,7 @@
                     <x-admin.input name="meta_keywords" label="Meta Keywords" placeholder="Kata kunci, pisahkan dengan koma" :value="old('meta_keywords', $service->meta_keywords)" />
                 </div>
             </x-admin.form-card>
+            @endif
 
             <x-admin.form-actions cancel-url="{{ route('admin.categories.show', $service->category_id) }}" submit-label="Simpan Data" />
         </div>

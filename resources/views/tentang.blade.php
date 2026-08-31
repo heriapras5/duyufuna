@@ -10,13 +10,6 @@
     @php
         $aboutImage = $setting->about_image ?? null;
         if (!$aboutImage && $setting->about_banner) $aboutImage = $setting->about_banner;
-        $waService = app(\App\Services\WhatsAppService::class);
-        $waMessage = $waService->message($setting->wa_message ?? '', [
-            'nama' => '', 'no_hp' => '',
-            'kategori' => '', 'layanan' => '',
-            'website' => $setting->website_name ?? '',
-        ]);
-        $waUrl = $waService->url(null, $setting->whatsapp, $waMessage);
     @endphp
 
     <section class="px-4 sm:px-6 lg:px-8 py-10 md:py-20">
@@ -41,21 +34,13 @@
             </div>
 
             <div class="scroll-reveal-right min-w-0">
+                <h1 class="font-serif text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-5">{{ $setting->about_title ?? 'Tentang Kami' }}</h1>
                 @if($setting && $setting->about_body)
                 <div class="article-content">
                     {!! \Illuminate\Support\Str::markdown($setting->about_body ?? '') !!}
                 </div>
                 @else
                 <p class="text-gray-500 leading-relaxed">Belum ada konten untuk halaman ini. Silakan lengkapi melalui pengaturan admin.</p>
-                @endif
-
-                @if($setting)
-                <div class="mt-10">
-                    <a href="{{ $waUrl }}" class="inline-flex w-full sm:w-auto items-center justify-center gap-2.5 bg-dark-green hover:bg-masjid text-white font-semibold text-sm sm:text-base rounded-full px-7 py-4 sm:py-3.5 transition-colors shadow-lg shadow-dark-green/20 active:scale-[0.98]">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></svg>
-                        Konsultasi via WhatsApp
-                    </a>
-                </div>
                 @endif
             </div>
         </div>

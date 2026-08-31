@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             [
                 'website_name' => 'DUYUFUNA',
                 'tagline' => 'MELAYANI TAMU ALLAH, SEPENUH HATI',
-                'whatsapp' => '6281234567890',
+                'whatsapp' => '6281293679502',
                 'email' => 'info@duyufuna.com',
                 'address' => 'Jakarta, Indonesia',
             ]

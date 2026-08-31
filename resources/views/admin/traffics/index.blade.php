@@ -13,14 +13,20 @@
     ];
 @endphp
 
-<x-admin.search route="admin.traffics.index" placeholder="Cari nama, nomor, layanan...">
+<x-admin.search route="admin.traffics.index" placeholder="{{ $type === 'leads' ? 'Cari nama, nomor, layanan...' : 'Cari halaman, menu, kategori, layanan...' }}">
     <x-slot:filters>
+        <select name="type" class="admin-input bg-white w-auto">
+            <option value="kunjungan" @selected($type === 'kunjungan')>Kunjungan</option>
+            <option value="leads" @selected($type === 'leads')>Lead Events</option>
+        </select>
+        @if($type === 'leads')
         <select name="status" class="admin-input bg-white w-auto">
             <option value="">Semua Status</option>
             @foreach($statusList as $value => $text)
             <option value="{{ $value }}" @selected(request('status') === $value)>{{ $text }}</option>
             @endforeach
         </select>
+        @endif
         <select name="device" class="admin-input bg-white max-w-[150px]">
             <option value="">Semua Device</option>
             @foreach($devices as $d)
@@ -39,6 +45,7 @@
     </x-slot:actions>
 </x-admin.search>
 
+@if($type === 'leads')
 <x-admin.table>
     <x-slot:head>
         <tr>
@@ -69,13 +76,10 @@
         </x-admin.td>
         <x-admin.td><span class="text-[13px] text-gray-600 whitespace-nowrap">{{ $t->device ?? '-' }}</span></x-admin.td>
         <x-admin.td>
-            @if($t->customer)
-            @include('admin.partials.status-changer', ['customer' => $t->customer])
-            @else
-            <x-admin.badge :color="$statusBadge[$t->status] ?? 'gray'">
-                {{ $statusList[$t->status] ?? ucfirst((string) $t->status) }}
+            @php $statusValue = $t->customer?->status ?: $t->status; @endphp
+            <x-admin.badge :color="$statusBadge[$statusValue] ?? 'gray'">
+                {{ $statusList[$statusValue] ?? ucfirst((string) $statusValue) }}
             </x-admin.badge>
-            @endif
         </x-admin.td>
         <x-admin.td class="text-right sticky-col">
             <x-admin.actions destroy="admin.traffics.destroy" :params="[$t]" />
@@ -85,10 +89,64 @@
     @php
         $isFiltering = collect(['search', 'status', 'device', 'date_from', 'date_to'])->contains(fn($n) => request()->filled($n));
     @endphp
-    <x-admin.empty-state :colspan="8" :message="$isFiltering ? 'Data tidak ditemukan.' : 'Belum ada data traffic.'" />
+    <x-admin.empty-state :colspan="8" :message="$isFiltering ? 'Data tidak ditemukan.' : 'Belum ada data lead events.'" />
     @endforelse
     <x-slot:footer>
         <div>{{ $traffics->links('vendor.pagination.admin') }}</div>
     </x-slot:footer>
 </x-admin.table>
+@else
+<x-admin.table>
+    <x-slot:head>
+        <tr>
+            <x-admin.th class="w-10 text-center">No</x-admin.th>
+            <x-admin.th class="min-w-[160px]">Waktu</x-admin.th>
+            <x-admin.th class="min-w-[240px]">Halaman</x-admin.th>
+            <x-admin.th class="min-w-[120px]">Menu</x-admin.th>
+            <x-admin.th class="min-w-[150px]">Kategori / Layanan</x-admin.th>
+            <x-admin.th class="min-w-[90px]">Device</x-admin.th>
+            <x-admin.th class="min-w-[160px]">Referrer</x-admin.th>
+            <x-admin.th class="min-w-[110px]">IP</x-admin.th>
+            <x-admin.th class="text-right sticky-col min-w-[52px]">Aksi</x-admin.th>
+        </tr>
+    </x-slot:head>
+    @forelse($traffics as $t)
+    <tr class="border-b border-gray-50 transition">
+        <x-admin.td class="text-center text-sm text-gray-500 tabular-nums">{{ $traffics->firstItem() + $loop->index }}</x-admin.td>
+        <x-admin.td class="text-[13px] text-gray-600 whitespace-nowrap tabular-nums">{{ $t->created_at->format('d/m/Y H:i') }}</x-admin.td>
+        <x-admin.td>
+            <a href="{{ $t->url }}" target="_blank" rel="noopener" class="block text-[13px] font-medium text-gray-800 hover:text-emerald-600 truncate max-w-[280px]" title="{{ $t->url }}">{{ $t->url }}</a>
+        </x-admin.td>
+        <x-admin.td><span class="text-[13px] text-gray-600 whitespace-nowrap">{{ $t->menu ?? '-' }}</span></x-admin.td>
+        <x-admin.td>
+            @if($t->category || $t->service)
+            <span class="text-[13px] text-gray-600">{{ $t->category ?? '-' }}{{ $t->service ? ' · ' . $t->service : '' }}</span>
+            @else
+            <span class="text-gray-400 text-sm">-</span>
+            @endif
+        </x-admin.td>
+        <x-admin.td><span class="text-[13px] text-gray-600 whitespace-nowrap">{{ $t->device ?? '-' }}</span></x-admin.td>
+        <x-admin.td>
+            @if($t->referrer)
+            <span class="block text-[12px] text-gray-500 truncate max-w-[220px]" title="{{ $t->referrer }}">{{ $t->referrer }}</span>
+            @else
+            <span class="text-gray-400 text-sm">-</span>
+            @endif
+        </x-admin.td>
+        <x-admin.td><span class="text-[12px] text-gray-500 tabular-nums">{{ $t->ip ?? '-' }}</span></x-admin.td>
+        <x-admin.td class="text-right sticky-col">
+            <x-admin.actions destroy="admin.traffics.destroy" :params="[$t]" />
+        </x-admin.td>
+    </tr>
+    @empty
+    @php
+        $isFiltering = collect(['search', 'device', 'date_from', 'date_to'])->contains(fn($n) => request()->filled($n));
+    @endphp
+    <x-admin.empty-state :colspan="9" :message="$isFiltering ? 'Data tidak ditemukan.' : 'Belum ada kunjungan tercatat.'" />
+    @endforelse
+    <x-slot:footer>
+        <div>{{ $traffics->links('vendor.pagination.admin') }}</div>
+    </x-slot:footer>
+</x-admin.table>
+@endif
 @endsection

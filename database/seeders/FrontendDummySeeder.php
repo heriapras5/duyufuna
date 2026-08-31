@@ -2,9 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Article;
-use App\Models\ArticleCategory;
-use App\Models\Gallery;
 use App\Models\Service;
 use App\Models\ServiceItem;
 use App\Models\Testimonial;
@@ -359,59 +356,6 @@ class FrontendDummySeeder extends Seeder
         ];
     }
 
-    protected function seedGallery(): void
-    {
-        $items = [
-            ['title' => 'Masjidil Haram', 'e' => '🕋', 'desc' => 'Kesempatan jamaah beribadah di Masjidil Haram, Makkah.', 'kw' => 'kaaba masjid haram'],
-            ['title' => 'Masjid Nabawi', 'e' => '🕌', 'desc' => 'Suasana khusyuk beribadah di Masjid Nabawi, Madinah.', 'kw' => 'masjid nabawi madinah'],
-            ['title' => 'Hotel Ideal', 'e' => '🏨', 'desc' => 'Akomodasi hotel nyaman dekat area Haram.', 'kw' => 'luxury hotel room'],
-            ['title' => 'Shalawat Transportasi', 'e' => '🚐', 'desc' => 'Layanan antar-jemput shalawat untuk jamaah.', 'kw' => 'shuttle bus'],
-            ['title' => 'Catering Khalid', 'e' => '🍽', 'desc' => 'Hidangan menu halal yang higienis dan lezat.', 'kw' => 'arabic rice food'],
-            ['title' => 'Jastip Tanah Suci', 'e' => '📿', 'desc' => 'Oleh-oleh autentik untuk keluarga tercinta.', 'kw' => 'prayer beads dates'],
-        ];
-        foreach ($items as $i) {
-            Gallery::updateOrCreate(
-                ['title' => $i['title']],
-                [
-                    'description' => $i['desc'],
-                    'image' => $this->photo('galleries', $i['title'], $i['e'], $i['kw']),
-                ]
-            );
-        }
-    }
-
-    protected function seedArticles(): void
-    {
-        $category = ArticleCategory::first();
-        $articles = [
-            [
-                'title' => 'Tips Memilih Waktu Terbaik Berangkat Umroh',
-                'slug' => 'tips-waktu-terbaik-berangkat-umroh',
-                'excerpt' => 'Panduan memilih musim dan bulan terbaik agar ibadah umroh Anda nyaman dan tenang.',
-                'content' => '<p>Melakukan umroh di waktu yang tepat sangat memengaruhi kenyamanan ibadah Anda.</p><h3>1. Musim Dingin</h3><p>Cuaca lebih sejuk sehingga beribadah semakin nyaman.</p><h3>2. Bulan Ramadhan</h3><p>Beribadah di bulan mulia memberikan pahala berlipat ganda.</p><p>Konsultasikan jadwal terbaik bersama tim DUYUFUNA.</p>',
-            ],
-            [
-                'title' => 'Daftar Perlengkapan Wajib Jamaah Umroh',
-                'slug' => 'daftar-perlengkapan-wajib-jamaah-umroh',
-                'excerpt' => 'Cek list perlengkapan penting agar perjalanan ibadah semakin ringkas dan nyaman.',
-                'content' => '<p>Membawa perlengkapan yang tepat sangat penting untuk kelancaran ibadah.</p><h3>1. Dokumen Penting</h3><p>Paspor, visa, dan tiket harus dipersiapkan sejak awal.</p><h3>2. Perlengkapan Pribadi</h3><p>Siapkan ihram, berbagai benda kebutuhan pribadi.</p>',
-            ],
-        ];
-        foreach ($articles as $a) {
-            Article::updateOrCreate(
-                ['slug' => $a['slug']],
-                [
-                    'title' => $a['title'],
-                    'article_category_id' => $category->id ?? null,
-                    'excerpt' => $a['excerpt'],
-                    'content' => $a['content'],
-                    'status' => true,
-                    'published_at' => now(),
-                ]
-            );
-        }
-    }
-
     protected function seedTestimonials(): void
     {
         $list = [
@@ -429,8 +373,6 @@ class FrontendDummySeeder extends Seeder
     public function run(): void
     {
         $this->seedServices();
-        $this->seedGallery();
-        $this->seedArticles();
         $this->seedTestimonials();
     }
 }

@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 rewind: slides.length > 1,
                 autoplay: slides.length > 1 ? { delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true } : false,
                 pagination: {
-                    el: el.querySelector('.swiper-pagination'),
+                    el: el.parentElement.querySelector('.swiper-pagination'),
                     clickable: true,
                 },
                 breakpoints: {
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <h2 class="font-serif text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">{!! $globalSetting->testimonial_title ?? 'Apa Kata <span class="text-gradient-gold">Jamaah</span>?' !!}</h2>
             <p class="text-white/50 text-sm md:text-base mt-3 max-w-lg mx-auto">{{ $globalSetting->testimonial_subtitle ?? 'Pengalaman nyata dari jamaah yang telah menggunakan layanan kami' }}</p>
         </div>
-        <div class="swiper testimonialSwiper overflow-visible pb-12">
+        <div class="swiper testimonialSwiper overflow-visible">
             <div class="swiper-wrapper">
                 @foreach($testimonials as $t)
                 <div class="swiper-slide h-auto">
@@ -62,13 +62,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
                 @endforeach
             </div>
-            <div class="swiper-pagination !bottom-0"></div>
+        </div>
+        <div class="testimonial-pagination mt-8 md:mt-10 flex items-center justify-center">
+            <div class="swiper-pagination !static !bottom-auto"></div>
         </div>
     </div>
 </section>
 
 <style>
-.testimonialSwiper .swiper-pagination-bullet {
+.testimonial-pagination .swiper-pagination-bullet {
     background: rgba(255,255,255,0.25);
     opacity: 1;
     width: 8px;
@@ -76,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
     border-radius: 999px;
     transition: all 0.4s ease;
 }
-.testimonialSwiper .swiper-pagination-bullet-active {
+.testimonial-pagination .swiper-pagination-bullet-active {
     width: 28px;
     background: #C9A227;
     border-radius: 999px;

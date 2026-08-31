@@ -34,6 +34,7 @@ class CategoryController extends Controller
             'subtitle' => 'nullable|string|max:255',
             'sort' => 'nullable|integer|min:0',
             'is_catalog' => 'nullable|boolean',
+            'page_type' => 'nullable|string|in:cards,catalog,form,transport',
             'group_label' => 'nullable|string|max:255',
             'item_label' => 'nullable|string|max:255',
             'description' => 'nullable|string',
@@ -45,7 +46,8 @@ class CategoryController extends Controller
         ]);
 
         $validated['slug'] = app(SlugService::class)->make($validated['name'], 'categories');
-        $validated['is_catalog'] = (bool) ($validated['is_catalog'] ?? false);
+        $validated['page_type'] = $validated['page_type'] ?? 'cards';
+        $validated['is_catalog'] = $validated['page_type'] === 'catalog';
         $validated['description'] = HtmlNormalizer::clean($validated['description'] ?? null);
         $validated['sort'] ??= Category::max('sort') + 1;
 
@@ -77,6 +79,7 @@ class CategoryController extends Controller
             'subtitle' => 'nullable|string|max:255',
             'sort' => 'nullable|integer|min:0',
             'is_catalog' => 'nullable|boolean',
+            'page_type' => 'nullable|string|in:cards,catalog,form,transport',
             'group_label' => 'nullable|string|max:255',
             'item_label' => 'nullable|string|max:255',
             'description' => 'nullable|string',
@@ -88,7 +91,8 @@ class CategoryController extends Controller
         ]);
 
         $validated['slug'] = app(SlugService::class)->make($validated['name'], 'categories', $category->id);
-        $validated['is_catalog'] = $category->is_catalog;
+        $validated['page_type'] = $validated['page_type'] ?? $category->pageType();
+        $validated['is_catalog'] = $validated['page_type'] === 'catalog';
         $validated['description'] = HtmlNormalizer::clean($validated['description'] ?? null);
         $validated['sort'] ??= Category::max('sort') + 1;
 

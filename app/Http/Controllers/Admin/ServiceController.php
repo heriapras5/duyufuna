@@ -31,6 +31,7 @@ class ServiceController extends Controller
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
             'title' => 'required|string|max:255',
+            'short_description' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'description' => 'nullable|string',
             'icon' => 'nullable|string|max:100',
@@ -59,6 +60,7 @@ class ServiceController extends Controller
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
             'title' => 'required|string|max:255',
+            'short_description' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'description' => 'nullable|string',
             'icon' => 'nullable|string|max:100',

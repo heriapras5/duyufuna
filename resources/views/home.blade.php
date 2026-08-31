@@ -98,9 +98,6 @@
                 </div>
                 <div class="flex-1 flex flex-col justify-center">
                     <h3 class="text-xs md:text-sm font-bold text-gray-900 leading-tight">{{ $category->name }}</h3>
-                    @if($category->subtitle)
-                    <p class="text-[10px] md:text-xs text-gray-400 mt-0.5 leading-tight">{{ $category->subtitle }}</p>
-                    @endif
                 </div>
             </a>
             @endforeach

@@ -55,7 +55,11 @@ class CustomerController extends Controller
             $query->reorder($sortBy, $sortDir);
         }
 
-        $customers = $query->paginate(25)->withQueryString();
+        $perPage = in_array((int) $request->input('per_page', 25), [25, 50, 100, 200], true)
+            ? (int) $request->input('per_page')
+            : 25;
+
+        $customers = $query->paginate($perPage)->withQueryString();
 
         $statuses = ['baru', 'pelanggan', 'dihubungi', 'konversi', 'batal'];
 

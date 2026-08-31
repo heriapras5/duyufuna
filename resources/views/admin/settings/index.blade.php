@@ -49,8 +49,8 @@
                     <x-admin.input name="tagline" label="Tagline" help="Slogan yang tampil di samping nama website (header, footer, halaman login, dan sidebar admin)." placeholder="Slogan bisnis Anda" :value="old('tagline', $setting->tagline)" />
                     <x-admin.textarea name="address" label="Alamat" rows="1" placeholder="Alamat lengkap kantor" :value="old('address', $setting->address)" />
                     <div class="max-w-xl pt-2 border-t border-gray-100">
-                        <x-admin.input name="whatsapp" label="No WhatsApp" placeholder="6281234567890" :value="old('whatsapp', $setting->whatsapp)"
-                            help="Format internasional tanpa +. Contoh: 6281234567890" />
+                        <x-admin.input name="whatsapp" label="No WhatsApp" placeholder="6281293679502" :value="old('whatsapp', $setting->whatsapp)"
+                            help="Format internasional tanpa +. Contoh: 6281293679502" />
                         <x-admin.textarea name="wa_message" label="Teks Pesan WhatsApp" rows="4" :value="old('wa_message', $setting->wa_message)"
                             help="Pesan otomatis saat pengunjung menekan Konsultasi (menu bawah) atau tombol WhatsApp. Kosongkan untuk memakai pesan bawaan. Variabel: {website}." />
                         <x-admin.wa-preview name="wa_message" :with-identity="false" />

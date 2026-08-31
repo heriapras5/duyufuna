@@ -21,9 +21,11 @@
 </div>
 
 @if($services->count() > 0)
+@php $isFormMode = $category->pageType() === 'form'; @endphp
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
     @foreach($services as $svc)
     <div class="flex flex-col bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-emerald-100 transition group overflow-hidden">
+        @if(!$isFormMode)
         <div class="relative h-36 bg-gray-50 flex items-center justify-center">
             @if($svc->image)
             <img src="{{ Storage::url($svc->image) }}" alt="{{ $svc->title }}" class="w-full h-full object-cover">
@@ -34,8 +36,14 @@
                 <x-admin.status-toggle resource="services" :id="$svc->id" :checked="$svc->status" />
             </div>
         </div>
+        @endif
         <div class="p-5 flex flex-col flex-1">
-            <h3 class="font-bold text-gray-900 text-base truncate">{{ $svc->title }}</h3>
+            <div class="flex items-start justify-between gap-2">
+                <h3 class="font-bold text-gray-900 text-base truncate">{{ $svc->title }}</h3>
+                @if($isFormMode)
+                <x-admin.status-toggle resource="services" :id="$svc->id" :checked="$svc->status" class="shrink-0" />
+                @endif
+            </div>
             @if($svc->description)
             <div class="mt-1.5 pt-1.5 border-t border-gray-100 border-dashed">
                 <p class="text-xs text-gray-500 line-clamp-3">{!! Str::limit(strip_tags($svc->description), 100) !!}</p>
