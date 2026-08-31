@@ -135,9 +135,9 @@
                     </span>
                 </button>
             </form>
-        </div>
 
-    <p class="absolute bottom-5 inset-x-0 text-center text-[10px] text-white/30 tracking-wide">&copy; {{ date('Y') }} {{ $globalSetting->website_name ?? config('app.name') }}. All rights reserved.</p>
+            <p class="text-center text-[10px] text-gray-400 tracking-wide mt-5">&copy; 2026 DUYUFUNA. All rights reserved.</p>
+        </div>
 
     <script>
         const loginEmail = document.getElementById('login_identifier');

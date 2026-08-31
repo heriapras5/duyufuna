@@ -3,9 +3,6 @@
 @section('page_title', 'Kategori Layanan')
 @section('content')
 <x-admin.search route="admin.categories.index">
-    <x-slot:actions>
-        <x-admin.add-button route="admin.categories.create" label="Tambah Data" />
-    </x-slot:actions>
 </x-admin.search>
 
 @if($categories->count() > 0)
