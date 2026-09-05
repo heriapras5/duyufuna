@@ -136,7 +136,7 @@
     <style>[x-cloak]{display:none!important}</style>
     @stack('head')
 </head>
-<body class="font-sans bg-gradient-to-b from-white via-emerald-50/30 to-white text-gray-900 pb-20 lg:pb-0 has-fixed-header">
+<body class="font-sans bg-gradient-to-b from-white via-emerald-50/30 to-white text-gray-900 pb-8 lg:pb-0 has-fixed-header">
     @if($globalSetting && $globalSetting->google_tag_manager_id)
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $globalSetting->google_tag_manager_id }}"
         height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
