@@ -12,9 +12,11 @@
 <div class="bannerSlider absolute inset-0" data-banner-slider>
     @foreach($banners as $banner)
     <div class="banner-slide absolute inset-0 {{ $loop->first ? 'is-active' : '' }}" data-slide>
+        {{-- Gambar penuh memenuhi frame --}}
         <img src="{{ Storage::url($banner->image) }}" alt="{{ $globalSetting->website_name ?? 'DUYUFUNA' }} — Banner"
-             class="w-full h-full object-cover object-[center_20%]"
+             class="absolute inset-0 w-full h-full object-cover object-center"
              @if($loop->first) fetchpriority="high" @else loading="lazy" @endif>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-black/20 z-10 pointer-events-none"></div>
         @if($banner->title || $banner->subtitle)
         <div class="absolute inset-x-0 bottom-4 md:bottom-8 z-40 px-5 md:px-10 pointer-events-none">
             <div class="max-w-7xl mx-auto w-full">

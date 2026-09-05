@@ -17,6 +17,7 @@ Route::get('/services', [ServiceController::class, 'index'])->name('services.ind
 Route::get('/category/{slug}', [App\Http\Controllers\CategoryController::class, 'show'])->name('category.show');
 Route::get('/category/{category}/{service}', [App\Http\Controllers\CategoryController::class, 'showService'])->name('category.service');
 Route::get('/service/{slug}', [ServiceController::class, 'show'])->name('service.detail');
+Route::get('/detail/{slug}', [App\Http\Controllers\ItemController::class, 'show'])->name('detail.show');
 Route::post('/customer', [CustomerController::class, 'store'])->name('customer.store');
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
 Route::get('/artikel/kategori/{slug}', [ArticleController::class, 'category'])->name('articles.category');
@@ -53,6 +54,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
     Route::resource('services', App\Http\Controllers\Admin\ServiceController::class)->except(['show', 'index']);
 
+    Route::prefix('services')->name('services.')->group(function () {
+        Route::get('{service}/items', [App\Http\Controllers\Admin\FormItemController::class, 'index'])->name('items');
+        Route::get('{service}/items/create', [App\Http\Controllers\Admin\FormItemController::class, 'create'])->name('items.create');
+        Route::post('{service}/items', [App\Http\Controllers\Admin\FormItemController::class, 'store'])->name('items.store');
+        Route::get('items/{item}/edit', [App\Http\Controllers\Admin\FormItemController::class, 'edit'])->name('items.edit');
+        Route::put('items/{item}', [App\Http\Controllers\Admin\FormItemController::class, 'update'])->name('items.update');
+        Route::delete('items/{item}', [App\Http\Controllers\Admin\FormItemController::class, 'destroy'])->name('items.destroy');
+    });
+
     Route::prefix('catalog')->name('catalog.')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\CatalogController::class, 'root'])->name('root');
         Route::get('{category}/groups/create', [App\Http\Controllers\Admin\CatalogController::class, 'groupCreate'])->name('groups.create');
@@ -63,6 +73,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
         Route::get('{category}', [App\Http\Controllers\Admin\CatalogController::class, 'groups'])->name('groups');
         Route::get('{category}/{service}', [App\Http\Controllers\Admin\CatalogController::class, 'items'])->name('items');
+        Route::get('{category}/{service}/items/create', [App\Http\Controllers\Admin\CatalogController::class, 'itemCreate'])->name('items.create');
         Route::post('{category}/{service}/items', [App\Http\Controllers\Admin\CatalogController::class, 'storeItem'])->name('items.store');
         Route::get('items/{item}/edit', [App\Http\Controllers\Admin\CatalogController::class, 'itemEdit'])->name('items.edit');
         Route::put('items/{item}', [App\Http\Controllers\Admin\CatalogController::class, 'updateItem'])->name('items.update');
@@ -94,7 +105,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('traffics-export-excel', [App\Http\Controllers\Admin\TrafficController::class, 'exportExcel'])->name('traffics.export-excel');
     Route::get('traffics-export-pdf', [App\Http\Controllers\Admin\TrafficController::class, 'exportPdf'])->name('traffics.export-pdf');
     Route::get('traffics-pdf-preview', [App\Http\Controllers\Admin\TrafficController::class, 'pdfPreview'])->name('traffics.pdf-preview');
-            Route::get('settings', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
+        Route::resource('transport-routes', App\Http\Controllers\Admin\TransportRouteController::class)->except(['show'])->parameters(['transport-routes' => 'transportRoute']);
+        Route::get('settings', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
             Route::put('settings/{setting}', [App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
             Route::post('whatsapp-preview', [App\Http\Controllers\Admin\WhatsAppPreviewController::class, 'preview'])->name('whatsapp.preview');
             Route::get('seo', [App\Http\Controllers\Admin\SeoSettingController::class, 'index'])->name('seo.index');

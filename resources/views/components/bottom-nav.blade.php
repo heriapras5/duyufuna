@@ -1,4 +1,5 @@
-<nav class="app-bottom-nav fixed bottom-0 left-0 right-0 z-40">
+<nav x-data="{ hidden: false }" @hide-bottom-nav.window="hidden = $event.detail" x-show="!hidden"
+     class="app-bottom-nav fixed bottom-0 left-0 right-0 z-40 lg:hidden">
     @php
         $waService = app(\App\Services\WhatsAppService::class);
         $waBottomMessage = $waService->message($globalSetting?->wa_message ?? '', [

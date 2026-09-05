@@ -7,9 +7,9 @@
 @section('breadcrumb', 'FAQ')
 
 @section('content')
-    <section class="px-4 md:px-6 lg:px-8 py-10 md:py-14 max-w-3xl mx-auto scroll-reveal">
-        <div class="mb-8">
-            <h1 class="font-serif text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mt-2">{!! $globalSetting->faq_page_title ?? 'Pertanyaan <span class="text-dark-green">Umum</span>' !!}</h1>
+    <section class="px-4 md:px-6 lg:px-8 pt-4 pb-12 md:pt-6 md:pb-16 max-w-3xl mx-auto scroll-reveal">
+        <div class="mb-6 md:mb-8">
+            <h1 class="font-serif text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">{!! $globalSetting->faq_page_title ?? 'Pertanyaan <span class="text-dark-green">Umum</span>' !!}</h1>
             <p class="text-sm md:text-base text-gray-500 mt-1">{{ $globalSetting->faq_page_subtitle ?? 'Jawaban atas pertanyaan yang paling sering diajukan.' }}</p>
         </div>
         @if($faqs->count() > 0)
@@ -17,7 +17,7 @@
             @foreach($faqs as $f)
             <div class="border border-gray-100 rounded-2xl overflow-hidden bg-white transition-all duration-300" x-data="{ open: false }" x-bind:class="open ? 'shadow-sm border-gold/30' : ''">
                 <button type="button" @click="open = !open" class="w-full flex items-center justify-between gap-4 p-5 md:p-6 text-left">
-                    <span class="flex items-center gap-3 font-bold text-gray-900 text-sm md:text-base">
+                    <span class="flex items-center gap-3 font-bold text-slate-950 text-[15px] md:text-base leading-snug">
                         <span class="w-8 h-8 shrink-0 rounded-lg bg-gradient-to-br from-gold/20 to-amber-500/20 flex items-center justify-center text-gold text-xs font-bold ring-1 ring-gold/20">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                         {{ $f->question }}
                     </span>
@@ -27,7 +27,7 @@
                 </button>
                 <div x-show="open" x-collapse.duration.500ms class="border-t border-gray-50">
                     <div class="px-5 md:px-6 pb-5 md:pb-6">
-                        <div class="pt-1 text-gray-600 text-sm leading-relaxed [&_p]:my-2 [&_ul]:list-disc [&_ul]:pl-5 [&_a]:text-dark-green [&_a]:underline">{!! $f->answer !!}</div>
+                        <div class="pt-1 text-slate-700 text-sm md:text-[15px] leading-relaxed [&_p]:my-2 [&_ul]:list-disc [&_ul]:pl-5 [&_a]:text-dark-green [&_a]:underline">{!! $f->answer !!}</div>
                     </div>
                 </div>
             </div>

@@ -31,14 +31,18 @@
             @if(!$service->exists)
             <input type="hidden" name="status" value="1">
             @endif
+            <div class="mt-5">
+                <x-admin.textarea name="short_description" label="{{ in_array($category->slug, ['jastip-viral', 'catering']) ? 'Subtitle' : 'Deskripsi Singkat (tampilan kartu ' . Str::lower($category->groupLabel()) . ')' }}" rows="2" maxlength="255" placeholder="Teks singkat yang tampil pada kartu {{ Str::lower($category->groupLabel()) }} di halaman publik" :value="old('short_description', $service->short_description)" help="Maksimal 255 karakter. Jika kosong, kartu akan menampilkan potongan dari Deskripsi." />
+            </div>
+            @if(!in_array($category->slug, ['jastip-viral', 'catering']))
+            @if(!in_array($category->slug, ['jastip-viral', 'catering', 'hotel']))
+            <div class="mt-6">
+                <x-admin.summernote name="description" label="Deskripsi" :value="old('description', $service->description)" :height="260" />
+            </div>
+            @endif
+            @endif
             <div class="mt-5 pt-5 border-t border-gray-100">
                 <x-admin.image-upload name="image" label="Gambar" :existing="$service->image" hint="Format: JPG, PNG, WEBP. Maks 2MB." />
-            </div>
-            <div class="mt-6">
-                <x-admin.textarea name="short_description" label="Deskripsi Singkat (tampilan kartu {{ Str::lower($category->groupLabel()) }})" rows="2" maxlength="255" placeholder="Teks singkat yang tampil pada kartu {{ Str::lower($category->groupLabel()) }} di halaman publik" :value="old('short_description', $service->short_description)" help="Maksimal 255 karakter. Jika kosong, kartu akan menampilkan potongan dari Deskripsi." />
-            </div>
-            <div class="mt-6">
-                <x-admin.summernote name="description" label="Deskripsi" :value="old('description', $service->description)" :height="140" />
             </div>
             <div class="mt-6">
                 <x-admin.form-card title="Pengaturan Pesan" description="Nomor HP dan teks pesan untuk tombol konsultasi {{ Str::lower($category->groupLabel()) }} ini." tone="green">

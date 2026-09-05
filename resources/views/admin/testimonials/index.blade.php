@@ -12,9 +12,9 @@
     <x-slot:head>
         <tr>
             <x-admin.th class="w-14 text-center">No</x-admin.th>
+            <x-admin.th>Gambar</x-admin.th>
             <x-admin.th>Nama</x-admin.th>
             <x-admin.th>Pesan</x-admin.th>
-            <x-admin.th>Rating</x-admin.th>
             <x-admin.th>Status</x-admin.th>
             <x-admin.th class="text-right">Aksi</x-admin.th>
         </tr>
@@ -22,15 +22,17 @@
     @forelse($testimonials as $t)
     <tr class="border-b border-gray-50 transition">
         <x-admin.td class="text-center text-sm text-gray-500 tabular-nums">{{ $testimonials->firstItem() + $loop->index }}</x-admin.td>
-        <x-admin.td class="font-medium text-gray-900">{{ $t->name }}</x-admin.td>
-        <x-admin.td class="text-gray-500 max-w-xs truncate" title="{{ $t->review }}">{{ $t->review }}</x-admin.td>
         <x-admin.td>
-            <span class="inline-flex items-center gap-0.5 text-amber-500" title="{{ $t->rating }} dari 5 bintang">
-                @for($i = 1; $i <= 5; $i++)
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="{{ $i <= $t->rating ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="{{ $i <= $t->rating ? '' : 'text-gray-300' }}"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                @endfor
-            </span>
+            @if($t->image)
+            <a href="{{ Storage::url($t->image) }}" data-fancybox="testimoni-admin" data-caption="Testimoni {{ $t->name ?: '#' . $t->id }}" title="Lihat gambar">
+                <img src="{{ Storage::url($t->image) }}" alt="Testimoni {{ $t->name ?: '#' . $t->id }}" loading="lazy" class="w-12 h-12 rounded-lg object-cover border border-gray-200 hover:opacity-90 transition">
+            </a>
+            @else
+            <span class="text-gray-300 text-sm">-</span>
+            @endif
         </x-admin.td>
+        <x-admin.td class="font-medium text-gray-900">{{ $t->name ?: '-' }}</x-admin.td>
+        <x-admin.td class="text-gray-500 max-w-xs truncate" title="{{ $t->review }}">{{ strip_tags($t->review) }}</x-admin.td>
         <x-admin.td>
             <x-admin.status-toggle resource="testimonials" :id="$t->id" :checked="$t->status" />
         </x-admin.td>

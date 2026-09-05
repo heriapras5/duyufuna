@@ -9,6 +9,7 @@ use App\Models\ServiceItem;
 use App\Models\Setting;
 use App\Models\Traffic;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class CustomerController extends Controller
 {
@@ -21,7 +22,25 @@ class CustomerController extends Controller
             'no_hp' => 'required|string|max:20',
             'item_title' => 'nullable|string|max:255',
             'item_id' => 'nullable|exists:service_items,id',
+            // Data harga & konteks dinamis (dikirim dari semua form konsultasi)
+            'qty' => 'nullable|integer|min:1|max:1000',
+            'unit_price' => 'nullable|numeric|min:0',
+            'unit_label' => 'nullable|string|max:40',
+            'currency' => 'nullable|string|max:8',
+            'pickup' => 'nullable|string|max:255',
+            'dropoff' => 'nullable|string|max:255',
+            'pickup_date' => 'nullable|date',
+            'pickup_time' => 'nullable|date_format:H:i',
+            'pax' => 'nullable|integer|min:1|max:1000',
+            'extra_note' => 'nullable|string|max:500',
         ]);
+
+        // Form kegiatan (mis. Fotografer): tanggal kegiatan wajib diisi.
+        if (($validated['unit_label'] ?? null) === 'kegiatan' && empty($validated['pickup_date'])) {
+            throw ValidationException::withMessages([
+                'pickup_date' => 'Tanggal kegiatan wajib diisi.',
+            ]);
+        }
 
         $service = isset($validated['service_id']) ? Service::with('category')->find($validated['service_id']) : null;
         $category = $service?->category;
@@ -89,6 +108,60 @@ class CustomerController extends Controller
             'item' => $itemTitle,
             'tanggal' => now()->format('d-m-Y H:i'),
         ]);
+
+        // Rincian harga & konteks (otomatis & dinamis dari semua form konsultasi).
+        // Hanya baris yang benar-benar tersedia di halaman yang disisipkan.
+        $detailLines = [];
+        $pickup = trim((string) ($validated['pickup'] ?? ''));
+        $dropoff = trim((string) ($validated['dropoff'] ?? ''));
+        $pickupDate = trim((string) ($validated['pickup_date'] ?? ''));
+        $pickupTime = trim((string) ($validated['pickup_time'] ?? ''));
+        $qty = isset($validated['qty']) && $validated['qty'] !== null ? (int) $validated['qty'] : null;
+        $pax = isset($validated['pax']) && $validated['pax'] !== null ? (int) $validated['pax'] : null;
+        $unitPrice = isset($validated['unit_price']) && $validated['unit_price'] !== '' ? (float) $validated['unit_price'] : null;
+        $currency = trim((string) ($validated['currency'] ?? '')) ?: 'SAR';
+        $unitLabel = trim((string) ($validated['unit_label'] ?? ''));
+        $extraNote = trim((string) ($validated['extra_note'] ?? ''));
+
+        if ($pickup !== '' && $dropoff !== '') {
+            $detailLines[] = 'Rute: ' . $pickup . ' → ' . $dropoff;
+        }
+        if ($pickupDate !== '') {
+            // Label tanggal mengikuti konteks form: laundry = tanggal laundry, fotografer = kegiatan, lainnya = penjemputan.
+            $dateLabel = match (true) {
+                $unitLabel === 'kegiatan' => 'Tanggal Kegiatan',
+                ($category->slug ?? '') === 'laundry' => 'Tanggal Laundry',
+                default => 'Tanggal Penjemputan',
+            };
+            try {
+                $detailLines[] = $dateLabel . ': ' . \Illuminate\Support\Carbon::parse($pickupDate)->format('d-m-Y');
+            } catch (\Throwable) {
+                $detailLines[] = $dateLabel . ': ' . $pickupDate;
+            }
+        }
+        if ($pickupTime !== '') {
+            $detailLines[] = 'Jam: ' . $pickupTime;
+        }
+
+        $unitCount = $pax ?? $qty;
+        if ($unitPrice !== null && $unitPrice > 0) {
+            $fmt = fn ($n) => $currency . ' ' . number_format($n, $currency === 'US$' ? 2 : 0, ',', '.');
+            $detailLines[] = 'Harga per ' . ($unitLabel !== '' ? $unitLabel : 'unit') . ': ' . $fmt($unitPrice);
+            if ($unitCount !== null && $unitCount > 1) {
+                $detailLines[] = 'Jumlah ' . ($unitLabel !== '' ? $unitLabel : 'unit') . ': ' . $unitCount;
+            }
+            $detailLines[] = 'Total: ' . $fmt($unitPrice * ($unitCount ?? 1));
+        } elseif ($unitCount !== null && $unitCount > 1) {
+            $detailLines[] = 'Jumlah ' . ($unitLabel !== '' ? $unitLabel : 'unit') . ': ' . $unitCount;
+        }
+
+        if ($extraNote !== '') {
+            $detailLines[] = 'Catatan: ' . $extraNote;
+        }
+
+        if ($detailLines) {
+            $message .= "\n\n" . implode("\n", $detailLines);
+        }
 
         $waUrl = $whatsapp->url($number, $setting?->whatsapp, $message);
 

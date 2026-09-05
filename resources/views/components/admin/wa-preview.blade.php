@@ -3,6 +3,8 @@
     'sample' => [],
     'number' => null,
     'withIdentity' => true,
+    'titleSource' => null,
+    'titlePrefix' => null,
 ])
 
 @php
@@ -21,7 +23,7 @@
     $waName = $globalSetting?->website_name ?: 'DUYUFUNA';
 @endphp
 
-<div class="wa-preview mt-3" data-input="{{ $name }}" data-sample='@json($sampleData)'>
+<div class="wa-preview mt-3" data-input="{{ $name }}" data-sample='@json($sampleData)' @if($titleSource) data-title-source="{{ $titleSource }}" @endif @if($titlePrefix) data-title-prefix="{{ $titlePrefix }}" @endif>
     <label class="block text-xs font-medium text-gray-500 mb-1.5">Pratinjau Pesan WhatsApp</label>
 
     <div class="mx-auto w-full max-w-sm rounded-[2rem] border-[10px] border-gray-900 bg-gray-900 shadow-xl overflow-hidden select-none">
@@ -67,7 +69,13 @@ document.addEventListener('DOMContentLoaded', function () {
         var route = @json(route('admin.whatsapp.preview'));
         var token = @json(csrf_token());
         var sample = JSON.parse(box.dataset.sample || '{}');
+        var titleInput = box.dataset.titleSource ? document.getElementById(box.dataset.titleSource) : null;
+        var prefix = (box.dataset.titlePrefix || '').trim();
         var run = function () {
+            var data = sample;
+            if (titleInput && titleInput.value.trim() !== '') {
+                data = Object.assign({}, sample, { item: (prefix ? prefix + ' ' : '') + titleInput.value.trim() });
+            }
             fetch(route, {
                 method: 'POST',
                 headers: {
@@ -75,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 },
-                body: JSON.stringify({ template: input.value, data: sample }),
+                body: JSON.stringify({ template: input.value, data: data }),
             })
             .then(function (r) { return r.json(); })
             .then(function (res) {
@@ -84,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(function () { text.textContent = 'Gagal memuat pratinjau.'; });
         };
         input.addEventListener('input', run);
+        if (titleInput) titleInput.addEventListener('input', run);
         if (box.querySelector('.wa-preview-refresh')) {
             box.querySelector('.wa-preview-refresh').addEventListener('click', run);
         }

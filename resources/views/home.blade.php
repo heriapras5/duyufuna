@@ -4,14 +4,14 @@
 @section('meta_description', $setting->seo_description ?? 'Platform Layanan Umroh Terlengkap - Hotel, Visa, Transportasi, Handling Bandara, Catering, dan lainnya.')
 
 @section('content')
-    {{-- Welcome Card --}}
-    <div class="px-4 md:px-6 lg:px-8 max-w-7xl mx-auto mt-3 md:mt-6 relative z-20 scroll-reveal">
-        <div class="card-glass-gold rounded-2xl md:rounded-3xl p-5 md:p-8 overflow-hidden relative">
+    {{-- Welcome Card (3D Parallax Tilt) --}}
+    <div class="px-4 md:px-6 lg:px-8 max-w-7xl mx-auto mt-3 md:mt-6 relative z-20 scroll-reveal parallax-3d-wrap">
+        <div class="card-glass-gold rounded-2xl md:rounded-3xl p-5 md:p-8 overflow-hidden relative parallax-3d" data-parallax-3d>
             <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-gold/40 via-gold-light to-gold/40"></div>
             <div class="absolute top-0 left-0 w-32 h-32 bg-gold/10 rounded-full blur-3xl"></div>
             <div class="absolute bottom-0 right-0 w-40 h-40 bg-dark-green/5 rounded-full blur-3xl"></div>
             <div class="flex flex-row items-center gap-4 md:gap-8 relative z-10">
-                <div class="flex-1 text-left">
+                <div class="flex-1 text-left parallax-3d-layer">
                     @php
                         $greetTitle = trim((string) ($setting->greeting_title ?? ''));
                         $greetSubtitle = trim((string) ($setting->greeting_subtitle ?? ''));
@@ -32,16 +32,22 @@
                     @endif
                 </div>
                 @if($setting && $setting->greeting_image)
-                <div class="w-24 h-24 md:w-32 md:h-32 shrink-0 relative">
-                    <div class="absolute inset-0 bg-gradient-to-br from-gold/30 to-amber-500/30 rounded-2xl blur-xl"></div>
-                    <img src="{{ Storage::url($setting->greeting_image) }}" alt="{{ $setting->website_name ?? '' }}" fetchpriority="high" width="128" height="128" class="w-full h-full object-contain drop-shadow-lg relative">
+                <div class="w-28 h-28 md:w-36 md:h-36 shrink-0 relative parallax-3d-pop">
+                    <div class="w-full h-full relative welcome-img-3d">
+                        <div class="welcome-halo absolute inset-0 bg-gradient-to-br from-gold/50 to-amber-500/50 rounded-full blur-2xl"></div>
+                        <div class="absolute inset-3 bg-white/60 rounded-2xl md:rounded-3xl shadow-[0_10px_30px_rgba(201,162,39,0.35)] ring-1 ring-gold/40 overflow-hidden">
+                            <div class="glare"></div>
+                            <img src="{{ Storage::url($setting->greeting_image) }}" alt="{{ $setting->website_name ?? '' }}" fetchpriority="high" width="128" height="128" class="w-full h-full object-contain drop-shadow-lg">
+                        </div>
+                    </div>
                 </div>
                 @else
-                <div class="w-24 h-24 md:w-32 md:h-32 shrink-0 relative">
+                <div class="w-28 h-28 md:w-36 md:h-36 shrink-0 relative parallax-3d-pop">
                     <div class="absolute inset-0 bg-gradient-to-br from-gold/30 via-amber-500/30 to-dark-green/10 rounded-2xl blur-xl"></div>
                     <div class="relative w-full h-full rounded-2xl bg-gradient-to-br from-gold/10 via-amber-500/10 to-dark-green/10 flex items-center justify-center shadow-inner ring-1 ring-gold/30">
                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="opacity-60">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
                             <path d="M12 2v20" stroke="#C9A227" stroke-width="2"/>
                         </svg>
                     </div>
@@ -60,9 +66,8 @@
             'hotel' => '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="drop-shadow-sm"><path d="M3 21V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14"/><path d="M7 21v-4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v4"/><path d="M7 3v2"/><path d="M17 3v2"/><rect x="10" y="8" width="4" height="4"/></svg>',
             'visa' => '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="drop-shadow-sm"><path d="M2 7.5V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2.5"/><path d="M2 16.5V19a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2.5"/><path d="M2 12h20"/><rect x="6" y="9" width="4" height="6" rx="1"/><circle cx="17" cy="12" r="2"/></svg>',
             'transportasi' => '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="drop-shadow-sm"><rect x="1" y="6" width="18" height="10" rx="2"/><rect x="5" y="10" width="10" height="4" rx="1"/><rect x="16" y="6" width="6" height="8" rx="1"/><circle cx="6" cy="16" r="2"/><circle cx="18" cy="16" r="2"/><path d="M22 12h-3"/></svg>',
-            'handling-bandara' => '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="drop-shadow-sm"><path d="M17 14h3l-5-8-3 1V3c0-.55-.45-1-1-1s-1 .45-1 1v4l-3-1-5 8h3l4-2v3l-2 2v3l2-1v2l1 1h2l1-1v-2l2 1v-3l-2-2v-3l4 2z"/></svg>',
-            'handling-hotel' => '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="drop-shadow-sm"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M12 9v4"/><path d="M10 11h4"/></svg>',
-            'catering-bandara' => '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="drop-shadow-sm"><path d="M6 2v6a6 6 0 0 0 10 4.46"/><path d="M18 2v6a6 6 0 0 1-6 6"/><path d="M10 14v8"/><path d="M14 14v8"/><path d="M12 2v8"/></svg>',
+            'handling' => '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="drop-shadow-sm"><path d="M17 14h3l-5-8-3 1V3c0-.55-.45-1-1-1s-1 .45-1 1v4l-3-1-5 8h3l4-2v3l-2 2v3l2-1v2l1 1h2l1-1v-2l2 1v-3l-2-2v-3l4 2z"/></svg>',
+            'catering' => '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="drop-shadow-sm"><path d="M6 2v6a6 6 0 0 0 10 4.46"/><path d="M18 2v6a6 6 0 0 1-6 6"/><path d="M10 14v8"/><path d="M14 14v8"/><path d="M12 2v8"/></svg>',
             'laundry' => '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="drop-shadow-sm"><path d="M7 2h10l1.5 4H5.5L7 2z"/><path d="M5 6v13a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V6"/><path d="M9 13a3 3 0 0 0 6 0"/><path d="M9 10v3"/><path d="M15 10v3"/></svg>',
             'buggy-car' => '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="drop-shadow-sm"><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 17h2"/><path d="M17 17h2"/><path d="M2 12h2l3-4h10l3 4h2"/><path d="M9 8h6"/><path d="M3 14h18"/></svg>',
             'jastip-viral' => '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="drop-shadow-sm"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/><path d="M9 6v6c0 .55.45 1 1 1h4c.55 0 1-.45 1-1V6"/></svg>',
@@ -72,13 +77,13 @@
             'muthawif' => '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="drop-shadow-sm"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
         ];
     @endphp
-    <section class="px-4 md:px-6 lg:px-8 pt-6 pb-6 md:pt-10 md:pb-10 max-w-7xl mx-auto">
-        <div class="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-5">
+    <section class="px-4 md:px-6 lg:px-8 pt-4 pb-6 md:pt-6 md:pb-10 max-w-7xl mx-auto">
+        <div class="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-5 stagger-children scroll-reveal">
             @foreach($categories as $i => $category)
             <a href="{{ url('/category/' . $category->slug) }}"
-               class="card-glass-gold p-3 md:p-4 flex flex-col items-center text-center gap-2 md:gap-3 min-h-[100px] sm:min-h-[110px] md:min-h-[130px] justify-center"
+               class="home-service-card parallax-3d-card card-glass-gold group p-2 sm:p-3 md:p-4 flex flex-col items-center text-center gap-2 md:gap-3 min-h-[100px] sm:min-h-[110px] md:min-h-[130px] justify-center"
                style="transition-delay: {{ $i * 0.04 }}s;">
-                <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl flex items-center justify-center text-dark-green transition-all duration-500"
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl flex items-center justify-center text-dark-green transition-all duration-500 category-icon ring-1 ring-white/40 parallax-3d-icon"
                      style="background: {{ match($i % 8) {
                         0 => 'linear-gradient(135deg, #E8F8F1, #a7f3d0)',
                         1 => 'linear-gradient(135deg, #FDF8F0, #fef3c7)',
@@ -91,13 +96,13 @@
                         default => 'linear-gradient(135deg, #E8F8F1, #a7f3d0)'
                     } }};">
                     @if($category->icon)
-                    <span class="text-xl md:text-2xl drop-shadow-sm">{{ $category->icon }}</span>
+                    <span class="text-xl md:text-2xl category-glyph group-hover:scale-110 transition-transform duration-300">{{ $category->icon }}</span>
                     @else
-                    {!! $svgs[$category->slug] ?? '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="drop-shadow-sm"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>' !!}
+                    {!! $svgs[$category->slug] ?? '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:scale-110 transition-transform duration-300"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>' !!}
                     @endif
                 </div>
-                <div class="flex-1 flex flex-col justify-center">
-                    <h3 class="text-xs md:text-sm font-bold text-gray-900 leading-tight">{{ $category->name }}</h3>
+                <div class="flex-1 flex flex-col justify-center w-full px-1">
+                    <h3 class="text-[10px] md:text-base font-bold text-gray-900 leading-tight tracking-tight whitespace-nowrap overflow-hidden text-ellipsis">{{ $category->name }}</h3>
                 </div>
             </a>
             @endforeach
@@ -106,13 +111,49 @@
     <x-section-divider />
     @endif
 
-    {{-- Keunggulan Section --}}
-    <section class="relative overflow-hidden bg-gradient-to-br from-masjid via-dark-green to-emerald-900 py-14 md:py-20 islamic-pattern scroll-reveal">
+    {{-- Keunggulan Section (3D Parallax Depth) --}}
+    <section class="relative overflow-hidden bg-gradient-to-br from-masjid via-dark-green to-emerald-900 py-14 md:py-20 islamic-pattern scroll-reveal parallax-3d-section">
+        <div class="pointer-events-none absolute -top-24 -left-24 w-72 h-72 rounded-full bg-gold/10 blur-3xl parallax-3d-orb" data-parallax-depth="0.35"></div>
+        <div class="pointer-events-none absolute -bottom-32 -right-20 w-96 h-96 rounded-full bg-emerald-400/10 blur-3xl parallax-3d-orb" data-parallax-depth="0.2"></div>
         <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 relative">
             <div class="text-center mb-10 md:mb-14">
                 <span class="section-label section-label-gold">{{ $setting->why_label ?? 'Mengapa Kami' }}</span>
                 <h2 class="font-serif text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">{!! $setting->why_title ?? 'Kenapa Memilih <span class="text-gradient-gold">DUYUFUNA</span>?' !!}</h2>
                 <p class="text-white/50 text-sm md:text-base mt-3 max-w-lg mx-auto">{{ $setting->why_subtitle ?? 'Kami berkomitmen memberikan layanan terbaik untuk perjalanan umroh Anda' }}</p>
+            </div>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 stagger-children scroll-reveal">
+                {{-- Kartu 1: Layanan Lengkap --}}
+                <div class="parallax-3d-tile group bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-3.5 md:p-6 text-center hover:bg-white/[0.08] hover:border-gold/30 transition-all duration-500">
+                    <div class="w-11 h-11 md:w-14 md:h-14 mx-auto rounded-2xl bg-gradient-to-br from-gold/20 to-amber-500/20 flex items-center justify-center ring-1 ring-gold/30 mb-2.5 md:mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/><path d="M12 2v20" stroke="#C9A227" stroke-width="2.5"/></svg>
+                    </div>
+                    <h3 class="text-white font-bold text-[13px] md:text-base mb-1 md:mb-2">Layanan Lengkap</h3>
+                    <p class="text-white/60 text-[11px] md:text-sm leading-relaxed">Visa, hotel, transportasi, handling, catering, dan kebutuhan umroh lainnya dalam satu platform.</p>
+                </div>
+                {{-- Kartu 2: Tim Profesional --}}
+                <div class="parallax-3d-tile group bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-3.5 md:p-6 text-center hover:bg-white/[0.08] hover:border-gold/30 transition-all duration-500">
+                    <div class="w-11 h-11 md:w-14 md:h-14 mx-auto rounded-2xl bg-gradient-to-br from-gold/20 to-amber-500/20 flex items-center justify-center ring-1 ring-gold/30 mb-2.5 md:mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <h3 class="text-white font-bold text-[13px] md:text-base mb-1 md:mb-2">Tim Profesional</h3>
+                    <p class="text-white/60 text-[11px] md:text-sm leading-relaxed">Berpengalaman dalam melayani jamaah umroh dan haji dengan amanah dan sepenuh hati.</p>
+                </div>
+                {{-- Kartu 3: Harga Terbaik --}}
+                <div class="parallax-3d-tile group bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-3.5 md:p-6 text-center hover:bg-white/[0.08] hover:border-gold/30 transition-all duration-500">
+                    <div class="w-11 h-11 md:w-14 md:h-14 mx-auto rounded-2xl bg-gradient-to-br from-gold/20 to-amber-500/20 flex items-center justify-center ring-1 ring-gold/30 mb-2.5 md:mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <h3 class="text-white font-bold text-[13px] md:text-base mb-1 md:mb-2">Harga Terbaik</h3>
+                    <p class="text-white/60 text-[11px] md:text-sm leading-relaxed">Biaya kompetitif tanpa mengurangi kualitas layanan untuk kenyamanan ibadah Anda.</p>
+                </div>
+                {{-- Kartu 4: Berkah & Amanah --}}
+                <div class="parallax-3d-tile group bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-3.5 md:p-6 text-center hover:bg-white/[0.08] hover:border-gold/30 transition-all duration-500">
+                    <div class="w-11 h-11 md:w-14 md:h-14 mx-auto rounded-2xl bg-gradient-to-br from-gold/20 to-amber-500/20 flex items-center justify-center ring-1 ring-gold/30 mb-2.5 md:mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                    </div>
+                    <h3 class="text-white font-bold text-[13px] md:text-base mb-1 md:mb-2">Berkah &amp; Amanah</h3>
+                    <p class="text-white/60 text-[11px] md:text-sm leading-relaxed">Setiap langkah kami niatkan ibadah untuk kenyamanan tamu Allah di Tanah Suci.</p>
+                </div>
             </div>
         </div>
     </section>

@@ -4,38 +4,48 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @php
-        $ogTitle = $globalSetting->og_title ?: $globalSetting->seo_title ?: $globalSetting->website_name ?: config('app.name');
-        $ogImage = $globalSetting->og_image ?: $globalSetting->logo ?: $globalSetting->favicon;
-        $ogImageUrl = $ogImage ? Storage::url($ogImage) : null;
-        $twitterImage = $globalSetting->twitter_image ?: $ogImage;
+        $siteName = $globalSetting->website_name ?? config('app.name');
+        $tagline = $globalSetting->tagline ?? 'Melayani Tamu Allah, Sepenuh Hati';
+        $toAbs = fn ($u) => $u ? ((str_starts_with($u, 'http://') || str_starts_with($u, 'https://')) ? $u : url($u)) : null;
+        $resolveImg = function ($p) use ($toAbs) {
+            if (!$p || !trim((string) $p)) return null;
+            $p = trim((string) $p);
+            if (str_starts_with($p, 'http://') || str_starts_with($p, 'https://')) return $p;
+            if (str_ends_with(strtolower($p), '.svg')) return null;
+            return $toAbs(Storage::url($p));
+        };
+
+        $ogTitleDefault = $globalSetting->og_title ?: $globalSetting->seo_title ?: $siteName;
+        $ogDescDefault = $globalSetting->og_description ?: $globalSetting->seo_description ?: $tagline;
+
+        // Gambar dinamis per-halaman via @section('og_image', $pathStorage); fallback: OG global → logo → favicon.
+        $pageOgImage = trim((string) ($__env->yieldContent('og_image') ?? ''));
+        $ogImageUrl = $resolveImg($pageOgImage)
+            ?: $resolveImg($globalSetting->og_image ?: ($globalSetting->logo ?: $globalSetting->favicon));
+        $twitterImageUrl = $resolveImg($globalSetting->twitter_image) ?: $ogImageUrl;
     @endphp
-    <title>@yield('title', $ogTitle) - {{ $globalSetting->website_name ?? config('app.name') }}</title>
-    <meta name="description" content="@yield('meta_description', $globalSetting->seo_description ?? 'Platform Layanan Umroh Terlengkap')">
+    <title>@yield('title', $ogTitleDefault) - {{ $siteName }}</title>
+    <meta name="description" content="@yield('meta_description', $globalSetting->seo_description ?: $tagline)">
     <meta name="keywords" content="@yield('seo_keywords', $globalSetting->seo_keywords ?? 'umroh, haji, travel umroh')">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta property="og:title" content="@yield('title', $ogTitle)">
-    <meta property="og:description" content="@yield('meta_description', $globalSetting->og_description ?: ($globalSetting->seo_description ?? 'Platform Layanan Umroh Terlengkap'))">
-    <meta property="og:type" content="{{ $globalSetting->og_type ?: 'website' }}">
+    <meta property="og:title" content="@yield('title', $ogTitleDefault)">
+    <meta property="og:description" content="@yield('meta_description', $ogDescDefault)">
+    <meta property="og:type" content="@yield('og_type', $globalSetting->og_type ?: 'website')">
     <meta property="og:url" content="{{ url()->current() }}">
-    @if($globalSetting->og_site_name || $globalSetting->website_name)
-    <meta property="og:site_name" content="{{ $globalSetting->og_site_name ?: $globalSetting->website_name }}">
-    @endif
+    <meta property="og:site_name" content="{{ $globalSetting->og_site_name ?: $siteName }}">
+    <meta property="og:locale" content="id_ID">
     @if($ogImageUrl)
     <meta property="og:image" content="{{ $ogImageUrl }}">
+    <meta property="og:image:secure_url" content="{{ $ogImageUrl }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{ $ogTitleDefault }}">
     @endif
-    @if($globalSetting->twitter_card)
-    <meta name="twitter:card" content="{{ $globalSetting->twitter_card }}">
-    @elseif($ogImageUrl)
-    <meta name="twitter:card" content="summary_large_image">
-    @endif
-    @if($ogTitle)
-    <meta name="twitter:title" content="{{ $globalSetting->twitter_title ?: $ogTitle }}">
-    @endif
-    @if($globalSetting->twitter_description || $globalSetting->og_description || $globalSetting->seo_description)
-    <meta name="twitter:description" content="{{ $globalSetting->twitter_description ?: ($globalSetting->og_description ?: $globalSetting->seo_description) }}">
-    @endif
-    @if($twitterImage)
-    <meta name="twitter:image" content="{{ Storage::url($twitterImage) }}">
+    <meta name="twitter:card" content="{{ $globalSetting->twitter_card ?: ($ogImageUrl ? 'summary_large_image' : 'summary') }}">
+    <meta name="twitter:title" content="{{ $globalSetting->twitter_title ?: trim($__env->yieldContent('title')) ?: $ogTitleDefault }}">
+    <meta name="twitter:description" content="{{ $globalSetting->twitter_description ?: (trim($__env->yieldContent('meta_description')) ?: $ogDescDefault) }}">
+    @if($twitterImageUrl)
+    <meta name="twitter:image" content="{{ $twitterImageUrl }}">
     @endif
     @if($globalSetting->robots)
     <meta name="robots" content="{{ $globalSetting->robots }}">
@@ -94,17 +104,18 @@
     @endif
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,600;1,700&family=Amiri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&family=Playfair+Display:wght@600;700&family=Amiri:wght@400;600;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>[x-cloak]{display:none!important}</style>
     @stack('head')
 </head>
-<body class="font-sans bg-gradient-to-b from-white via-emerald-50/30 to-white text-gray-900 pt-12 md:pt-14 pb-20">
+<body class="font-sans bg-gradient-to-b from-white via-emerald-50/30 to-white text-gray-900 pb-20 lg:pb-0 has-fixed-header">
     @if($globalSetting && $globalSetting->google_tag_manager_id)
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $globalSetting->google_tag_manager_id }}"
         height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     @endif
     <header data-scroll-header class="app-header fixed top-0 left-0 right-0 z-40 bg-dark-green transition-all duration-500 gold-border-bottom">
-        <div class="flex items-center max-w-7xl mx-auto px-4 md:px-6 lg:px-8 h-12 md:h-14">
+        <div class="flex items-center max-w-7xl mx-auto px-4 md:px-6 lg:px-8 h-14 md:h-16">
             <a href="{{ route('home') }}" class="flex items-center gap-3 group">
                 @if($globalSetting && $globalSetting->logo)
                 <div class="w-11 h-11 md:w-12 md:h-12 rounded-lg bg-white/10 p-1 flex items-center justify-center shrink-0 transition-colors duration-300 group-hover:bg-white/15">
@@ -121,21 +132,21 @@
                 </div>
                 @endif
                 <div>
-                    <h1 class="text-xs md:text-sm font-bold text-white tracking-wide leading-none drop-shadow-sm">{{ $globalSetting->website_name ?? 'DUYUFUNA' }}</h1>
-                    <p class="text-[8px] md:text-[10px] font-semibold text-gold-light leading-tight mt-0.5 tracking-widest uppercase drop-shadow-sm">{{ $globalSetting->tagline ?? 'MELAYANI TAMU ALLAH, SEPENUH HATI' }}</p>
+                    <h1 class="text-sm md:text-base font-bold text-white tracking-wide leading-none drop-shadow-sm">{{ $globalSetting->website_name ?? 'DUYUFUNA' }}</h1>
+                    <p class="text-[9px] md:text-[11px] font-semibold text-gold-light leading-tight mt-1 tracking-widest uppercase drop-shadow-sm">{{ $globalSetting->tagline ?? 'MELAYANI TAMU ALLAH, SEPENUH HATI' }}</p>
                 </div>
             </a>
             <div class="ml-auto flex items-center gap-2 md:gap-3">
             <nav class="hidden md:flex items-center gap-0.5 text-sm font-medium">
-                <a href="{{ route('home') }}" class="px-2.5 lg:px-3 py-1.5 rounded-lg transition-all {{ request()->routeIs('home') ? 'text-gold-light bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/10' }}">Beranda</a>
-                <a href="{{ route('pages.tentang') }}" class="px-2.5 lg:px-3 py-1.5 rounded-lg transition-all {{ request()->routeIs('pages.tentang') ? 'text-gold-light bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/10' }}">Tentang Kami</a>
-                <a href="{{ route('articles.index') }}" class="px-2.5 lg:px-3 py-1.5 rounded-lg transition-all {{ request()->routeIs('articles.*') ? 'text-gold-light bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/10' }}">Artikel</a>
-                <a href="{{ route('pages.galeri') }}" class="px-2.5 lg:px-3 py-1.5 rounded-lg transition-all {{ request()->routeIs('pages.galeri') ? 'text-gold-light bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/10' }}">Galeri Layanan</a>
-                <a href="{{ route('pages.testimoni') }}" class="px-2.5 lg:px-3 py-1.5 rounded-lg transition-all {{ request()->routeIs('pages.testimoni') ? 'text-gold-light bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/10' }}">Testimoni</a>
-                <a href="{{ route('pages.faq') }}" class="px-2.5 lg:px-3 py-1.5 rounded-lg transition-all {{ request()->routeIs('pages.faq') ? 'text-gold-light bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/10' }}">FAQ</a>
+                <a href="{{ route('home') }}" class="px-3 py-2 rounded-lg transition-all {{ request()->routeIs('home') ? 'text-gold-light bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/10' }}">Beranda</a>
+                <a href="{{ route('pages.tentang') }}" class="px-3 py-2 rounded-lg transition-all {{ request()->routeIs('pages.tentang') ? 'text-gold-light bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/10' }}">Tentang Kami</a>
+                <a href="{{ route('articles.index') }}" class="px-3 py-2 rounded-lg transition-all {{ request()->routeIs('articles.*') ? 'text-gold-light bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/10' }}">Artikel</a>
+                <a href="{{ route('pages.galeri') }}" class="px-3 py-2 rounded-lg transition-all {{ request()->routeIs('pages.galeri') ? 'text-gold-light bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/10' }}">Galeri Layanan</a>
+                <a href="{{ route('pages.testimoni') }}" class="px-3 py-2 rounded-lg transition-all {{ request()->routeIs('pages.testimoni') ? 'text-gold-light bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/10' }}">Testimoni</a>
+                <a href="{{ route('pages.faq') }}" class="px-3 py-2 rounded-lg transition-all {{ request()->routeIs('pages.faq') ? 'text-gold-light bg-white/10' : 'text-white/80 hover:text-white hover:bg-white/10' }}">FAQ</a>
             </nav>
             <div class="flex items-center gap-2">
-                <button data-drawer-toggle class="md:hidden w-9 h-9 rounded-xl flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition-all">
+                <button data-drawer-toggle class="md:hidden w-10 h-10 rounded-xl flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
                 </button>
             </div>
@@ -186,15 +197,7 @@
         </div>
     </nav>
 
-    @if(!request()->routeIs('home') && $__env->hasSection('breadcrumb'))
-    <div class="bg-white border-b border-gray-100">
-        <nav class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-2.5 flex items-center gap-1.5 text-xs">
-            <a href="{{ route('home') }}" class="text-gray-400 hover:text-dark-green transition-colors">Beranda</a>
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-            <span class="text-gray-700 font-medium">@yield('breadcrumb')</span>
-        </nav>
-    </div>
-    @endif
+    {{-- Breadcrumb dihapus sesuai permintaan user (semua halaman public) --}}
 
     @if(!$__env->hasSection('no_hero'))
     @hasSection('hero_full')
@@ -229,6 +232,7 @@
 
 <x-footer />
 <x-bottom-nav />
+<x-wa-float />
 @stack('modals')
 </body>
 </html>

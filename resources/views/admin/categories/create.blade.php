@@ -31,9 +31,13 @@
                 </div>
             </x-admin.form-card>
 
+            @if(old('slug') !== 'jastip-viral' && old('slug') !== 'catering')
+            @if(!in_array(old('slug'), ['jastip-viral', 'catering', 'hotel', 'laundry', 'buggy-car', 'kursi-roda-umroh', 'fotografer', 'penukaran-uang', 'muthawif']))
             <x-admin.form-card title="Deskripsi" description="Teks ini tampil di halaman publik kategori.">
                 <x-admin.summernote name="description" label="Deskripsi" :value="old('description')" />
             </x-admin.form-card>
+            @endif
+            @endif
 
             <x-admin.form-card title="WhatsApp (Opsional)" description="Nomor & pesan khusus untuk konsultasi di kategori ini. Kosongkan untuk memakai pengaturan global.">
                 <div class="space-y-5">
@@ -41,7 +45,8 @@
                         help="Format internasional tanpa +. Contoh: 6281293679502. Kosongkan untuk memakai nomor global." />
                     <x-admin.textarea name="wa_message" label="Teks Pesan WhatsApp" rows="4" :value="old('wa_message')"
                         help="Pesan khusus untuk semua layanan di kategori ini. Kosongkan untuk memakai pesan global. Variabel: {nama}, {no_hp}, {kategori}, {layanan}, {item}, {website}, {tanggal}." />
-                    <x-admin.wa-preview name="wa_message" />
+                    <x-admin.wa-preview name="wa_message" title-source="name"
+                        :sample="['kategori' => old('name') ?: '', 'layanan' => old('name') ?: '', 'item' => old('name') ?: '']" />
                 </div>
             </x-admin.form-card>
 

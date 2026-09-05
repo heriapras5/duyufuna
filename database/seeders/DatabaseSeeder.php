@@ -39,5 +39,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CategoryContentSeeder::class);
         $this->call(CatalogSeeder::class);
         $this->call(FrontendDummySeeder::class);
+        // Terakhir: menimpa placeholder fotografer dengan 9 kegiatan final (harga = price list + 50 SAR).
+        $this->call(FotograferSeeder::class);
     }
 }

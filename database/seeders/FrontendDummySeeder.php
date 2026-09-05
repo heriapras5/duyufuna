@@ -38,12 +38,9 @@ class FrontendDummySeeder extends Seeder
         'transportasi-bus-shalawat' => 'shuttle bus group travel',
         'transportasi-bus-24jam' => 'tourist bus travel',
         'transportasi-hiace' => 'van minibus travel',
-        'handling-bandara-datang' => 'airport luggage arriving passengers',
-        'handling-bandara-pulang' => 'airport departure luggage',
-        'handling-hotel-check-in' => 'hotel reception check in',
-        'handling-hotel-check-out' => 'hotel bellhop luggage',
-        'catering-bandara-datang' => 'arabic rice food platter',
-        'catering-bandara-pulang' => 'packed food box meal',
+        'handling-umroh' => 'airport luggage arriving passengers',
+        'kedatangan' => 'arabic rice food platter',
+        'kepulangan' => 'packed food box meal',
         'laundry-kilat' => 'laundry folded clothes',
         'buggy-car-haram' => 'electric buggy car',
         'jastip-tumbler' => 'stainless water bottle',
@@ -297,22 +294,32 @@ class FrontendDummySeeder extends Seeder
             $service->save();
         }
 
-        $servicesNeedItems = $services->filter(fn ($s) => $s->serviceItems()->count() === 0);
-
-        foreach ($servicesNeedItems as $service) {
+        foreach ($services as $service) {
             $pool = $this->findPool($service->title);
             if (! $pool) {
                 continue;
             }
+            if (! empty($pool['sync'])) {
+                ServiceItem::where('service_id', $service->id)->delete();
+            }
+            if ($service->serviceItems()->count() > 0) {
+                continue;
+            }
             $sort = 1;
             $baseKw = $this->slugKeyword($service->slug) ?: $this->textKeyword($service->title);
-            foreach ($pool['items'] as $title) {
-                $kw = $this->textKeyword($title) ?: $baseKw;
+            $defaultDesc = $pool['description'] ?? null;
+            foreach ($pool['items'] as $poolItem) {
+                $itemTitle = is_array($poolItem) ? $poolItem['title'] : $poolItem;
+                $kw = $this->textKeyword($itemTitle) ?: $baseKw;
                 ServiceItem::updateOrCreate(
-                    ['service_id' => $service->id, 'title' => $title],
+                    ['service_id' => $service->id, 'title' => $itemTitle],
                     [
-                        'image' => $this->photo('service-items', $service->title . ' - ' . $title, $this->categoryEmoji($service), $kw),
-                        'description' => '<p>Pilihan ' . $title . ' dari ' . $service->title . ' yang nyaman dan terpercaya untuk perjalanan ibadah Anda.</p>',
+                        'image' => $this->photo('service-items', $service->title . ' - ' . $itemTitle, $this->categoryEmoji($service), $kw),
+                        'description' => is_array($poolItem) ? ($poolItem['description'] ?? null) : ($defaultDesc ?? '<p>Pilihan ' . $itemTitle . ' dari ' . $service->title . ' yang nyaman dan terpercaya untuk perjalanan ibadah Anda.</p>'),
+                        'info' => is_array($poolItem) ? ($poolItem['info'] ?? null) : null,
+                        'benefit' => is_array($poolItem) ? ($poolItem['benefit'] ?? null) : null,
+                        'pax_prices' => is_array($poolItem) ? ($poolItem['pax_prices'] ?? null) : null,
+                        'price_per_night' => is_array($poolItem) ? ($poolItem['price'] ?? null) : ($pool['price'] ?? null),
                         'sort' => $sort,
                         'status' => true,
                     ]
@@ -345,14 +352,29 @@ class FrontendDummySeeder extends Seeder
     {
         return [
             ['title' => 'Visa', 'items' => ['Visa 30 Hari', 'Visa 60 Hari', 'Visa Perpanjangan']],
-            ['title' => 'Handling Bandara', 'items' => ['Penyambutan VIP', 'Antre Prioritas', 'Penjemputan Bagasi']],
-            ['title' => 'Handling Hotel', 'items' => ['Check-in Express', 'Layanan Bagasi', 'Pemandu Fasilitas']],
-            ['title' => 'Laundry', 'items' => ['Cuci Reguler', 'Setrika Express', 'Laundry Harian']],
-            ['title' => 'Buggy', 'items' => ['Sewa Harian', 'Sewa Paket Per Jam', 'Buggy VIP']],
-            ['title' => 'Kursi Roda', 'items' => ['Kursi Roda Reguler', 'Kursi Motor Wheelchair', 'Kursi Roda Premium']],
+            ['title' => 'Handling Bandara', 'items' => ['Penyambutan VIP', 'Antre Prioritas', 'Penjemputan Bagasi', 'Check-in Express', 'Layanan Bagasi', 'Pemandu Fasilitas']],
+            ['title' => 'Handling', 'sync' => true, 'items' => [
+                ['title' => 'SILVER', 'description' => '<p class="font-semibold">Pax &amp; Price:</p><ul class="list-disc pl-5"><li>35–47 Pax — $73.00/Pax</li><li>25–34 Pax — $78.00/Pax</li><li>16–24 Pax — $98.00/Pax</li><li>11–15 Pax — $173.00/Pax</li></ul>', 'benefit' => "Handling Bandara Kedatangan & Kepulangan\nTipping Bandara\nMeal Box Kedatangan & Kepulangan\nCheck In & Check Out Hotel Mekkah & Madinah\nTeam Distribusi Koper depan kamar Jamaah\nSnack City Tour Mekkah, Madinah & Thaif\nWelcome Drink hotel kedatangan pertama\nAir Zam-Zam 5 Liter\nMuthawwifah Raudhah", 'pax_prices' => [['min' => 35, 'max' => 47, 'price' => 73], ['min' => 25, 'max' => 34, 'price' => 78], ['min' => 16, 'max' => 24, 'price' => 98], ['min' => 11, 'max' => 15, 'price' => 173]]],
+                ['title' => 'GOLD', 'description' => '<p class="font-semibold">Pax &amp; Price:</p><ul class="list-disc pl-5"><li>35–47 Pax — $80.00/Pax</li><li>25–34 Pax — $85.00/Pax</li><li>16–24 Pax — $105.00/Pax</li><li>11–15 Pax — $181.00/Pax</li></ul>', 'benefit' => "Handling Bandara Kedatangan & Kepulangan\nTipping Bandara\nMeal Box Kedatangan & Kepulangan\nCheck In & Check Out Hotel Mekkah & Madinah\nTeam Distribusi Koper depan kamar Jamaah\nSnack City Tour Mekkah, Madinah & Thaif\nWelcome Drink hotel kedatangan pertama\nAir Zam-Zam 5 Liter & Al Baik\nMuthawwifah Raudhah", 'pax_prices' => [['min' => 35, 'max' => 47, 'price' => 80], ['min' => 25, 'max' => 34, 'price' => 85], ['min' => 16, 'max' => 24, 'price' => 105], ['min' => 11, 'max' => 15, 'price' => 181]]],
+                ['title' => 'PLATINUM', 'description' => '<p class="font-semibold">Pax &amp; Price:</p><ul class="list-disc pl-5"><li>35–47 Pax — $93.00/Pax</li><li>25–34 Pax — $108.00/Pax</li><li>16–24 Pax — $123.00/Pax</li><li>4–15 Pax — $193.00/Pax</li></ul>', 'benefit' => "Handling Bandara Kedatangan & Kepulangan\nTipping Bandara\nMeal Box Kedatangan & Kepulangan\nCheck In & Check Out Hotel Mekkah & Madinah\nTeam Distribusi Koper depan kamar Jamaah\nSnack City Tour Mekkah, Madinah & Thaif\nWelcome Drink hotel kedatangan pertama\nAir Zam-Zam 5 Liter & Al Baik\nMuthawwifah Raudhah\nWelcome Food di kamar Jamaah (Air Zam-Zam 5 L, Kurma, Buah)", 'pax_prices' => [['min' => 35, 'max' => 47, 'price' => 93], ['min' => 25, 'max' => 34, 'price' => 108], ['min' => 16, 'max' => 24, 'price' => 123], ['min' => 4, 'max' => 15, 'price' => 193]]],
+            ]],
+            ['title' => 'Laundry', 'sync' => true, 'items' => [
+                ['title' => 'Laundry 1–5 kg', 'price' => 15, 'info' => 'Waktu pengerjaan ± 24 jam · Antar-jemput ke kamar hotel'],
+                ['title' => 'Laundry 5–10 kg', 'price' => 13, 'info' => 'Waktu pengerjaan ± 24 jam · Antar-jemput ke kamar hotel'],
+            ]],
+            ['title' => 'Buggy', 'sync' => true, 'items' => [
+                ['title' => 'Tawaf', 'price' => 110, 'info' => 'Layanan buggy antar-jemput mengelilingi Ka\'bah'],
+                ['title' => 'Sa\'i', 'price' => 110, 'info' => 'Layanan buggy antar-jemput Safa–Marwah'],
+                ['title' => 'Umroh (Tawaf + Sa\'i)', 'price' => 220, 'info' => 'Paket lengkap Tawaf + Sa\'i, lebih hemat'],
+            ]],
+            ['title' => 'Kursi Roda', 'sync' => true, 'items' => [
+                ['title' => 'Tawaf', 'price' => 150, 'info' => 'Didorong petugas berpengalaman mengelilingi Ka\'bah'],
+                ['title' => 'Sa\'i', 'price' => 150, 'info' => 'Didorong petugas via jalur Safa–Marwah'],
+                ['title' => 'Umroh (Tawaf + Sa\'i)', 'price' => 350, 'info' => 'Paket lengkap dengan pendampingan petugas'],
+            ]],
             ['title' => 'Fotografer', 'items' => ['Paket Foto Dokumentasi', 'Paket Edisi Eksklusif', 'Paket Video Cinematic']],
             ['title' => 'Penukaran', 'items' => ['Riyal Cash', 'Dolar ke Riyal', 'Kirim Uang']],
-            ['title' => 'Muthawif', 'items' => ['Pendampingan Harian', 'Pendamping Ziarah', 'Pendamping Manasik']],
+            ['title' => 'Muthawif', 'sync' => true, 'price' => 300, 'description' => '<p>Muthawif Harian, Mingguan &amp; Bulanan</p>', 'items' => ['Mohammad Jadid', 'A. Najian Muzaki', 'Asep Saepuloh', 'Faqih Nur Fahmi']],
         ];
     }
 

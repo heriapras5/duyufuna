@@ -6,9 +6,9 @@
 @section('breadcrumb', isset($category) ? $category->name : 'Artikel')
 
 @section('content')
-<div class="px-4 md:px-6 lg:px-8 py-8 md:py-10 max-w-7xl mx-auto">
+<div class="px-4 md:px-6 lg:px-8 pt-4 pb-10 md:pt-6 md:pb-12 max-w-7xl mx-auto">
     <div class="mb-6 md:mb-8">
-        <h1 class="font-serif text-xl md:text-3xl font-bold text-gray-900 mt-2">{{ isset($category) ? $category->name : ($globalSetting->artikel_page_title ?? 'Artikel & Panduan') }}</h1>
+        <h1 class="font-serif text-xl md:text-3xl font-bold text-gray-900">{{ isset($category) ? $category->name : ($globalSetting->artikel_page_title ?? 'Artikel & Panduan') }}</h1>
         <p class="text-sm md:text-base text-gray-500 mt-1">
             @if(isset($category))
             {{ $articles->total() }} artikel dalam kategori {{ $category->name }} seputar umroh dan haji

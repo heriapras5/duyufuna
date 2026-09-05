@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Testimonial;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TestimonialController extends Controller
 {
@@ -24,13 +26,19 @@ class TestimonialController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'review' => 'required|string',
-            'rating' => 'required|integer|min:1|max:5',
+            'name' => 'nullable|string|max:255',
+            'review' => 'nullable|string',
             'status' => 'nullable|boolean',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
+        $validated['name'] = trim((string) ($validated['name'] ?? ''));
+        $validated['review'] = trim((string) ($validated['review'] ?? ''));
         $validated['status'] = $request->boolean('status');
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = app(ImageService::class)->processAndStore($request->file('image'), 'testimonials', 640, 80);
+        }
 
         Testimonial::create($validated);
 
@@ -45,13 +53,27 @@ class TestimonialController extends Controller
     public function update(Request $request, Testimonial $testimonial)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'review' => 'required|string',
-            'rating' => 'required|integer|min:1|max:5',
+            'name' => 'nullable|string|max:255',
+            'review' => 'nullable|string',
             'status' => 'nullable|boolean',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
+        $validated['name'] = trim((string) ($validated['name'] ?? ''));
+        $validated['review'] = trim((string) ($validated['review'] ?? ''));
         $validated['status'] = $request->boolean('status');
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = app(ImageService::class)->processAndStore($request->file('image'), 'testimonials', 640, 80);
+            if ($testimonial->image) {
+                Storage::disk('public')->delete($testimonial->image);
+            }
+        } elseif ($request->input('remove_image')) {
+            if ($testimonial->image) {
+                Storage::disk('public')->delete($testimonial->image);
+            }
+            $validated['image'] = null;
+        }
 
         $testimonial->update($validated);
 
@@ -60,6 +82,10 @@ class TestimonialController extends Controller
 
     public function destroy(Testimonial $testimonial)
     {
+        if ($testimonial->image) {
+            Storage::disk('public')->delete($testimonial->image);
+        }
+
         $testimonial->delete();
 
         return redirect()->route('admin.testimonials.index')->with('success', 'Testimoni berhasil dihapus.');

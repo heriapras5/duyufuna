@@ -30,15 +30,20 @@
                         <x-admin.input name="title" label="Nama Layanan" required placeholder="Contoh: Paket Umroh Hemat 12 Hari" :value="old('title')" />
                         <x-admin.slug-preview source="title" base="service" />
                         <x-admin.textarea name="short_description" label="Deskripsi Singkat" rows="2" maxlength="255" placeholder="Teks singkat yang tampil di halaman publik" :value="old('short_description')" help="Maksimal 255 karakter. Teks ini tampil pada pemilih layanan di halaman konsultasi." />
+                        @if($category->pageType() === 'transport')
+                        <x-admin.input name="price_sar" label="Harga Mulai (SAR)" type="number" step="0.01" min="0" placeholder="Contoh: 150" :value="old('price_sar')" help="Harga minimum untuk kendaraan ini, ditampilkan sebagai 'Mulai SAR X / per kendaraan'." />
+                        @endif
                     </div>
                 </div>
                 @if(!$isFormMode)
                 <div class="mt-5 pt-5 border-t border-gray-100">
                     <x-admin.image-upload name="image" label="Gambar" hint="Ditampilkan pada kartu layanan di halaman kategori. Format: JPG, PNG, WEBP. Maks 2MB." />
                 </div>
+                @if($category->pageType() === 'transport')
                 <div class="mt-5 pt-5 border-t border-gray-100">
-                    <x-admin.emoji-input name="icon" label="Ikon Alternatif (emoji)" help="Ditampilkan jika layanan tidak memiliki gambar. Kosongkan untuk memakai ikon kategori." :value="old('icon')" />
+                    <x-admin.gallery-upload name="gallery" label="Galeri" hint="Foto kendaraan tambahan yang tampil pada halaman detail. Format: JPG, PNG, WEBP." />
                 </div>
+                @endif
                 @endif
             </x-admin.form-card>
 

@@ -1,1 +1,7 @@
 @import "summernote/dist/summernote-lite.css";
+
+.note-editable {
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif !important;
+}

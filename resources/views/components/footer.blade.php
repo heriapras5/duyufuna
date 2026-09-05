@@ -21,10 +21,10 @@
                     @endif
                     <div>
                         <h3 class="text-white font-bold text-base md:text-lg tracking-wide font-serif">{{ $globalSetting->website_name ?? 'DUYUFUNA' }}</h3>
-                        <p class="text-[9px] font-semibold text-gold-light tracking-widest uppercase mt-0.5">{{ $globalSetting->tagline ?? 'MELAYANI TAMU ALLAH, SEPENUH HATI' }}</p>
+                        <p class="text-[10px] font-semibold text-gold-light tracking-widest uppercase mt-0.5">{{ $globalSetting->tagline ?? 'MELAYANI TAMU ALLAH, SEPENUH HATI' }}</p>
                     </div>
                 </div>
-                <div class="text-white/90 text-sm leading-relaxed max-w-sm mt-4">
+                <div class="text-white/90 text-[13px] md:text-sm leading-relaxed max-w-sm mt-4">
                     @if($globalSetting && $globalSetting->footer_text)
                     {!! $globalSetting->footer_text !!}
                     @else
@@ -69,27 +69,27 @@
             <div class="md:col-span-6 flex flex-col items-start text-left pt-8 border-t border-white/10 md:pt-0 md:border-t-0">
                 <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-8">
                     <div>
-                        <h4 class="text-white font-semibold text-sm mb-5 tracking-wide">{{ $globalSetting->footer_contact_heading ?? 'Hubungi Kami' }}</h4>
+                        <h4 class="text-white font-semibold text-sm md:text-base mb-5 tracking-wide">{{ $globalSetting->footer_contact_heading ?? 'Hubungi Kami' }}</h4>
                         <div class="space-y-3.5">
                             @if($globalSetting && $globalSetting->address)
-                            <div class="flex items-start gap-3 text-white/60 text-sm group">
-                                <div class="w-7 h-7 shrink-0 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-gold/20 transition-all">
+                            <div class="flex items-start gap-3 text-white/80 text-[13px] md:text-sm group">
+                                <div class="w-7 h-7 shrink-0 rounded-lg bg-white/10 flex items-center justify-center group-hover:bg-gold/20 transition-all">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
                                 </div>
                                 <span class="leading-relaxed">{{ $globalSetting->address }}</span>
                             </div>
                             @endif
                             @if($globalSetting)
-                            <div class="flex items-start gap-3 text-white/60 text-sm">
-                                <div class="w-7 h-7 shrink-0 rounded-lg bg-white/5 flex items-center justify-center">
+                            <div class="flex items-start gap-3 text-white/80 text-[13px] md:text-sm">
+                                <div class="w-7 h-7 shrink-0 rounded-lg bg-white/10 flex items-center justify-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></svg>
                                 </div>
                                 <span>{{ $waFooterDisplay }}</span>
                             </div>
                             @endif
                             @if($globalSetting && $globalSetting->email)
-                            <a href="mailto:{{ $globalSetting->email }}" class="flex items-start gap-3 text-white/60 hover:text-gold-light transition-colors text-sm group">
-                                <div class="w-7 h-7 shrink-0 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-gold/20 transition-all">
+                            <a href="mailto:{{ $globalSetting->email }}" class="flex items-start gap-3 text-white/80 hover:text-gold-light transition-colors text-[13px] md:text-sm group">
+                                <div class="w-7 h-7 shrink-0 rounded-lg bg-white/10 flex items-center justify-center group-hover:bg-gold/20 transition-all">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                                 </div>
                                 <span>{{ $globalSetting->email }}</span>
@@ -122,7 +122,7 @@
                         <h4 class="text-white font-semibold text-sm mb-5 tracking-wide">{{ $globalSetting->footer_links_heading ?? 'Quick Links' }}</h4>
                         <ul class="space-y-2">
                             @foreach($links as $link)
-                            <li><a href="{{ $link['url'] }}" class="text-white/50 hover:text-gold-light transition text-sm">{{ $link['label'] }}</a></li>
+                            <li><a href="{{ $link['url'] }}" class="text-white/75 hover:text-gold-light transition text-[13px] md:text-sm">{{ $link['label'] }}</a></li>
                             @endforeach
                         </ul>
                     </div>
@@ -132,7 +132,7 @@
     </div>
     <div class="border-t border-white/5 relative z-10">
         <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-5 text-center">
-            <p class="text-white/40 text-xs">{{ $copyright }}</p>
+            <p class="text-white/60 text-sm">{{ $copyright }}</p>
         </div>
     </div>
 </footer>

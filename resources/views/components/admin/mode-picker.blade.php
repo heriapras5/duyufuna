@@ -10,7 +10,7 @@
         'cards' => [
             'title' => 'Kartu Layanan',
             'desc' => 'Grid kartu layanan bergambar. Klik kartu membuka halaman detail layanan.',
-            'example' => 'Contoh: Handling Bandara, Handling Hotel',
+            'example' => 'Contoh: Handling Bandara dan Hotel',
             'sketch' => 'grid',
         ],
         'transport' => [

@@ -18,7 +18,7 @@
                 <x-admin.input name="sort" label="Urutan" type="number" min="0" placeholder="0" :value="old('sort')"
                     help="Semakin kecil angkanya, semakin awal banner tampil di slider." />
                 <div class="border-t border-gray-100 pt-4">
-                    <x-admin.image-upload name="image" label="Gambar" required hint="Format: JPG, PNG, WEBP. Maks 10MB." />
+                    <x-admin.image-upload name="image" label="Gambar" required hint="Gambar tampil penuh tanpa crop — bebas rasio, disarankan landscape. Format: JPG, PNG, WEBP. Maks 10MB." />
                 </div>
             </div>
             <x-admin.form-actions cancel-url="{{ route('admin.banners.index') }}" submit-label="Simpan" />

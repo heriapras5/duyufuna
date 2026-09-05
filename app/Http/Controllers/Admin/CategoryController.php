@@ -62,6 +62,14 @@ class CategoryController extends Controller
             return redirect()->route('admin.catalog.groups', $category);
         }
 
+        // Muthawif, Laundry, Buggy, Kursi Roda & Fotografer: satu layanan — langsung ke halaman daftar item.
+        if (in_array($category->slug, ['muthawif', 'laundry', 'buggy-car', 'kursi-roda-umroh', 'fotografer'])) {
+            $services = $category->services()->orderBy('id')->get();
+            if ($services->count() === 1) {
+                return redirect()->route('admin.services.items', $services->first());
+            }
+        }
+
         $services = $category->services()->with('banners')->latest()->paginate(25)->withQueryString();
         return view('admin.categories.show', compact('category', 'services'));
     }

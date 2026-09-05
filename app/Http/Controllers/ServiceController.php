@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Service;
+use App\Models\TransportRoute;
 
 class ServiceController extends Controller
 {
@@ -33,6 +34,11 @@ class ServiceController extends Controller
             ->limit(4)
             ->get();
 
-        return view('services.detail', compact('service', 'relatedServices'));
+        $transportRoutes = null;
+        if ($service->category?->pageType() === 'transport') {
+            $transportRoutes = TransportRoute::with('prices')->orderBy('sort')->get();
+        }
+
+        return view('services.detail', compact('service', 'relatedServices', 'transportRoutes'));
     }
 }

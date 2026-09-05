@@ -32,10 +32,13 @@ function snCreateSummernote($this) {
         lang: 'id-ID',
         callbacks: {
             onKeydown: function(e) {
-                // Jangan ganggu Enter di dalam daftar (membuat item baru / keluar list)
-                if ($(e.target).closest('li').length) return;
-                // Enter → '<br>' (line break langsung terlihat), Shift+Enter → paragraf baru
                 if (e.keyCode === 13 && !e.shiftKey) {
+                    var sel = window.getSelection();
+                    if (sel && sel.rangeCount > 0) {
+                        var node = sel.getRangeAt(0).commonAncestorContainer;
+                        // Jika kursor di dalam <li>, biarkan Summernote menangani Enter (membuat item list baru)
+                        if ($(node).closest('li').length) return;
+                    }
                     e.preventDefault();
                     document.execCommand('insertLineBreak');
                 }

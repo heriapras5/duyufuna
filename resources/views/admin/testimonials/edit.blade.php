@@ -13,9 +13,9 @@
         <form method="POST" action="{{ route('admin.testimonials.update', $testimonial) }}" enctype="multipart/form-data">
             @csrf @method('PUT')
             <div class="space-y-5">
-                <x-admin.input name="name" label="Nama" required placeholder="Contoh: Bapak Ahmad" :value="$testimonial->name" />
-                <x-admin.select name="rating" label="Rating (1-5)" :options="[5 => '5 Bintang', 4 => '4 Bintang', 3 => '3 Bintang', 2 => '2 Bintang', 1 => '1 Bintang']" :selected="$testimonial->rating" />
-                <x-admin.summernote name="review" label="Isi Testimoni" :value="$testimonial->review" required />
+                <x-admin.input name="name" label="Nama" :value="$testimonial->name" help="Opsional — boleh dikosongkan bila hanya menampilkan gambar." />
+                <x-admin.image-upload name="image" label="Gambar Screenshot Chat WhatsApp" :existing="$testimonial->image" hint="Upload screenshot percakapan WhatsApp sebagai bukti. Format: JPG, PNG, WEBP. Maks 2MB. Gambar otomatis diperkecil menjadi maks. 640px." />
+                <x-admin.summernote name="review" label="Isi Testimoni" :value="$testimonial->review" help="Opsional — boleh dikosongkan bila hanya menampilkan gambar." />
                 <div class="border-t border-gray-100 pt-4">
                     <x-admin.switch name="status" label="Tampilkan" :checked="$testimonial->status" help="Tampilkan testimoni ini di halaman publik." />
                 </div>

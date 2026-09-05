@@ -9,8 +9,9 @@
 [x-cloak] { display: none !important; }
 
 @theme {
-    --font-sans: 'Poppins', 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Inter', 'Poppins', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --font-display: 'Poppins', ui-sans-serif, system-ui, sans-serif;
     --font-inter: 'Inter', ui-sans-serif, system-ui, sans-serif;
     --font-arabic: 'Amiri', Georgia, 'Times New Roman', serif;
 
@@ -396,6 +397,13 @@
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
+    /* Darker gold gradient for headings on light backgrounds */
+    .text-gradient-gold-deep {
+        background: linear-gradient(135deg, #8a6d1d 0%, #C9A227 45%, #a3821f 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
     .gold-shimmer {
         background: linear-gradient(135deg, #C9A227 0%, #F5D76E 25%, #C9A227 50%, #F5D76E 75%, #C9A227 100%);
         -webkit-background-clip: text;
@@ -497,9 +505,9 @@
     /* --- Stagger Children --- */
     .stagger-children > * {
         opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: translateY(8px);
+        transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .stagger-children.revealed > *:nth-child(1) { transition-delay: 0.02s; opacity: 1; transform: translateY(0); }
     .stagger-children.revealed > *:nth-child(2) { transition-delay: 0.06s; opacity: 1; transform: translateY(0); }
@@ -511,6 +519,7 @@
     .stagger-children.revealed > *:nth-child(8) { transition-delay: 0.30s; opacity: 1; transform: translateY(0); }
     .stagger-children.revealed > *:nth-child(9) { transition-delay: 0.34s; opacity: 1; transform: translateY(0); }
     .stagger-children.revealed > *:nth-child(10) { transition-delay: 0.38s; opacity: 1; transform: translateY(0); }
+    .stagger-children.revealed > *:nth-child(n+11) { transition-delay: 0.42s; opacity: 1; transform: translateY(0); }
 
     /* --- Mobile Drawer --- */
     .mobile-drawer-overlay {
@@ -552,8 +561,8 @@
     }
     .scroll-reveal {
         opacity: 0;
-        transform: translateY(40px);
-        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: translateY(16px);
+        transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .scroll-reveal.revealed {
         opacity: 1;
@@ -561,8 +570,8 @@
     }
     .scroll-reveal-left {
         opacity: 0;
-        transform: translateX(-40px);
-        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: translateX(-16px);
+        transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .scroll-reveal-left.revealed {
         opacity: 1;
@@ -570,8 +579,8 @@
     }
     .scroll-reveal-right {
         opacity: 0;
-        transform: translateX(40px);
-        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: translateX(16px);
+        transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .scroll-reveal-right.revealed {
         opacity: 1;
@@ -579,8 +588,8 @@
     }
     .scroll-reveal-scale {
         opacity: 0;
-        transform: scale(0.92);
-        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: scale(0.96);
+        transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .scroll-reveal-scale.revealed {
         opacity: 1;
@@ -616,8 +625,9 @@
     /* --- Article Content (replaces prose, which is not compiled) --- */
     .article-content {
         font-size: 0.9375rem;
-        line-height: 1.85;
-        color: #374151;
+        line-height: 1.9;
+        letter-spacing: 0.012em;
+        color: #334155;
         overflow-wrap: anywhere;
         word-break: break-word;
     }
@@ -629,16 +639,17 @@
     .article-content h4,
     .article-content h5,
     .article-content h6 {
-        font-weight: 700;
-        color: #111827;
-        line-height: 1.4;
+        font-weight: 600;
+        color: #0f172a;
+        line-height: 1.35;
+        letter-spacing: -0.015em;
         margin: 1.75em 0 0.6em;
     }
-    .article-content h1 { font-size: 1.5rem; }
-    .article-content h2 { font-size: 1.35rem; }
-    .article-content h3 { font-size: 1.2rem; }
-    .article-content h4 { font-size: 1.05rem; }
-    .article-content p { margin: 0 0 1.1em; }
+    .article-content h1 { font-size: 1.45rem; }
+    .article-content h2 { font-size: 1.25rem; }
+    .article-content h3 { font-size: 1.15rem; }
+    .article-content h4 { font-size: 1.02rem; }
+    .article-content p { margin: 0 0 1.25em; }
     .article-content a {
         color: #005C3B;
         text-decoration: underline;
@@ -677,7 +688,10 @@
         border-top: 1px solid #e5e7eb;
     }
     .article-content table {
+        display: block;
         width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
         border-collapse: collapse;
         margin: 1.2em 0;
         font-size: 0.875rem;
@@ -690,12 +704,80 @@
     }
     .article-content table th { background: #FDF8F0; color: #111827; font-weight: 600; }
 
+    /* --- Checklist style for Kelebihan (kecil, emerald, center-aligned) --- */
+    .checklist-content { list-style: none; padding-left: 0; }
+    .checklist-content li {
+        position: relative;
+        padding-left: 1.2rem;
+        line-height: 1.6;
+        display: flex;
+        align-items: center;
+    }
+    @media (min-width: 640px) {
+        .checklist-content li { padding-left: 1.4rem; }
+    }
+    .checklist-content li::before {
+        content: '✓';
+        position: absolute; left: 0; top: 50%;
+        transform: translateY(-50%);
+        width: 0.75rem; height: 0.75rem;
+        background: linear-gradient(135deg, #059669, #10b981);
+        border-radius: 3px;
+        box-shadow: 0 1px 3px rgba(5, 150, 105, 0.25);
+        color: white;
+        display: inline-flex; align-items: center; justify-content: center;
+        font-size: 0.45rem; font-weight: 800; line-height: 1;
+    }
+    @media (min-width: 640px) {
+        .checklist-content li::before { width: 0.85rem; height: 0.85rem; font-size: 0.5rem; border-radius: 4px; }
+    }
+    /* Modifier: ikon centang sejajar baris pertama untuk poin multi-baris */
+    .checklist-content.items-top li {
+        align-items: flex-start;
+    }
+    .checklist-content.items-top li::before {
+        top: 0.55em;
+        transform: none;
+    }
+
+    /* --- Card tints for Kelebihan & Rekomendasi (clean, muted) --- */
+    .card-tint-mint {
+        background: #FDF8F0;
+        border-color: #FDE68A;
+    }
+    .card-tint-gold {
+        background: #FFFBEE;
+        border-color: #FDE68A;
+    }
+
+    /* --- 3D Parallax Tilt --- */
+    .parallax-3d-wrap {
+        perspective: 1000px;
+        transform-style: preserve-3d;
+    }
+    .parallax-3d {
+        transition: transform 0.15s ease-out;
+        transform-style: preserve-3d;
+        will-change: transform;
+    }
+    .parallax-3d-card {
+        transition: transform 0.3s ease-out;
+        transform-style: preserve-3d;
+        will-change: transform;
+    }
+    .parallax-3d-card:hover {
+        transform: translateY(-4px) rotateX(4deg) rotateY(4deg);
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .parallax-3d, .parallax-3d-card { transition: none !important; transform: none !important; }
+    }
+
     /* --- Modal Prose (compact typography for detail popups) --- */
     .modal-prose {
         font-size: 0.875rem;
-        line-height: 1.6;
-        color: #475569;
-        letter-spacing: 0.01em;
+        line-height: 1.75;
+        color: #64748b;
+        letter-spacing: 0.015em;
         white-space: normal;
         overflow-wrap: anywhere;
         word-break: break-word;
@@ -708,9 +790,10 @@
     .modal-prose h4,
     .modal-prose h5,
     .modal-prose h6 {
-        font-weight: 700;
-        color: #111827;
+        font-weight: 600;
+        color: #0f172a;
         line-height: 1.35;
+        letter-spacing: -0.01em;
         margin: 1.1em 0 0.4em;
     }
     .modal-prose h1 { font-size: 0.9375rem; }
@@ -750,6 +833,17 @@
     }
     .modal-prose table th { background: #FDF8F0; color: #111827; font-weight: 600; }
 
+    /* --- Testimoni slider dots (emas, selaras tema) --- */
+    .testi-pagination .swiper-pagination-bullet {
+        background: rgba(0, 0, 0, 0.2);
+        opacity: 1;
+    }
+    .testi-pagination .swiper-pagination-bullet-active {
+        background: #C9A227;
+        width: 20px;
+        border-radius: 999px;
+    }
+
     /* --- Fancybox Theme Overrides --- */
     .fancybox__container {
         --fancybox-bg: rgba(0, 45, 27, 0.95);
@@ -773,6 +867,11 @@
     }
     .fancybox__button svg {
         filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+    }
+    /* Popup gambar testimoni: strip thumbnail disembunyikan paksa */
+    .testimoni-popup .f-thumbs,
+    .testimoni-popup .f-thumbs__viewport {
+        display: none !important;
     }
     @media (hover: none), (max-width: 768px) {
         .fancybox__container .f-button.is-arrow.is-prev,
@@ -1555,6 +1654,16 @@ body {
 .app-header {
     padding-top: env(safe-area-inset-top);
 }
+/* Offset konten terhadap header fixed public (56px mobile / 64px desktop + notch).
+   Di-scope ke body.has-fixed-header agar layout admin (app-shell tinggi-tetap) tidak ikut terdorong. */
+body.has-fixed-header {
+    padding-top: calc(3.5rem + env(safe-area-inset-top));
+}
+@media (min-width: 768px) {
+    body.has-fixed-header {
+        padding-top: calc(4rem + env(safe-area-inset-top));
+    }
+}
 .app-bottom-nav {
     padding-bottom: env(safe-area-inset-bottom);
 }
@@ -1577,5 +1686,193 @@ button.touch-target {
     .btn-gold-sm {
         padding: 12px 22px;
         min-height: 44px;
+    }
+}
+
+/* Floating WhatsApp */
+@keyframes wa-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+    50% { box-shadow: 0 0 0 16px rgba(37, 211, 102, 0); }
+}
+.wa-float {
+    animation: wa-pulse 2.5s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+    .wa-float {
+        animation: none;
+    }
+}
+
+/* Kedalaman ikon kartu kategori */
+.parallax-3d-card {
+    transform-style: preserve-3d;
+}
+
+/* Ikon 3D pada header halaman kategori */
+.category-icon-3d {
+    position: relative;
+    transform: translateZ(10px);
+    box-shadow:
+        inset 0 -10px 16px rgba(0, 0, 0, 0.12),
+        inset 0 6px 12px rgba(255, 255, 255, 0.8),
+        0 14px 26px rgba(16, 60, 40, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.category-icon-3d .category-glyph,
+.category-icon-3d span,
+.category-icon-3d svg {
+    filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.22));
+    transform: translateZ(14px);
+}
+.category-icon-3d::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 48%);
+    pointer-events: none;
+}
+@media (hover: hover) {
+    .category-icon-3d:hover {
+        transform: translateZ(16px) scale(1.06);
+        box-shadow:
+            inset 0 -12px 18px rgba(0, 0, 0, 0.14),
+            inset 0 7px 14px rgba(255, 255, 255, 0.9),
+            0 20px 34px rgba(16, 60, 40, 0.22);
+    }
+}.parallax-3d-card .category-icon {
+    transform: translateZ(8px);
+    box-shadow: inset 0 -8px 14px rgba(0,0,0,0.12), inset 0 5px 10px rgba(255,255,255,0.75), 0 10px 20px rgba(0,0,0,0.12);
+    border-top: 1px solid rgba(255,255,255,0.8);
+}
+.parallax-3d-card .category-icon svg {
+    filter: drop-shadow(0 8px 12px rgba(0,0,0,0.22));
+}
+.parallax-3d-card .category-icon .category-glyph {
+    filter: drop-shadow(0 8px 12px rgba(0,0,0,0.22));
+}
+@media (hover: hover) {
+    .parallax-3d-card:hover .category-icon {
+        transform: translateZ(18px) scale(1.12) rotate(-4deg);
+        box-shadow: inset 0 -10px 16px rgba(0,0,0,0.14), inset 0 6px 12px rgba(255,255,255,0.85), 0 16px 28px rgba(0,0,0,0.18);
+    }
+}
+
+/* Card layanan pada Halaman Beranda: flat tanpa bayangan hitam */
+.home-service-card {
+    box-shadow: none;
+}
+.home-service-card:hover {
+    box-shadow: none;
+}
+.home-service-card .category-icon {
+    box-shadow: none;
+}
+.home-service-card .category-icon .category-glyph,
+.home-service-card .category-icon svg {
+    filter: none;
+}
+
+/* Lapisan parallax 3D pada welcome card (digerakkan via JS translateZ) */
+.parallax-3d-layer,
+.parallax-3d-pop {
+    transform: translateZ(0);
+    transition: transform 0.35s ease-out;
+    will-change: transform;
+}
+
+/* Tile section "Keunggulan": tilt halus mengikuti kursor (JS) */
+.parallax-3d-tile {
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform 0.25s ease-out;
+}
+
+/* Orb dekoratif parallax (JS: gerak mouse + scroll) */
+.parallax-3d-orb {
+    will-change: transform, translate;
+}
+@media (prefers-reduced-motion: reduce) {
+    .parallax-3d-layer,
+    .parallax-3d-pop,
+    .parallax-3d-tile,
+    .parallax-3d-orb {
+        transition: none !important;
+        transform: none !important;
+        translate: 0 0 !important;
+    }
+}
+
+/* Welcome image 3D float */
+@keyframes welcome-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-14px) rotate(2deg); }
+}
+@keyframes welcome-halo {
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.12); }
+}
+.welcome-img-3d {
+    animation: welcome-float 5s ease-in-out infinite;
+    will-change: transform;
+}
+.welcome-img-3d .welcome-halo {
+    animation: welcome-halo 3.5s ease-in-out infinite;
+}
+.welcome-img-3d .glare {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 45%);
+    pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+    .welcome-img-3d,
+    .welcome-img-3d .welcome-halo {
+        animation: none;
+    }
+}
+
+
+/* Hide scrollbar for horizontal scroll areas */
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* Kartu mobil 3D (transport-carousel-card) */
+.car-3d-wrap {
+    perspective: 700px;
+}
+.car-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.35s ease;
+    will-change: transform;
+}
+@media (hover: hover) {
+    .car-3d-wrap:hover .car-3d {
+        transform: rotateX(6deg) rotateY(-5deg) translateZ(8px);
+    }
+}
+.car-shadow {
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+@media (hover: hover) {
+    .car-3d-wrap:hover .car-shadow {
+        opacity: 0.45;
+        transform: translateX(-50%) scaleX(0.9);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .car-3d {
+        transition: none;
+        transform: none !important;
+    }
+    .car-shadow {
+        transition: none;
     }
 }

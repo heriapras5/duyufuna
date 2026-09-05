@@ -21,8 +21,8 @@
 </head>
 <body class="font-sans bg-gray-50 admin-content-bg" x-data="{ sidebarOpen: false, sidebarCollapsed: false }">
     <div class="flex overflow-hidden admin-frame">
-        <aside class="fixed inset-y-0 left-0 z-40 admin-sidebar text-white sidebar-transition flex flex-col
-                    lg:static lg:inset-auto"
+        <aside class="fixed inset-y-0 left-0 z-40 w-72 admin-sidebar text-white sidebar-transition flex flex-col
+                    lg:static lg:inset-auto lg:w-auto"
                 :class="{
                     '-translate-x-full': !sidebarOpen,
                     'translate-x-0': sidebarOpen,
@@ -32,15 +32,15 @@
                 @click.away="sidebarOpen = false">
 
             <a href="{{ route('admin.dashboard') }}"
-               class="flex items-center h-[72px] px-4 border-b border-white/10 relative z-10 hover:bg-white/5 transition"
+               class="flex items-center h-16 px-4 border-b border-white/10 relative z-10 hover:bg-white/5 transition"
                :class="sidebarCollapsed ? 'lg:justify-center lg:px-0' : ''">
                 @if($globalSetting && $globalSetting->logo)
-                <div class="w-16 h-16 rounded-xl bg-white/10 p-1 flex items-center justify-center shrink-0 transition-colors duration-300 hover:bg-white/15">
+                <div class="w-11 h-11 rounded-xl bg-white/10 p-1 flex items-center justify-center shrink-0 transition-colors duration-300 hover:bg-white/15">
                     <img src="{{ Storage::url($globalSetting->logo) }}" alt="{{ $globalSetting->website_name ?? 'Logo' }}"
                          class="w-full h-full object-contain transition-all duration-300 hover:scale-105 hover:drop-shadow-[0_0_10px_rgba(245,215,110,0.55)] hover:brightness-110">
                 </div>
                 @else
-                <div class="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
+                <div class="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
                 </div>
                 @endif
@@ -69,8 +69,8 @@
                     <span x-show="!sidebarCollapsed">Banner Slider</span>
                 </a>
                 <a href="{{ route('admin.categories.index') }}"
-                    class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 group {{ request()->routeIs('admin.categories.*') || request()->routeIs('admin.catalog.*') || request()->routeIs('admin.services.*') ? 'active-nav' : '' }}"
-                   :class="sidebarCollapsed ? 'lg:justify-center lg:px-0' : ''">
+                    class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 group {{ request()->routeIs('admin.categories.*') || request()->routeIs('admin.catalog.*') || request()->routeIs('admin.services.*') || request()->routeIs('admin.transport-routes.*') ? 'active-nav' : '' }}"
+                    :class="sidebarCollapsed ? 'lg:justify-center lg:px-0' : ''">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 nav-icon"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2"/></svg>
                     <span x-show="!sidebarCollapsed">Kategori Layanan</span>
                 </a>

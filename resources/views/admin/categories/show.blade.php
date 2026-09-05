@@ -13,6 +13,12 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
             Edit Kategori
         </a>
+        @if($category->pageType() === 'transport')
+        <a href="{{ route('admin.transport-routes.index') }}" class="btn btn-secondary btn-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
+            Rute & Tarif
+        </a>
+        @endif
         <a href="{{ route('admin.services.create', ['category_id' => $category->id]) }}" class="btn btn-primary btn-sm">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Tambah Data
@@ -29,8 +35,6 @@
         <div class="relative h-36 bg-gray-50 flex items-center justify-center">
             @if($svc->image)
             <img src="{{ Storage::url($svc->image) }}" alt="{{ $svc->title }}" class="w-full h-full object-cover">
-            @else
-            <div class="text-5xl">{{ $svc->icon ?? $category->icon }}</div>
             @endif
             <div class="absolute top-3 right-3">
                 <x-admin.status-toggle resource="services" :id="$svc->id" :checked="$svc->status" />
@@ -39,7 +43,14 @@
         @endif
         <div class="p-5 flex flex-col flex-1">
             <div class="flex items-start justify-between gap-2">
-                <h3 class="font-bold text-gray-900 text-base truncate">{{ $svc->title }}</h3>
+                <div class="min-w-0">
+                    <h3 class="font-bold text-gray-900 text-base leading-snug break-words">{{ $svc->title }}</h3>
+                    @if($category->pageType() === 'transport' && $svc->price_sar !== null)
+                    <span class="mt-1.5 inline-flex items-center rounded-md bg-emerald-50 border border-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
+                        Mulai SAR {{ number_format((float) $svc->price_sar, 0, ',', '.') }}
+                    </span>
+                    @endif
+                </div>
                 @if($isFormMode)
                 <x-admin.status-toggle resource="services" :id="$svc->id" :checked="$svc->status" class="shrink-0" />
                 @endif
@@ -50,6 +61,12 @@
             </div>
             @endif
             <div class="mt-auto pt-4 border-t border-gray-50 flex items-center justify-end gap-1 shrink-0">
+                @if($isFormMode)
+                <a href="{{ route('admin.services.items', $svc) }}" title="{{ $category->itemLabel() }}"
+                   class="p-2 rounded-lg hover:bg-emerald-50 text-gray-400 hover:text-emerald-600 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/><path d="M12 12l3-3"/></svg>
+                </a>
+                @endif
                 <a href="{{ route('admin.services.edit', $svc) }}" title="Edit"
                    class="p-2 rounded-lg hover:bg-emerald-50 text-gray-400 hover:text-emerald-600 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>

@@ -15,7 +15,7 @@ document.addEventListener('alpine:init', function () {
         openConsult: false,
         loadingConsult: false,
         detail: { service_id: null, item_id: null, item_title: null, image: null, title: null, description: null },
-        consult: { service_id: null, item_id: null, item_title: null, title: null },
+        consult: { service_id: null, item_id: null, item_title: null, title: null, unit_price: null, currency: null, unit_label: null, extra_note: null },
 
         lockScroll() {
             document.body.style.overflow = (this.openDetail || this.openConsult) ? 'hidden' : '';
@@ -44,6 +44,10 @@ document.addEventListener('alpine:init', function () {
                 item_id: this.detail.item_id,
                 item_title: this.detail.item_title,
                 title: this.detail.title,
+                unit_price: this.detail.unit_price ?? this.detail.unitPrice ?? null,
+                currency: this.detail.currency ?? null,
+                unit_label: this.detail.unit_label ?? this.detail.unitLabel ?? null,
+                extra_note: this.detail.extra_note ?? null,
             };
             this.closeDetail();
             this.openConsult = true;
@@ -108,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        }, { threshold: 0.05, rootMargin: '0px 0px -10px 0px' });
         revealEls().forEach(function (el) {
             observer.observe(el);
         });
@@ -161,9 +165,101 @@ document.addEventListener('DOMContentLoaded', function () {
         }, { passive: true });
     }
 
-    var fancyboxEls = document.querySelectorAll('[data-fancybox="galeri"]');
+    // --- 3D Parallax Tilt ---
+    var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReduced && window.matchMedia('(hover: hover)').matches) {
+        // Tilt pada elemen [data-parallax-3d]: kartu berputar mengikuti kursor,
+        // anak-anak berlapis (.parallax-3d-layer / .parallax-3d-pop) ikut melayang.
+        document.querySelectorAll('[data-parallax-3d]').forEach(function (el) {
+            var wrap = el.closest('.parallax-3d-wrap') || el.parentElement;
+            if (!wrap) return;
+            var raf = null;
+            var lastEvent = null;
+            var layers = el.querySelectorAll('.parallax-3d-layer, .parallax-3d-pop');
+            function applyTilt() {
+                raf = null;
+                if (!lastEvent) return;
+                var rect = wrap.getBoundingClientRect();
+                var px = (lastEvent.clientX - rect.left) / rect.width - 0.5;
+                var py = (lastEvent.clientY - rect.top) / rect.height - 0.5;
+                el.style.transform = 'rotateX(' + (-py * 8) + 'deg) rotateY(' + (px * 8) + 'deg) translateZ(6px)';
+                layers.forEach(function (layer) {
+                    layer.style.transform = 'translateZ(' + (layer.classList.contains('parallax-3d-pop') ? 40 : 22) + 'px)';
+                });
+            }
+            wrap.addEventListener('mousemove', function (e) {
+                lastEvent = e;
+                if (!raf) raf = requestAnimationFrame(applyTilt);
+            });
+            wrap.addEventListener('mouseleave', function () {
+                lastEvent = null;
+                if (raf) { cancelAnimationFrame(raf); raf = null; }
+                el.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
+                layers.forEach(function (layer) {
+                    layer.style.transform = 'translateZ(0)';
+                });
+            });
+        });
+
+        // Tilt ringan pada kartu kategori (parallax-3d-card): 3D dari CSS hover saja.
+        // Tile "Keunggulan" bergerak mengikuti kursor di dalam section.
+        document.querySelectorAll('.parallax-3d-section').forEach(function (section) {
+            var tiles = section.querySelectorAll('.parallax-3d-tile');
+            var orbs = section.querySelectorAll('.parallax-3d-orb');
+            var sRaf = null;
+            var sEvent = null;
+            function applySectionTilt() {
+                sRaf = null;
+                if (!sEvent) return;
+                var rect = section.getBoundingClientRect();
+                var px = (sEvent.clientX - rect.left) / rect.width - 0.5;
+                var py = (sEvent.clientY - rect.top) / rect.height - 0.5;
+                tiles.forEach(function (tile, i) {
+                    var depth = 1 + (i % 3) * 0.4;
+                    tile.style.transform = 'perspective(800px) rotateX(' + (-py * 3 * depth) + 'deg) rotateY(' + (px * 3 * depth) + 'deg) translateZ(' + (4 * depth) + 'px)';
+                });
+                orbs.forEach(function (orb) {
+                    var d = parseFloat(orb.getAttribute('data-parallax-depth') || '0.25');
+                    orb.style.transform = 'translate(' + (px * 40 * d) + 'px, ' + (py * 40 * d) + 'px)';
+                });
+            }
+            section.addEventListener('mousemove', function (e) {
+                sEvent = e;
+                if (!sRaf) sRaf = requestAnimationFrame(applySectionTilt);
+            });
+            section.addEventListener('mouseleave', function () {
+                sEvent = null;
+                if (sRaf) { cancelAnimationFrame(sRaf); sRaf = null; }
+                tiles.forEach(function (tile) { tile.style.transform = ''; });
+                orbs.forEach(function (orb) { orb.style.transform = ''; });
+            });
+        });
+
+        // Parallax scroll halus untuk orb dekoratif pada section gelap.
+        var scrollOrbs = Array.prototype.slice.call(document.querySelectorAll('.parallax-3d-orb'));
+        if (scrollOrbs.length > 0) {
+            var orbTicking = false;
+            window.addEventListener('scroll', function () {
+                if (orbTicking) return;
+                orbTicking = true;
+                requestAnimationFrame(function () {
+                    orbTicking = false;
+                    var vh = window.innerHeight;
+                    scrollOrbs.forEach(function (orb) {
+                        var rect = orb.getBoundingClientRect();
+                        if (rect.bottom < -100 || rect.top > vh + 100) return;
+                        var d = parseFloat(orb.getAttribute('data-parallax-depth') || '0.25');
+                        var progress = (rect.top + rect.height / 2 - vh / 2) / vh;
+                        orb.style.translate = '0 ' + (-progress * 60 * d) + 'px';
+                    });
+                });
+            }, { passive: true });
+        }
+    }
+
+    var fancyboxEls = document.querySelectorAll('[data-fancybox]');
     if (fancyboxEls.length > 0) {
-        Fancybox.bind('[data-fancybox="galeri"]', {
+        var fancyboxBase = {
             Carousel: {
                 infinite: true,
             },
@@ -173,7 +269,13 @@ document.addEventListener('DOMContentLoaded', function () {
             Toolbar: {
                 display: ['counter', 'zoom', 'download', 'close'],
             },
-        });
+        };
+        Fancybox.bind('[data-fancybox]:not([data-fancybox^="testimoni"])', fancyboxBase);
+        // Popup gambar testimoni: tanpa strip thumbnail
+        if (document.querySelectorAll('[data-fancybox^="testimoni"]').length > 0) {
+            var fancyboxTestimoni = Object.assign({}, fancyboxBase, { Thumbs: false, mainClass: 'testimoni-popup' });
+            Fancybox.bind('[data-fancybox^="testimoni"]', fancyboxTestimoni);
+        }
     }
 
     var drawerToggle = document.querySelector('[data-drawer-toggle]');

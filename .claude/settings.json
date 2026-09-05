@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php artisan *)",
+      "Bash(curl -s http://127.0.0.1:8058/category/transportasi)",
+      "Read(//tmp/**)",
+      "Bash(kill %1)",
+      "Bash(rm -f /tmp/tr58.html /tmp/sv58.log)"
+    ]
+  }
+}

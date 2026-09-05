@@ -53,6 +53,16 @@ class Category extends Model
         return $this->pageType() === 'catalog';
     }
 
+    public function isHotel(): bool
+    {
+        return $this->slug === 'hotel' || $this->itemLabel() === 'Hotel';
+    }
+
+    public function isHandling(): bool
+    {
+        return $this->slug === 'handling';
+    }
+
     public function pageType(): string
     {
         return $this->page_type ?: 'cards';

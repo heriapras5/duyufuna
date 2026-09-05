@@ -34,12 +34,12 @@ class CatalogSeeder extends Seeder
         'transportasi-hiace' => [
             ['title' => 'Sewa Hiace Keluarga', 'description' => '<p>Sewa Toyota Hiace untuk perjalanan keluarga atau grup kecil, sopir berpengalaman untuk rute dalam kota maupun antar kota.</p>'],
         ],
-        'catering-bandara-datang' => [
+        'kedatangan' => [
             ['title' => 'Paket Nasi Ayam Kabsah', 'description' => '<p>Nasi kabsah dengan ayam khas Timur Tengah, disajikan hangat saat kedatangan jamaah di bandara.</p>'],
             ['title' => 'Paket Nasi Kebuli', 'description' => '<p>Nasi kebuli gurih dengan daging pilihan, hidangan pembuka yang mengenyangkan untuk jamaah yang baru tiba.</p>'],
             ['title' => 'Paket Snack Box', 'description' => '<p>Snack box praktis berisi roti, buah, dan minuman untuk jamaah dalam perjalanan.</p>'],
         ],
-        'catering-bandara-pulang' => [
+        'kepulangan' => [
             ['title' => 'Paket Nasi Ayam Kabsah', 'description' => '<p>Nasi kabsah dengan ayam khas Timur Tengah untuk bekal jamaah sebelum penerbangan pulang.</p>'],
             ['title' => 'Paket Nasi Mandhi', 'description' => '<p>Nasi mandhi dengan daging yang mengenyangkan, pilihan tepat sebagai bekal kepulangan jamaah.</p>'],
             ['title' => 'Paket Snack Box', 'description' => '<p>Snack box ringan dan higienis untuk perjalanan pulang jamaah umroh.</p>'],

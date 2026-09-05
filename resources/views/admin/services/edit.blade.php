@@ -30,6 +30,9 @@
                         <x-admin.input name="title" label="Nama Layanan" required :value="$service->title" />
                         <x-admin.slug-preview source="title" base="service" />
                         <x-admin.textarea name="short_description" label="Deskripsi Singkat" rows="2" maxlength="255" placeholder="Teks singkat yang tampil di halaman publik" :value="old('short_description', $service->short_description)" help="Maksimal 255 karakter. Teks ini tampil pada pemilih layanan di halaman konsultasi." />
+                        @if($service->category?->pageType() === 'transport')
+                        <x-admin.input name="price_sar" label="Harga Mulai (SAR)" type="number" step="0.01" min="0" placeholder="Contoh: 150" :value="old('price_sar', $service->price_sar)" help="Harga minimum untuk kendaraan ini, ditampilkan sebagai 'Mulai SAR X / per kendaraan'." />
+                        @endif
                     </div>
                     <x-admin.switch name="status" label="Tampilkan di halaman publik" :checked="$service->status" help="Nonaktifkan untuk menyembunyikan layanan sementara." />
                 </div>
@@ -37,11 +40,28 @@
                 <div class="mt-5 pt-5 border-t border-gray-100">
                     <x-admin.image-upload name="image" label="Gambar" :existing="$service->image" hint="Ditampilkan pada kartu layanan di halaman kategori. Format: JPG, PNG, WEBP. Maks 2MB." />
                 </div>
+                @if($service->category?->pageType() === 'transport')
                 <div class="mt-5 pt-5 border-t border-gray-100">
-                    <x-admin.emoji-input name="icon" label="Ikon Alternatif (emoji)" help="Ditampilkan jika layanan tidak memiliki gambar. Kosongkan untuk memakai ikon kategori." :value="old('icon', $service->icon)" />
+                    <x-admin.gallery-upload name="gallery" label="Galeri" :existing="$service->gallery" hint="Foto kendaraan tambahan yang tampil pada halaman detail. Format: JPG, PNG, WEBP." />
                 </div>
                 @endif
+                @endif
             </x-admin.form-card>
+
+            @if($isFormMode)
+            <x-admin.form-card title="Pilihan {{ $category->itemLabel() }}" description="Item yang tampil sebagai pilihan di halaman konsultasi (judul, harga SAR, info singkat)." tone="blue">
+                <x-slot:icon>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                </x-slot:icon>
+                <div class="flex items-start gap-3 bg-sky-50 border border-sky-200 rounded-xl p-4 text-sm text-sky-800">
+                    <div class="flex-1">
+                        <p class="font-semibold">{{ $service->serviceItems()->count() }} pilihan terdaftar</p>
+                        <p class="text-sky-700 mt-0.5">Kelola judul, harga, dan info singkat dari pilihan {{ Str::lower($category->itemLabel()) }} pada layanan ini.</p>
+                    </div>
+                    <a href="{{ route('admin.services.items', $service) }}" class="btn btn-secondary btn-sm shrink-0">Buka {{ $category->itemLabel() }}</a>
+                </div>
+            </x-admin.form-card>
+            @endif
 
             @if(!$isFormMode)
             <x-admin.form-card title="Deskripsi" description="Satu deskripsi lengkap layanan." tone="amber">
