@@ -258,7 +258,6 @@
     </div>
 
 <x-footer />
-<x-bottom-nav />
 <x-wa-float />
 @stack('modals')
 </body>

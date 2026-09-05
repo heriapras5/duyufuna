@@ -15,7 +15,6 @@
 
     // Harga: SAR (default); jastip tanpa akhiran "/paket"
     $isJastip = $category !== null && $category->slug === 'jastip-viral';
-    $isCatering = $category !== null && $category->slug === 'catering';
     if ($item->price_per_night !== null) {
         $priceLabel = 'SAR ' . number_format((float) $item->price_per_night, 0, ',', '.');
         $priceUnit = $isJastip ? '' : '/paket';
@@ -33,10 +32,10 @@
 
 <div class="group card-glass-gold rounded-2xl overflow-hidden flex flex-col h-full"
      style="animation: fadeIn 0.5s ease-out {{ $index * $delay }}s both;">
-    <div class="relative aspect-[16/10] overflow-hidden flex items-center justify-center {{ $isCatering ? 'bg-white p-2 ring-1 ring-inset ring-slate-100' : 'bg-white' }}">
+    <div class="relative aspect-[16/10] bg-white overflow-hidden">
         @if($hasImage)
         <img src="{{ Storage::url($item->image) }}" alt="{{ $item->title }}" loading="lazy"
-             class="max-w-full max-h-full w-auto h-auto {{ $isCatering ? 'object-contain' : 'w-full h-full object-cover' }} transition-transform duration-700 group-hover:scale-105">
+             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
         @endif
     </div>
 

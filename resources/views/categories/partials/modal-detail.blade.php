@@ -12,10 +12,10 @@
 
         {{-- Isi: gambar + teks dalam satu area scroll (deskripsi tidak terhimpit) --}}
         <div class="flex-1 min-h-0 overflow-y-auto px-5 md:px-6 pt-5 pb-2 space-y-3">
-            {{-- Bingkai gambar: rasio tetap 4:2, foto tampil penuh tanpa crop --}}
-            <div class="relative w-full aspect-[4/2] bg-slate-50 overflow-hidden flex items-center justify-center rounded-xl ring-1 ring-gray-100 shadow-sm">
+            {{-- Bingkai gambar: rasio tetap 4:2, foto memenuhi bingkai --}}
+            <div class="relative w-full aspect-[4/2] bg-slate-100 overflow-hidden rounded-xl ring-1 ring-gray-100 shadow-sm">
                 <img x-show="$store.modal.detail.image" x-cloak :src="$store.modal.detail.image" :alt="$store.modal.detail.title" loading="lazy"
-                     class="max-w-full max-h-full w-auto h-auto object-contain">
+                     class="absolute inset-0 w-full h-full object-cover">
             </div>
 
             <h3 class="font-serif text-lg md:text-xl font-bold text-gray-900 leading-snug pr-6" x-text="$store.modal.detail.title"></h3>

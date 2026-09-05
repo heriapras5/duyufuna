@@ -878,6 +878,15 @@
         .fancybox__container .f-button.is-arrow.is-next {
             display: none;
         }
+        /* Popup testimoni di mobile: hanya tombol close yang tampil agar tak menutupi gambar */
+        .testimoni-popup .f-button.is-arrow.is-prev,
+        .testimoni-popup .f-button.is-arrow.is-next,
+        .testimoni-popup .f-carousel__toolbar .f-button:not([data-fancybox-close]) {
+            display: none !important;
+        }
+        .testimoni-popup .f-carousel__toolbar {
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), transparent);
+        }
     }
 
     /* --- Bottom Spacing for Bottom Nav (App-like) --- */

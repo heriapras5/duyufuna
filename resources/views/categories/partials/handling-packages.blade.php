@@ -47,13 +47,17 @@
 
         {{-- ===== KOLOM KIRI: Ground Handling + daftar paket ===== --}}
         <div class="min-w-0">
-            {{-- Navigasi geser kartu: di samping kiri-kanan kartu pada mobile, disembunyikan di desktop --}}
-            <div class="flex items-center gap-1.5 sm:gap-2">
+            {{-- Navigasi geser kartu: overlay di dalam area kartu pada mobile, disembunyikan di desktop --}}
+            <div class="relative">
                 <button type="button" @click="scrollCards(-1)" aria-label="Paket sebelumnya"
-                        class="sm:hidden flex h-9 w-9 shrink-0 items-center justify-center self-center rounded-full border border-slate-300 bg-white text-slate-700 shadow-sm transition active:scale-95">
+                        class="sm:hidden absolute left-2 top-1/2 -translate-y-1/2 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white/95 text-slate-700 shadow-lg transition active:scale-95">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                 </button>
-            <div class="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm min-w-0 flex-1">
+                <button type="button" @click="scrollCards(1)" aria-label="Paket berikutnya"
+                        class="sm:hidden absolute right-2 top-1/2 -translate-y-1/2 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white/95 text-slate-700 shadow-lg transition active:scale-95">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+            <div class="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm min-w-0">
             {{-- Header Paket Handling --}}
             <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
                 <h1 class="text-base sm:text-xl font-bold leading-tight tracking-normal text-slate-950 break-words">Paket Handling</h1>
@@ -78,10 +82,6 @@
                      @endforeach
                   </div>
             </div>
-                <button type="button" @click="scrollCards(1)" aria-label="Paket berikutnya"
-                        class="sm:hidden flex h-9 w-9 shrink-0 items-center justify-center self-center rounded-full border border-slate-300 bg-white text-slate-700 shadow-sm transition active:scale-95">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                </button>
             </div>
         </div>
 
