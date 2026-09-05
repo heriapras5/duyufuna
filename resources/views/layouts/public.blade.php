@@ -20,16 +20,43 @@
 
         // Gambar dinamis per-halaman via @section('og_image', $pathStorage); fallback: OG global → logo → favicon.
         $pageOgImage = trim((string) ($__env->yieldContent('og_image') ?? ''));
-        $ogImageUrl = $resolveImg($pageOgImage)
-            ?: $resolveImg($globalSetting->og_image ?: ($globalSetting->logo ?: $globalSetting->favicon));
+        $ogImagePath = null;
+        $ogImageUrl = $resolveImg($pageOgImage);
+        if ($ogImageUrl) {
+            $ogImagePath = $pageOgImage;
+        } else {
+            $ogImagePath = $globalSetting->og_image ?: ($globalSetting->logo ?: $globalSetting->favicon);
+            $ogImageUrl = $resolveImg($ogImagePath);
+        }
         $twitterImageUrl = $resolveImg($globalSetting->twitter_image) ?: $ogImageUrl;
+
+        // Dimensi asli file (fallback 1200x630) agar deklarasi og:image akurat.
+        $ogImageWidth = 1200;
+        $ogImageHeight = 630;
+        if ($ogImagePath && !str_starts_with($ogImagePath, 'http://') && !str_starts_with($ogImagePath, 'https://')) {
+            try {
+                $dims = @getimagesize(Storage::disk('public')->path($ogImagePath));
+                if (is_array($dims) && $dims[0] > 0 && $dims[1] > 0) {
+                    $ogImageWidth = $dims[0];
+                    $ogImageHeight = $dims[1];
+                }
+            } catch (\Throwable $e) {}
+        }
+
+        // Override khusus share (dipakai Beranda): section og_title/og_description mengalahkan judul/deskripsi halaman.
+        $pageOgTitle = trim((string) ($__env->yieldContent('og_title') ?? ''));
+        $pageOgDesc = trim((string) ($__env->yieldContent('og_description') ?? ''));
+        $pageTitle = trim((string) ($__env->yieldContent('title') ?? ''));
+        $pageMetaDesc = trim((string) ($__env->yieldContent('meta_description') ?? ''));
+        $ogTitle = $pageOgTitle ?: ($pageTitle ?: $ogTitleDefault);
+        $ogDesc = $pageOgDesc ?: ($pageMetaDesc ?: $ogDescDefault);
     @endphp
     <title>@yield('title', $ogTitleDefault) - {{ $siteName }}</title>
     <meta name="description" content="@yield('meta_description', $globalSetting->seo_description ?: $tagline)">
     <meta name="keywords" content="@yield('seo_keywords', $globalSetting->seo_keywords ?? 'umroh, haji, travel umroh')">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta property="og:title" content="@yield('title', $ogTitleDefault)">
-    <meta property="og:description" content="@yield('meta_description', $ogDescDefault)">
+    <meta property="og:title" content="{{ $ogTitle }}">
+    <meta property="og:description" content="{{ $ogDesc }}">
     <meta property="og:type" content="@yield('og_type', $globalSetting->og_type ?: 'website')">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:site_name" content="{{ $globalSetting->og_site_name ?: $siteName }}">
@@ -37,13 +64,13 @@
     @if($ogImageUrl)
     <meta property="og:image" content="{{ $ogImageUrl }}">
     <meta property="og:image:secure_url" content="{{ $ogImageUrl }}">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="{{ $ogTitleDefault }}">
+    <meta property="og:image:width" content="{{ $ogImageWidth }}">
+    <meta property="og:image:height" content="{{ $ogImageHeight }}">
+    <meta property="og:image:alt" content="{{ $ogTitle }}">
     @endif
     <meta name="twitter:card" content="{{ $globalSetting->twitter_card ?: ($ogImageUrl ? 'summary_large_image' : 'summary') }}">
-    <meta name="twitter:title" content="{{ $globalSetting->twitter_title ?: trim($__env->yieldContent('title')) ?: $ogTitleDefault }}">
-    <meta name="twitter:description" content="{{ $globalSetting->twitter_description ?: (trim($__env->yieldContent('meta_description')) ?: $ogDescDefault) }}">
+    <meta name="twitter:title" content="{{ $globalSetting->twitter_title ?: $ogTitle }}">
+    <meta name="twitter:description" content="{{ $globalSetting->twitter_description ?: $ogDesc }}">
     @if($twitterImageUrl)
     <meta name="twitter:image" content="{{ $twitterImageUrl }}">
     @endif

@@ -2,6 +2,8 @@
 
 @section('title', 'Beranda')
 @section('meta_description', $setting->seo_description ?? 'Platform Layanan Umroh Terlengkap - Hotel, Visa, Transportasi, Handling Bandara, Catering, dan lainnya.')
+@section('og_title', $setting?->og_title ?: $setting?->website_name ?? 'DUYUFUNA')
+@section('og_description', $setting?->og_description ?: trim(($setting?->tagline ?? 'Melayani Tamu Allah, Sepenuh Hati') . '. ' . ($setting?->seo_description ?: 'Layanan perjalanan umroh dan haji yang membantu setiap langkah perjalanan menuju Tanah Suci dengan mudah, nyaman, dan terpercaya.')))
 
 @section('content')
     {{-- Welcome Card (3D Parallax Tilt) --}}

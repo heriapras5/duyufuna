@@ -104,7 +104,7 @@
 
                         <div>
                             <x-admin.input name="og_title" label="Judul" x-model="ogTitle" :value="old('og_title', $setting->og_title)"
-                                help="Kosongkan = pakai Judul di tab Pencarian Google." />
+                                help="Judul kartu share, dipakai untuk Beranda. Kosongkan = pakai Nama Website." />
                             <div class="mt-2 flex items-center gap-2.5">
                                 <div class="flex-1 h-1.5 rounded-full bg-gray-100 overflow-hidden">
                                     <div class="h-full rounded-full transition-all duration-300"
@@ -119,7 +119,7 @@
 
                         <div>
                             <x-admin.textarea name="og_description" label="Deskripsi" rows="2" x-model="ogDesc" :value="old('og_description', $setting->og_description)"
-                                help="Kosongkan = pakai Deskripsi di tab Pencarian Google." />
+                                help="Deskripsi kartu share, dipakai untuk Beranda. Kosongkan = Slogan + Deskripsi Google." />
                             <div class="mt-2 flex items-center gap-2.5">
                                 <div class="flex-1 h-1.5 rounded-full bg-gray-100 overflow-hidden">
                                     <div class="h-full rounded-full transition-all duration-300"
