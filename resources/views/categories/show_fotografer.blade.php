@@ -157,9 +157,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 <label class="grid gap-1 text-xs md:text-[13px] font-semibold text-gray-700">
                     <span>Tanggal Kegiatan <span class="text-red-400">*</span></span>
                     <div class="relative">
-                        <input type="date" x-model="tanggal" required min="{{ date('Y-m-d') }}" lang="id"
+                        <input type="date" x-model="tanggal" required min="{{ date('Y-m-d') }}" lang="id" :class="!tanggal ? 'placeholder-empty' : ''"
                                class="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white text-gray-900 text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition">
-                        <span x-show="!tanggal" x-cloak class="md:hidden pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-gray-400">dd/mm/yyyy</span>
+                        <span x-show="!tanggal" x-cloak class="md:hidden pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-gray-500">dd/mm/yyyy</span>
                     </div>
                 </label>
                 <label class="grid gap-1 text-xs md:text-[13px] font-semibold text-gray-700">

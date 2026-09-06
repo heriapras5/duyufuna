@@ -1745,6 +1745,20 @@ body.has-fixed-header {
 .app-bottom-nav {
     padding-bottom: env(safe-area-inset-bottom);
 }
+/* Sembunyikan ghost text native input date/time saat kosong (mobile):
+   teks native ikut transparan, overlay placeholder custom yang tampil —
+   mencegah dua teks bertumpuk. Overlay & class di-toggle Alpine. */
+@media (max-width: 767px) {
+    input[type="date"].placeholder-empty,
+    input[type="time"].placeholder-empty {
+        color: transparent;
+    }
+    input[type="date"].placeholder-empty::selection,
+    input[type="time"].placeholder-empty::selection {
+        color: transparent;
+        background: transparent;
+    }
+}
 /* Generous touch targets for feel like a native app */
 .touch-target {
     min-height: 44px;
