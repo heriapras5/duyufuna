@@ -48,11 +48,11 @@
             <p class="mt-1 text-[13px] md:text-sm font-semibold text-slate-700 leading-none">Hubungi kami</p>
             @endif
         </div>
-        {{-- Tombol Pilih Paket (mobile saja, pojok kanan bawah kartu) --}}
-        <div class="mt-3 flex justify-end lg:hidden">
+        {{-- Tombol Pilih Paket (mobile saja, tengah kartu full-width) --}}
+        <div class="mt-3 flex justify-center lg:hidden">
             <span role="button" tabindex="0"
                   @click.stop="selectItem({{ $item->id }}, {{ $service?->id ?? 'null' }}, @js($item->title), {{ $price ?? 'null' }}, @js($item->info))"
-                  class="inline-flex h-9 items-center gap-1.5 rounded-xl bg-[#25D366] hover:bg-[#128C7E] text-white text-xs font-bold px-4 shadow-lg shadow-[#25D366]/25 active:scale-[0.98] transition-all whitespace-nowrap">
+                  class="inline-flex w-full h-9 items-center justify-center gap-1.5 rounded-xl bg-[#25D366] hover:bg-[#128C7E] text-white text-xs font-bold px-4 shadow-lg shadow-[#25D366]/25 active:scale-[0.98] transition-all whitespace-nowrap">
                 Pilih Paket
             </span>
         </div>

@@ -50,11 +50,11 @@
             <p class="mt-2 text-[13px] md:text-sm font-semibold text-slate-700 leading-none">Hubungi kami</p>
             @endif
 
-            {{-- Tombol Pilih Muthawif (mobile saja, pojok kanan bawah kartu) --}}
-            <div class="mt-2 flex justify-end lg:hidden">
+            {{-- Tombol Pilih Muthawif (mobile saja, kiri kartu) --}}
+            <div class="mt-2 flex justify-start lg:hidden">
                 <span role="button" tabindex="0"
                       @click.stop="selectItem({{ $item->id }}, {{ $service?->id ?? 'null' }}, @js($item->title), {{ $price ?? 'null' }}, @js($item->info))"
-                      class="inline-flex h-9 items-center rounded-xl bg-[#25D366] hover:bg-[#128C7E] text-white text-xs font-bold px-4 shadow-lg shadow-[#25D366]/25 active:scale-[0.98] transition-all whitespace-nowrap">
+                      class="inline-flex h-8 items-center rounded-lg bg-[#25D366] hover:bg-[#128C7E] text-white text-[11px] font-bold px-3 shadow-md shadow-[#25D366]/25 active:scale-[0.98] transition-all whitespace-nowrap">
                     Pilih Muthawif
                 </span>
             </div>
