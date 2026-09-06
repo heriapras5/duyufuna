@@ -20,7 +20,7 @@
                     <div class="relative mx-auto max-w-xl lg:max-w-none">
                         <div class="rounded-2xl overflow-hidden ring-1 ring-gray-100 shadow-[0_12px_36px_-14px_rgba(16,24,40,0.18)]">
                             @if($aboutImage)
-                            <img src="{{ Storage::url($aboutImage) }}" alt="{{ $setting->about_title ?? 'Tentang Kami' }}" loading="lazy" class="w-full aspect-[4/3] object-cover">
+                            <img src="{{ Storage::url($aboutImage) }}" alt="{{ $setting->about_title ?? 'Tentang Kami' }}" loading="lazy" class="w-full h-auto">
                             @else
                             <div class="relative w-full aspect-[4/3] bg-emerald-50 flex items-center justify-center overflow-hidden">
                                 <div class="relative w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center ring-1 ring-emerald-100">
