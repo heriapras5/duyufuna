@@ -1,0 +1,86 @@
+{
+  "_vendor-05EQY2fr.js": {
+    "file": "assets/vendor-05EQY2fr.js",
+    "name": "vendor",
+    "css": [
+      "assets/vendor-CS0i6PXw.css"
+    ]
+  },
+  "_vendor-CS0i6PXw.css": {
+    "file": "assets/vendor-CS0i6PXw.css",
+    "src": "_vendor-CS0i6PXw.css"
+  },
+  "_vendor-jquery-BZOalPbs.js": {
+    "file": "assets/vendor-jquery-BZOalPbs.js",
+    "name": "vendor-jquery"
+  },
+  "_vendor-summernote-Mavg6qrW.js": {
+    "file": "assets/vendor-summernote-Mavg6qrW.js",
+    "name": "vendor-summernote",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vendor-jquery-BZOalPbs.js"
+    ]
+  },
+  "_vendor-swiper-BxLKcDXi.js": {
+    "file": "assets/vendor-swiper-BxLKcDXi.js",
+    "name": "vendor-swiper"
+  },
+  "node_modules/summernote/dist/font/summernote.eot": {
+    "file": "assets/summernote-jt9apK1s.eot",
+    "src": "node_modules/summernote/dist/font/summernote.eot"
+  },
+  "node_modules/summernote/dist/font/summernote.ttf": {
+    "file": "assets/summernote-BDPkqvsB.ttf",
+    "src": "node_modules/summernote/dist/font/summernote.ttf"
+  },
+  "node_modules/summernote/dist/font/summernote.woff": {
+    "file": "assets/summernote-MGhHcnpK.woff",
+    "src": "node_modules/summernote/dist/font/summernote.woff"
+  },
+  "node_modules/summernote/dist/font/summernote.woff2": {
+    "file": "assets/summernote-tk6LuLER.woff2",
+    "src": "node_modules/summernote/dist/font/summernote.woff2"
+  },
+  "resources/css/admin-summernote.css": {
+    "file": "assets/admin-summernote-qqJW9a3P.css",
+    "src": "resources/css/admin-summernote.css",
+    "isEntry": true,
+    "name": "admin-summernote",
+    "names": [
+      "admin-summernote.css"
+    ]
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-MvYQq9oH.css",
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "name": "app",
+    "names": [
+      "app.css"
+    ]
+  },
+  "resources/js/admin.js": {
+    "file": "assets/admin-OOUj6FG3.js",
+    "name": "admin",
+    "src": "resources/js/admin.js",
+    "isEntry": true,
+    "imports": [
+      "_vendor-jquery-BZOalPbs.js"
+    ],
+    "dynamicImports": [
+      "_vendor-summernote-Mavg6qrW.js",
+      "_vendor-summernote-Mavg6qrW.js"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-Beq3jE12.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "_vendor-05EQY2fr.js",
+      "_vendor-swiper-BxLKcDXi.js"
+    ]
+  }
+}
