@@ -35,11 +35,7 @@
 
                 {{-- Kolom teks: pill + judul + konten admin --}}
                 <div class="scroll-reveal-right lg:col-span-7 min-w-0">
-                    <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 text-dark-green text-[11px] font-semibold px-2.5 py-1 ring-1 ring-emerald-100 uppercase tracking-[0.14em]">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                        Tentang Kami
-                    </span>
-                    <h1 class="mt-3 font-serif text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight tracking-tight">{{ $setting->about_title ?? 'Tentang Kami' }}</h1>
+                    <h1 class="font-serif text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight tracking-tight">{{ $setting->about_title ?? 'Tentang Kami' }}</h1>
                     <div class="mt-2 w-14 h-1 rounded-full bg-gradient-to-r from-gold to-dark-green/60"></div>
 
                     @if($setting && $setting->about_body)
