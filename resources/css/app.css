@@ -557,7 +557,7 @@
 
     /* --- Transitions & Scroll Reveal --- */
     .page-enter {
-        animation: pageEnter 0.6s ease-out forwards;
+        animation: pageEnter 0.6s ease-out;
     }
     .scroll-reveal {
         opacity: 0;

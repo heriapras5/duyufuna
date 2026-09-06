@@ -34,7 +34,10 @@
              },
              formOpen: false,
              init() {
-                 this.$watch('formOpen', (value) => this.$dispatch('hide-bottom-nav', value));
+                 this.$watch('formOpen', (value) => {
+                     document.body.classList.toggle('modal-body-lock', value);
+                     this.$dispatch('hide-bottom-nav', value);
+                 });
              },
              scrollCards(dir) {
                  const el = this.$refs.cards;

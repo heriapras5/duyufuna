@@ -42,7 +42,10 @@
                  loading: false,
                  submitted: false,
                  init() {
-                     this.$watch('formOpen', (value) => this.$dispatch('hide-bottom-nav', value));
+                     this.$watch('formOpen', (value) => {
+                         document.body.classList.toggle('modal-body-lock', value);
+                         this.$dispatch('hide-bottom-nav', value);
+                     });
                  },
                  selectItem(id, serviceId, title, price, info) {
                      this.selectedId = id;

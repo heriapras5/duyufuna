@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="px-4 md:px-6 lg:px-8 pt-4 pb-12 md:pt-6 md:pb-16 max-w-7xl mx-auto space-y-4 md:space-y-6"
      x-data="{
         kegiatan: '',
+        kegiatanOpen: false,
         tanggal: '',
         kegiatanData: @js($kegiatanData),
         selected: {
@@ -131,13 +132,27 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 md:gap-3">
                 <label class="grid gap-1 text-xs md:text-[13px] font-semibold text-gray-700">
                     <span>Nama Kegiatan <span class="text-red-400">*</span></span>
-                    <select x-model="kegiatan" @change="onKegiatanChange()"
-                            class="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white text-gray-900 text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition">
-                        <option value="" disabled>Pilih kegiatan</option>
-                        @foreach($items as $item)
-                        <option value="{{ $item->title }}">{{ $item->title }}</option>
-                        @endforeach
-                    </select>
+                    <div class="relative" @keydown.escape.stop="kegiatanOpen = false">
+                        <button type="button" @click="kegiatanOpen = !kegiatanOpen" @click.outside="kegiatanOpen = false"
+                                aria-haspopup="listbox" :aria-expanded="String(kegiatanOpen)"
+                                class="w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl border bg-gray-50/50 focus:bg-white text-gray-900 text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition text-left"
+                                :class="kegiatanOpen ? 'border-gold ring-2 ring-gold/40' : 'border-gray-200'">
+                            <span class="truncate" :class="kegiatan ? 'text-gray-900' : 'text-gray-400'" x-text="kegiatan || 'Pilih kegiatan'"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-gray-400 transition-transform duration-200" :class="kegiatanOpen ? 'rotate-180' : ''"><path d="m6 9 6 6 6-6"/></svg>
+                        </button>
+                        <div x-show="kegiatanOpen" x-cloak x-transition.opacity.duration.150ms
+                             class="absolute z-20 mt-1 w-full max-h-52 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg py-1">
+                            <template x-for="k in kegiatanData" :key="k.id">
+                                <button type="button"
+                                        @click="kegiatan = k.title; onKegiatanChange(); kegiatanOpen = false"
+                                        class="w-full flex items-center justify-between gap-2 text-left px-3 py-1.5 text-[13px] text-gray-700 hover:bg-emerald-50 hover:text-dark-green transition-colors"
+                                        :class="kegiatan === k.title ? 'font-semibold bg-emerald-50/60 text-dark-green' : ''">
+                                    <span class="truncate" x-text="k.title"></span>
+                                    <svg x-show="kegiatan === k.title" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-emerald-600"><path d="M20 6 9 17l-5-5"/></svg>
+                                </button>
+                            </template>
+                        </div>
+                    </div>
                 </label>
                 <label class="grid gap-1 text-xs md:text-[13px] font-semibold text-gray-700">
                     <span>Tanggal Kegiatan <span class="text-red-400">*</span></span>

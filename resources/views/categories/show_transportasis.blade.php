@@ -70,7 +70,10 @@ document.addEventListener('DOMContentLoaded', function () {
             this.formOpen = true;
         },
         init() {
-            this.$watch('formOpen', (value) => this.$dispatch('hide-bottom-nav', value));
+            this.$watch('formOpen', (value) => {
+                document.body.classList.toggle('modal-body-lock', value);
+                this.$dispatch('hide-bottom-nav', value);
+            });
         },
 
         get dropoffOptions() {
