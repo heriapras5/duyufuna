@@ -144,7 +144,8 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!d) return '';
             const dt = new Date(d + 'T00:00:00');
             if (isNaN(dt.getTime())) return d;
-            return new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }).format(dt);
+            const p = (n) => String(n).padStart(2, '0');
+            return p(dt.getDate()) + '/' + p(dt.getMonth() + 1) + '/' + dt.getFullYear();
         },
 
         routeAvailable(vehicle) {
@@ -329,7 +330,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 </label>
                 <label class="grid gap-1 text-xs md:text-[13px] font-semibold text-gray-700">
                     <span>Tanggal Penjemputan</span>
-                    <input type="date" x-model="tanggal" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white text-gray-900 text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition">
+                    <div class="relative">
+                        <input type="date" x-model="tanggal" lang="id" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white text-gray-900 text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition">
+                        <span x-show="!tanggal" x-cloak class="md:hidden pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-gray-400">dd/mm/yyyy</span>
+                    </div>
                 </label>
                 <div class="flex items-end gap-2 col-span-2 lg:col-span-1 lg:justify-end">
                     <button type="button" @click="applyFilter()" class="inline-flex h-[42px] flex-1 lg:flex-none items-center justify-center gap-1.5 rounded-xl bg-dark-green px-5 text-xs font-bold text-white hover:brightness-110 transition">

@@ -161,6 +161,7 @@
                                         </div>
                                         <input type="date" x-model="laundryDate" min="{{ now()->toDateString() }}" lang="id" aria-label="Tanggal"
                                                class="w-full pl-10 pr-2 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white text-gray-900 text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition">
+                                        <span x-show="!laundryDate" x-cloak class="md:hidden pointer-events-none absolute inset-y-0 left-10 flex items-center text-sm text-gray-400">dd/mm/yyyy</span>
                                     </div>
                                     <div class="relative">
                                         <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-300">
@@ -168,6 +169,7 @@
                                         </div>
                                         <input type="time" x-model="laundryTime" lang="id" aria-label="Jam"
                                                class="w-full pl-10 pr-2 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white text-gray-900 text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition">
+                                        <span x-show="!laundryTime" x-cloak class="md:hidden pointer-events-none absolute inset-y-0 left-10 flex items-center text-sm text-gray-400">hh:mm</span>
                                     </div>
                                 </div>
                             </div>
