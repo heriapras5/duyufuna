@@ -17,8 +17,8 @@
         </a>
 
         <div class="min-w-0 flex-1 self-start">
-            <h1 class="font-sans text-sm sm:text-[15px] md:text-base font-semibold leading-snug tracking-[-0.015em] text-gray-900 break-words">{{ $article->title }}</h1>
-            <div class="mt-1.5 flex flex-wrap items-center justify-start gap-x-3 gap-y-2">
+            <h1 class="font-sans text-[15px] sm:text-[15px] md:text-base font-semibold leading-snug tracking-[-0.015em] text-gray-900 break-words">{{ $article->title }}</h1>
+            <div class="mt-2 flex flex-wrap items-center justify-start gap-x-4 gap-y-2">
                 @if($article->category)
                 <a href="{{ route('articles.category', $article->category->slug) }}" class="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-emerald-900 bg-emerald-100 px-2.5 py-1 rounded-full border border-emerald-200 leading-none hover:bg-emerald-200/70 transition truncate max-w-[200px]">{{ $article->category->name }}</a>
                 @endif
@@ -37,14 +37,14 @@
             {{-- Gambar Utama --}}
             @if($article->image && !str_ends_with($article->image, '.svg'))
             <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-                <div class="relative aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[16/9] w-full overflow-hidden bg-white">
+                <div class="relative aspect-[3/2] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[16/9] w-full overflow-hidden bg-white">
                     <img src="{{ Storage::url($article->image) }}" alt="{{ $article->title }}" width="800" height="450" loading="eager"
                          class="w-full h-full object-cover">
                 </div>
             </div>
             @else
             <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-                <div class="relative aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-mint to-emerald-50 flex items-center justify-center">
+                <div class="relative aspect-[3/2] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-mint to-emerald-50 flex items-center justify-center">
                     <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white/80 border border-emerald-100 shadow-sm flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#005C3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="opacity-40"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
                     </div>
@@ -54,7 +54,7 @@
 
             {{-- Isi Artikel --}}
             <article class="rounded-2xl border border-gray-200 bg-white p-4 sm:p-5 md:p-7 shadow-sm">
-                <div class="article-content text-[11.5px] sm:text-[14px] leading-6 sm:leading-7 text-justify hyphens-auto text-slate-600">
+                <div class="article-content article-content--page text-justify hyphens-auto text-slate-600">
                     {!! $article->content !!}
                 </div>
             </article>

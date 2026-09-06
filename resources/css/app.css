@@ -759,6 +759,18 @@
         }
     }
 
+    /* --- Article Content varian halaman (mis. Detail Artikel): lebih kecil & justify --- */
+    .article-content--page {
+        font-size: 0.875rem;
+        line-height: 1.9;
+    }
+    @media (max-width: 767px) {
+        .article-content--page {
+            font-size: 11.5px;
+            line-height: 1.8;
+        }
+    }
+
     /* --- Checklist style for Kelebihan (kecil, emerald, center-aligned) --- */
     .checklist-content { list-style: none; padding-left: 0; }
     .checklist-content li {
