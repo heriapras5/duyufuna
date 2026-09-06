@@ -40,14 +40,14 @@
             {{-- Gambar Utama --}}
             @if($article->image && !str_ends_with($article->image, '.svg'))
             <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-                <div class="relative aspect-[3/2] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[2/1] w-full overflow-hidden bg-white">
+                <div class="relative aspect-[3/2] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[21/9] w-full overflow-hidden bg-white">
                     <img src="{{ Storage::url($article->image) }}" alt="{{ $article->title }}" width="800" height="450" loading="eager"
                          class="w-full h-full object-cover">
                 </div>
             </div>
             @else
             <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-                <div class="relative aspect-[3/2] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[2/1] w-full overflow-hidden bg-gradient-to-br from-mint to-emerald-50 flex items-center justify-center">
+                <div class="relative aspect-[3/2] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[21/9] w-full overflow-hidden bg-gradient-to-br from-mint to-emerald-50 flex items-center justify-center">
                     <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white/80 border border-emerald-100 shadow-sm flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#005C3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="opacity-40"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
                     </div>
