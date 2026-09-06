@@ -55,13 +55,13 @@
             <span class="absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 bg-gold text-white text-[10px] font-semibold px-2.5 py-1 rounded-full shadow-sm">{{ $article->category->name }}</span>
             @endif
             <div class="p-5 md:p-6">
-                <p class="text-[11px] text-gray-400 font-medium mb-2 flex items-center gap-1.5">
+                <p class="text-[11px] text-slate-500 font-medium mb-2 flex items-center gap-1.5">
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                     {{ optional($article->published_at)->format('d M Y') }}
                 </p>
                 <h2 class="text-sm md:text-base font-bold text-gray-900 leading-snug line-clamp-2 group-hover:text-dark-green transition-colors">{{ $article->title }}</h2>
                 @if($article->excerpt)
-                <p class="text-xs text-gray-400 mt-2 leading-relaxed line-clamp-2">{{ $article->excerpt }}</p>
+                <p class="text-xs text-slate-600 mt-2 leading-relaxed line-clamp-2">{{ $article->excerpt }}</p>
                 @endif
                 <div class="mt-4 flex items-center text-gold text-xs font-semibold gap-1 group-hover:gap-2 transition-all">
                     Baca Selengkapnya

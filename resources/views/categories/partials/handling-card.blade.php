@@ -10,7 +10,7 @@
     $category = $category ?? $service?->category ?? null;
     $benefits = $item->benefitList();
     $paxPrices = collect($item->paxPrices())->sortBy('min')->values()->all();
-    $pricePerPax = count($paxPrices) > 0 ? (float) $paxPrices[0]['price'] : null;
+    $pricePerPax = count($paxPrices) > 0 ? (float) collect($paxPrices)->min('price') : null;
 
     // Ikon sesuai nama paket (setiap kartu tetap styling sama, hanya ikonnya beda).
     $key = mb_strtolower(trim((string) $item->title));
@@ -52,8 +52,8 @@
         {{-- Nama paket + harga mulai --}}
         <h3 class="mt-3 font-serif text-base sm:text-lg md:text-xl font-bold text-slate-950 leading-tight text-center break-words">{{ $item->title }}</h3>
         @if($pricePerPax !== null)
-        <p class="mt-2 text-[13px] font-semibold text-slate-700">Mulai</p>
-        <p class="mt-0.5 text-xl md:text-2xl font-extrabold text-slate-950 leading-none tabular-nums">${{ number_format($pricePerPax, 2) }} <span class="text-[13px] md:text-sm font-medium text-slate-500">/ Pax</span></p>
+        <p class="mt-2 text-sm font-semibold text-slate-700">Mulai</p>
+        <p class="mt-1.5 text-xl md:text-2xl font-extrabold text-slate-950 leading-none tabular-nums">${{ number_format($pricePerPax, 2) }} <span class="text-[13px] md:text-sm font-medium text-slate-500">/ Pax</span></p>
         @endif
     </div>
 

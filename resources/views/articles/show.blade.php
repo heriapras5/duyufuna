@@ -17,12 +17,15 @@
         </a>
 
         <div class="min-w-0 flex-1 self-start">
-            <h1 class="font-sans text-[17px] sm:text-[15px] md:text-base font-semibold leading-snug tracking-[-0.015em] text-gray-900 break-words">{{ $article->title }}</h1>
+            <h1 class="font-sans text-[15px] sm:text-[15px] md:text-base font-semibold leading-snug tracking-[-0.015em] text-gray-900 break-words">{{ $article->title }}</h1>
+            @if($article->excerpt)
+            <p class="mt-1 text-xs sm:text-[13px] text-slate-500 leading-relaxed line-clamp-2">{{ $article->excerpt }}</p>
+            @endif
             <div class="mt-2 flex flex-wrap items-center justify-start gap-x-4 gap-y-2">
                 @if($article->category)
-                <a href="{{ route('articles.category', $article->category->slug) }}" class="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-emerald-900 bg-emerald-100 px-2.5 py-1 rounded-full border border-emerald-200 leading-none hover:bg-emerald-200/70 transition truncate max-w-[200px]">{{ $article->category->name }}</a>
+                <a href="{{ route('articles.category', $article->category->slug) }}" class="inline-flex items-center gap-1 text-[10px] sm:text-xs font-semibold text-emerald-900 bg-emerald-100 px-2.5 py-1 rounded-full border border-emerald-200 leading-none hover:bg-emerald-200/70 transition truncate max-w-[200px]">{{ $article->category->name }}</a>
                 @endif
-                <span class="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-slate-600 whitespace-nowrap leading-none">
+                <span class="inline-flex items-center gap-1 text-[10px] sm:text-xs font-semibold text-slate-600 whitespace-nowrap leading-none">
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 shrink-0"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                     {{ optional($article->published_at)->format('d M Y') }}
                 </span>
