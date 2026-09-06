@@ -763,6 +763,8 @@
     .article-content--page {
         font-size: 0.875rem;
         line-height: 1.9;
+        overflow-wrap: break-word;
+        word-break: normal;
     }
     @media (max-width: 767px) {
         .article-content--page {

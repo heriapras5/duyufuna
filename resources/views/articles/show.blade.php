@@ -17,7 +17,7 @@
         </a>
 
         <div class="min-w-0 flex-1 self-start">
-            <h1 class="font-sans text-[15px] sm:text-[15px] md:text-base font-semibold leading-snug tracking-[-0.015em] text-gray-900 break-words">{{ $article->title }}</h1>
+            <h1 class="font-sans text-[17px] sm:text-[15px] md:text-base font-semibold leading-snug tracking-[-0.015em] text-gray-900 break-words">{{ $article->title }}</h1>
             <div class="mt-2 flex flex-wrap items-center justify-start gap-x-4 gap-y-2">
                 @if($article->category)
                 <a href="{{ route('articles.category', $article->category->slug) }}" class="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-emerald-900 bg-emerald-100 px-2.5 py-1 rounded-full border border-emerald-200 leading-none hover:bg-emerald-200/70 transition truncate max-w-[200px]">{{ $article->category->name }}</a>
