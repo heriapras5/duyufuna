@@ -95,13 +95,15 @@
              :class="formOpen
                  ? 'fixed inset-0 z-[80] m-auto h-fit max-h-[85dvh] w-[calc(100%-1.5rem)] max-w-md overflow-y-auto rounded-2xl shadow-2xl lg:sticky lg:top-20 lg:inset-auto lg:z-auto lg:m-0 lg:h-auto lg:max-h-none lg:max-w-none lg:overflow-visible lg:shadow-sm'
                  : 'hidden lg:block lg:sticky lg:top-20'">
-            <div class="relative rounded-2xl border border-slate-300 bg-white p-3 shadow-[0_14px_30px_rgba(15,23,42,0.08)] sm:p-5">
+            <div class="lg:hidden flex justify-end pb-2">
                 <button type="button" @click="formOpen = false" aria-label="Tutup"
-                        class="lg:hidden absolute top-2 right-2 z-10 w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-600 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                        class="w-9 h-9 rounded-full bg-white shadow-xl flex items-center justify-center text-slate-500 hover:text-red-500 active:scale-95 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                 </button>
+            </div>
+            <div class="relative rounded-2xl border border-slate-300 bg-white p-3 shadow-[0_14px_30px_rgba(15,23,42,0.08)] sm:p-5">
                 {{-- Header: harga mengikuti PAX (kosong hingga ada paket dipilih) --}}
-                <div class="flex items-center justify-between gap-2 pb-3 pr-8 border-b border-dashed border-slate-200" x-show="selected?.id" x-cloak>
+                <div class="flex items-center justify-between gap-2 pb-3 border-b border-dashed border-slate-200" x-show="selected?.id" x-cloak>
                     <div class="min-w-0">
                         <p class="text-xs font-semibold text-slate-950">Paket <span class="text-gold" x-text="selected?.title || 'Belum ada pilihan'"></span></p>
                         <p class="text-[11px] text-slate-500 leading-tight mt-0.5">Harga mengikuti jumlah PAX</p>
