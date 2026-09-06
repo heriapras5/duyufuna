@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\ArticleCategory;
+use App\Services\HtmlNormalizer;
 use App\Services\ImageService;
 use App\Services\SlugService;
 use Illuminate\Http\Request;
@@ -44,6 +45,8 @@ class ArticleController extends Controller
 
         $validated['slug'] = app(SlugService::class)->make($validated['title'], 'articles');
 
+        $validated['content'] = HtmlNormalizer::clean($validated['content'] ?? null);
+
         if ($request->hasFile('image')) {
             $validated['image'] = app(ImageService::class)->processAndStore($request->file('image'), 'articles');
         }
@@ -79,6 +82,8 @@ class ArticleController extends Controller
         ]);
 
         $validated['slug'] = app(SlugService::class)->make($validated['title'], 'articles', $article->id);
+
+        $validated['content'] = HtmlNormalizer::clean($validated['content'] ?? null);
 
         if ($request->hasFile('image')) {
             $validated['image'] = app(ImageService::class)->processAndStore($request->file('image'), 'articles');
