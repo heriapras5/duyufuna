@@ -12,7 +12,7 @@
 
     {{-- Kembali + Judul (selalu di atas, full-width) --}}
     <div class="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
-        <a href="{{ route('articles.index') }}" title="Kembali ke Semua Artikel" class="shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-xl bg-white hover:bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-600 transition border border-gray-200 shadow-sm">
+        <a href="{{ route('articles.index') }}" title="Kembali ke Semua Artikel" class="shrink-0 self-start mt-0.5 md:mt-1 w-8 h-8 md:w-10 md:h-10 rounded-xl bg-white hover:bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-600 transition border border-gray-200 shadow-sm">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
         </a>
 
