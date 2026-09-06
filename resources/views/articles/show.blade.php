@@ -53,7 +53,7 @@
             @endif
 
             {{-- Isi Artikel --}}
-            <article class="rounded-2xl border-0 bg-transparent p-0 shadow-none sm:border sm:border-gray-200 sm:bg-white sm:p-5 md:p-7 sm:shadow-sm">
+            <article class="rounded-2xl border border-gray-200 bg-white p-4 sm:p-5 md:p-7 shadow-sm">
                 <div class="article-content article-content--page text-justify hyphens-auto text-slate-600">
                     {!! $article->content !!}
                 </div>
