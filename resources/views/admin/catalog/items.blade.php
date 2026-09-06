@@ -35,7 +35,7 @@
                 $key = mb_strtolower(trim((string) $item->title));
                 $medalStroke = str_contains($key, 'platinum') ? '#6366f1' : (str_contains($key, 'gold') ? '#d97706' : '#94a3b8');
                 $tiersSorted = collect($item->paxPrices())->sortBy('min')->values();
-                $startPrice = $tiersSorted->isNotEmpty() ? (float) $tiersSorted[0]['price'] : null;
+                $startPrice = $tiersSorted->isNotEmpty() ? (float) $tiersSorted->min('price') : null;
             @endphp
             <svg viewBox="0 0 24 24" class="w-10 h-10 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="{{ $medalStroke }}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"/>

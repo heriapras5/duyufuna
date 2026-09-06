@@ -52,8 +52,8 @@
         {{-- Nama paket + harga mulai --}}
         <h3 class="mt-3 font-serif text-base sm:text-lg md:text-xl font-bold text-slate-950 leading-tight text-center break-words">{{ $item->title }}</h3>
         @if($pricePerPax !== null)
-        <p class="mt-2 text-sm font-semibold text-slate-700">Mulai</p>
-        <p class="mt-1.5 text-xl md:text-2xl font-extrabold text-slate-950 leading-none tabular-nums">${{ number_format($pricePerPax, 2) }} <span class="text-[13px] md:text-sm font-medium text-slate-500">/ Pax</span></p>
+        <p class="mt-2 text-[13px] font-semibold text-slate-700">Mulai</p>
+        <p class="mt-0.5 text-xl md:text-2xl font-extrabold text-slate-950 leading-none tabular-nums">${{ number_format($pricePerPax, 2) }} <span class="text-[13px] md:text-sm font-medium text-slate-500">/ Pax</span></p>
         @endif
     </div>
 
