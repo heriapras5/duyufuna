@@ -11,15 +11,15 @@
 <div class="px-4 md:px-6 lg:px-8 pt-4 md:pt-6 lg:pt-5 pb-10 max-w-7xl mx-auto">
 
     {{-- Kembali + Judul (selalu di atas, full-width) --}}
-    <div class="flex items-start gap-3 sm:gap-4 mb-5 sm:mb-6">
-        <a href="{{ route('articles.index') }}" title="Kembali ke Semua Artikel" class="mt-[1px] sm:mt-[2px] w-8 h-8 md:w-9 md:h-9 rounded-xl bg-white hover:bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-600 transition shrink-0 border border-gray-200 shadow-sm">
+    <div class="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
+        <a href="{{ route('articles.index') }}" title="Kembali ke Semua Artikel" class="shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-xl bg-white hover:bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-600 transition border border-gray-200 shadow-sm">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
         </a>
 
-        <div class="min-w-0 flex-1 self-start">
-            <h1 class="font-sans text-[15px] sm:text-[15px] md:text-base font-semibold leading-snug tracking-[-0.015em] text-gray-900 break-words">{{ $article->title }}</h1>
+        <div class="min-w-0 flex-1">
+            <h1 class="font-sans text-base sm:text-lg md:text-xl lg:text-2xl font-semibold leading-snug tracking-[-0.015em] text-gray-900 break-words">{{ $article->title }}</h1>
             @if($article->excerpt)
-            <p class="mt-1 text-xs sm:text-[13px] text-slate-500 leading-relaxed line-clamp-2">{{ $article->excerpt }}</p>
+            <p class="mt-1 text-[13px] sm:text-sm text-slate-500 leading-relaxed line-clamp-2">{{ $article->excerpt }}</p>
             @endif
             <div class="mt-2 flex flex-wrap items-center justify-start gap-x-4 gap-y-2">
                 @if($article->category)
