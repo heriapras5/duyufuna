@@ -13,20 +13,21 @@
     $hasImage = $item->image && !str_ends_with($item->image, '.svg');
     $desc = Str::limit(trim(strip_tags((string) $item->description)), 80);
 
-    // Harga: SAR (default); jastip tanpa akhiran "/paket"
+    // Harga: SAR (default); jastip tanpa akhiran, catering per pax
     $isJastip = $category !== null && $category->slug === 'jastip-viral';
+    $isCatering = $category !== null && $category->slug === 'catering';
     if ($item->price_per_night !== null) {
         $priceLabel = 'SAR ' . number_format((float) $item->price_per_night, 0, ',', '.');
-        $priceUnit = $isJastip ? '' : '/paket';
+        $priceUnit = $isJastip ? '' : ($isCatering ? '/pax' : '/paket');
         $unitPrice = (float) $item->price_per_night;
         $currency = 'SAR';
-        $unitLabel = $isJastip ? 'produk' : 'paket';
+        $unitLabel = $isJastip ? 'produk' : ($isCatering ? 'pax' : 'paket');
     } else {
         $priceLabel = null;
         $priceUnit = '';
         $unitPrice = null;
         $currency = 'SAR';
-        $unitLabel = $isJastip ? 'produk' : 'paket';
+        $unitLabel = $isJastip ? 'produk' : ($isCatering ? 'pax' : 'paket');
     }
 @endphp
 

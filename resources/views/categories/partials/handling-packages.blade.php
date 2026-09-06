@@ -97,11 +97,11 @@
                  : 'hidden lg:block lg:sticky lg:top-20'">
             <div class="relative rounded-2xl border border-slate-300 bg-white p-3 shadow-[0_14px_30px_rgba(15,23,42,0.08)] sm:p-5">
                 <button type="button" @click="formOpen = false" aria-label="Tutup"
-                        class="lg:hidden absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 transition">
+                        class="lg:hidden absolute top-2 right-2 z-10 w-6 h-6 flex items-center justify-center text-slate-400 hover:text-slate-600 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                 </button>
                 {{-- Header: harga mengikuti PAX (kosong hingga ada paket dipilih) --}}
-                <div class="flex items-center justify-between gap-2 pb-3 border-b border-dashed border-slate-200" x-show="selected?.id" x-cloak>
+                <div class="flex items-center justify-between gap-2 pb-3 pr-8 border-b border-dashed border-slate-200" x-show="selected?.id" x-cloak>
                     <div class="min-w-0">
                         <p class="text-xs font-semibold text-slate-950">Paket <span class="text-gold" x-text="selected?.title || 'Belum ada pilihan'"></span></p>
                         <p class="text-[11px] text-slate-500 leading-tight mt-0.5">Harga mengikuti jumlah PAX</p>

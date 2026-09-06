@@ -123,6 +123,8 @@
             <p class="mt-1 text-xs font-semibold text-emerald-600">{{ $item->priceLabelUSD() }}</p>
             @elseif($category->slug === 'jastip-viral' && $item->price_per_night !== null)
             <p class="mt-1 text-xs font-semibold text-emerald-600">SAR {{ number_format((float) $item->price_per_night, 0, ',', '.') }}</p>
+            @elseif($category->slug === 'catering' && $item->price_per_night !== null)
+            <p class="mt-1 text-xs font-semibold text-emerald-600">SAR {{ number_format((float) $item->price_per_night, 0, ',', '.') }} <span class="font-normal text-gray-400">/pax</span></p>
             @endif
             @if($item->description && !$category->isHandling())
             <div class="mt-1.5 pt-1.5 border-t border-gray-100 border-dashed">

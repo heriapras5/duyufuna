@@ -97,7 +97,7 @@
                         @if($item->price_per_night !== null)
                         <input type="hidden" name="unit_price" value="{{ (float) $item->price_per_night }}">
                         <input type="hidden" name="currency" value="SAR">
-                        <input type="hidden" name="unit_label" value="item">
+                        <input type="hidden" name="unit_label" value="{{ $category?->slug === 'catering' ? 'pax' : ($category?->slug === 'jastip-viral' ? 'produk' : 'item') }}">
                         @endif
 
                         <p class="font-sans text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Form Data Pesanan</p>

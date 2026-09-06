@@ -36,6 +36,7 @@
          x-data="{
             pickup: '',
             dropoff: '',
+            tanggal: '',
             fallbackPrice: {{ $service->price_sar !== null ? (float) $service->price_sar : 'null' }},
             routes: @js($transportRoutes ? $transportRoutes->map(fn($r) => [
                 'pickup' => $r->pickup_label,
@@ -83,6 +84,12 @@
             },
             fmt(n) {
                 return new Intl.NumberFormat('id-ID').format(Math.round(n));
+            },
+            fmtDate(d) {
+                if (!d) return '';
+                const dt = new Date(d + 'T00:00:00');
+                if (isNaN(dt.getTime())) return d;
+                return new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }).format(dt);
             },
             onPickupChange() { this.dropoff = ''; },
          }">
@@ -183,28 +190,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <label class="grid gap-1.5 text-sm font-semibold text-gray-700">
-                            <span>Pick Up</span>
-                            <select x-model="pickup" @change="onPickupChange()"
-                                    class="w-full px-3.5 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition">
-                                <option value="">Pilih lokasi penjemputan</option>
-                                <template x-for="opt in pickupOptions" :key="opt">
-                                    <option :value="opt" x-text="opt"></option>
-                                </template>
-                            </select>
-                        </label>
-                        <label class="grid gap-1.5 text-sm font-semibold text-gray-700">
-                            <span>Drop Off</span>
-                            <select x-model="dropoff"
-                                    class="w-full px-3.5 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition">
-                                <option value="">Pilih lokasi tujuan</option>
-                                <template x-for="opt in dropoffOptions" :key="opt">
-                                    <option :value="opt" x-text="opt"></option>
-                                </template>
-                            </select>
-                        </label>
-                    </div>
+                    <p class="text-[13px] text-slate-600 leading-relaxed">Pilih Pick Up, Drop Off, dan Tanggal Penjemputan pada form pemesanan di samping untuk melihat rute &amp; tarif spesifik {{ $service->title }}.</p>
 
                     {{-- Ringkasan rute terpilih --}}
                     <div class="mt-4 rounded-xl border border-emerald-100 bg-emerald-50/50 p-4 space-y-0">
@@ -224,16 +210,16 @@
                         <template x-if="!matchedRoute">
                             <div class="space-y-2">
                                 @if($cap)
-                                <p class="text-xs text-gray-600">
-                                    <span class="font-semibold text-gray-700">{{ $service->title }}</span>
-                                    <span class="text-gray-400">·</span>
+                                <p class="text-[13px] text-slate-600">
+                                    <span class="font-semibold text-slate-800">{{ $service->title }}</span>
+                                    <span class="text-slate-400">·</span>
                                     <span>{{ $cap['pax'] }} Pax - {{ $cap['bag'] }} Bag</span>
                                 </p>
                                 @endif
-                                <p class="text-xs text-gray-500 leading-relaxed">
-                                    Pilih Pick Up dan Drop Off untuk melihat rute &amp; tarif spesifik {{ $service->title }}.
+                                <p class="text-[13px] text-slate-600 leading-relaxed">
+                                    Pilih Pick Up, Drop Off, dan Tanggal Penjemputan pada form pemesanan untuk melihat rute &amp; tarif spesifik {{ $service->title }}.
                                 </p>
-                                <p class="text-[11px] text-gray-400 italic leading-relaxed">
+                                <p class="text-xs text-slate-500 leading-relaxed">
                                     Harga mengikuti ketersediaan armada dan rute. Konfirmasi detail pickup, drop off, dan waktu keberangkatan sebelum pembayaran.
                                 </p>
                             </div>
@@ -252,21 +238,56 @@
                     <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-gold">Tarif</p>
                     <p class="mt-2 text-[18px] sm:text-xl font-bold tabular-nums tracking-tight text-dark-green leading-none break-words"
                        x-text="priceLabel">SAR {{ number_format((float) $service->price_sar, 0, ',', '.') }}</p>
-                    <p class="mt-1.5 text-[11px] text-slate-400">per kendaraan · tarif {{ $service->title }}</p>
+                    <p class="mt-1.5 text-[11px] text-slate-500">per kendaraan · tarif {{ $service->title }}</p>
                     <div class="mt-3 rounded-xl border border-emerald-100 bg-white px-3 py-2 flex items-center gap-2" x-show="matchedRoute" x-cloak>
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 shrink-0 text-gold"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
                         <span class="text-[11px] font-medium text-slate-600 truncate" x-text="matchedRoute?.pickup + ' → ' + matchedRoute?.dropoff"></span>
                     </div>
+                    <div class="mt-2 rounded-xl border border-slate-200 bg-white px-3 py-2 flex items-center gap-2" x-show="tanggal" x-cloak>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 shrink-0 text-gold"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        <span class="text-[11px] font-medium text-slate-600" x-text="'Penjemputan: ' + fmtDate(tanggal)"></span>
+                    </div>
                 </div>
 
-                {{-- Form Konsultasi --}}
+                {{-- Form Pemesanan --}}
                 <div class="px-4 sm:px-5 md:px-6 py-5 sm:py-6 md:py-7">
+                    {{-- Rute & tanggal (scope root agar reaktif ke ringkasan kiri + harga) --}}
+                    <div class="space-y-4 sm:space-y-5 mb-4 sm:mb-5">
+                        <div>
+                            <label class="block text-xs sm:text-[13px] font-semibold text-gray-700 mb-1">Pick Up <span class="text-red-400">*</span></label>
+                            <select x-model="pickup" @change="onPickupChange()" required
+                                    class="w-full px-3 sm:px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white text-gray-900 text-[13px] sm:text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition">
+                                <option value="">Pilih lokasi penjemputan</option>
+                                <template x-for="opt in pickupOptions" :key="opt">
+                                    <option :value="opt" x-text="opt"></option>
+                                </template>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs sm:text-[13px] font-semibold text-gray-700 mb-1">Drop Off <span class="text-red-400">*</span></label>
+                            <select x-model="dropoff" required
+                                    class="w-full px-3 sm:px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white text-gray-900 text-[13px] sm:text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition">
+                                <option value="">Pilih lokasi tujuan</option>
+                                <template x-for="opt in dropoffOptions" :key="opt">
+                                    <option :value="opt" x-text="opt"></option>
+                                </template>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs sm:text-[13px] font-semibold text-gray-700 mb-1">Tanggal Penjemputan <span class="text-red-400">*</span></label>
+                            <input type="date" x-model="tanggal" required
+                                   class="w-full px-3 sm:px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white text-gray-900 text-[13px] sm:text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition">
+                        </div>
+                    </div>
                     <form method="POST" action="{{ route('customer.store') }}"
                           x-data="{ loading: false, submitted: false }"
-                          @submit.prevent="if(!submitted){ submitted = true; loading = true; const $f = $el; const fd = new FormData($f); fetch($f.action, { method: 'POST', headers: { 'Accept': 'application/json' }, body: fd }).then(r => r.json()).then(d => { if(d.redirect_url){ submitted = false; loading = false; setTimeout(function(){ window.location.href = d.redirect_url; }, 200); } else { submitted = false; loading = false; } }).catch(() => { submitted = false; loading = false; alert('Terjadi kesalahan. Silakan coba lagi.'); }); }">
+                          @submit.prevent="if(!pickup || !dropoff || !tanggal){ alert('Mohon lengkapi Pick Up, Drop Off, dan Tanggal Penjemputan.'); } else if(!submitted){ submitted = true; loading = true; const $f = $el; const fd = new FormData($f); fetch($f.action, { method: 'POST', headers: { 'Accept': 'application/json' }, body: fd }).then(r => r.json()).then(d => { if(d.redirect_url){ submitted = false; loading = false; setTimeout(function(){ window.location.href = d.redirect_url; }, 200); } else { submitted = false; loading = false; } }).catch(() => { submitted = false; loading = false; alert('Terjadi kesalahan. Silakan coba lagi.'); }); }">
                         @csrf
                         <input type="hidden" name="service_id" value="{{ $service->id }}">
                         <input type="hidden" name="item_title" value="{{ $service->title }}">
+                        <input type="hidden" name="pickup" :value="pickup">
+                        <input type="hidden" name="dropoff" :value="dropoff">
+                        <input type="hidden" name="pickup_date" :value="tanggal">
                         @if($service->price_sar !== null)
                         <input type="hidden" name="unit_price" value="{{ (float) $service->price_sar }}">
                         <input type="hidden" name="currency" value="SAR">
@@ -274,7 +295,7 @@
                         <input type="hidden" name="extra_note" value="Tarif {{ $service->title }} sesuai rute yang dipilih">
                         @endif
 
-                        <p class="font-sans text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Detail Transportasi</p>
+                        <p class="font-sans text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Form Pemesanan</p>
 
                         <div class="space-y-4 sm:space-y-5">
                             <div>

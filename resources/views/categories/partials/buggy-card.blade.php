@@ -57,5 +57,14 @@
             <p class="mt-1 text-[13px] md:text-sm font-semibold text-slate-700 leading-none">Hubungi kami</p>
         </div>
         @endif
+
+        {{-- Tombol Pilih (mobile saja, pojok kanan bawah kartu) --}}
+        <div class="mt-auto pt-3 flex justify-end lg:hidden">
+            <span role="button" tabindex="0"
+                  @click.stop="selectItem({{ $item->id }}, {{ $service?->id ?? 'null' }}, @js($item->title), {{ $price ?? 'null' }}, @js($item->info))"
+                  class="inline-flex h-9 items-center rounded-xl bg-[#25D366] hover:bg-[#128C7E] text-white text-xs font-bold px-4 shadow-lg shadow-[#25D366]/25 active:scale-[0.98] transition-all whitespace-nowrap truncate max-w-full">
+                Pilih {{ $item->title }}
+            </span>
+        </div>
     </div>
 </button>

@@ -8,46 +8,55 @@
 @section('no_hero', true)
 
 @section('content')
-<div class="px-4 md:px-6 lg:px-8 pt-4 pb-10 md:pt-6 md:pb-12 max-w-7xl mx-auto">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-        <div class="lg:col-span-2">
-            {{-- Baris: Tombol Kembali + Judul --}}
-            <div class="flex items-start gap-3 sm:gap-4 mb-6">
-                <a href="{{ route('articles.index') }}" title="Kembali ke Semua Artikel"
-                   class="mt-[1px] w-8 h-8 md:w-9 md:h-9 rounded-xl bg-white hover:bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-600 transition shrink-0 border border-slate-200/60 shadow-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                </a>
-                <div class="min-w-0 flex-1">
-                    <h1 class="font-sans text-lg sm:text-xl lg:text-2xl font-semibold leading-tight tracking-[-0.015em] text-slate-900 break-words">{{ $article->title }}</h1>
-                    <div class="flex flex-wrap items-center justify-end gap-x-2 gap-y-2 mt-2.5">
-                        @if($article->category)
-                        <a href="{{ route('articles.category', $article->category->slug) }}" class="shrink-0 inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-white bg-emerald-600 border border-emerald-600 px-2.5 py-1 rounded-full hover:bg-emerald-700 transition truncate max-w-[140px]">{{ $article->category->name }}</a>
-                        @endif
-                        <span class="shrink-0 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 whitespace-nowrap">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                            {{ optional($article->published_at)->format('d M Y') }}
-                        </span>
-                    </div>
+<div class="px-4 md:px-6 lg:px-8 pt-4 md:pt-6 lg:pt-8 pb-10 max-w-7xl mx-auto">
+
+    {{-- Kembali + Judul (selalu di atas, full-width) --}}
+    <div class="flex items-start gap-3 sm:gap-4 mb-5 sm:mb-6">
+        <a href="{{ route('articles.index') }}" title="Kembali ke Semua Artikel" class="mt-[1px] sm:mt-[2px] w-8 h-8 md:w-9 md:h-9 rounded-xl bg-white hover:bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-600 transition shrink-0 border border-gray-200 shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </a>
+
+        <div class="min-w-0 flex-1 self-start">
+            <h1 class="font-sans text-sm sm:text-[15px] md:text-base font-semibold leading-snug tracking-[-0.015em] text-gray-900 break-words">{{ $article->title }}</h1>
+            <div class="mt-1.5 flex flex-wrap items-center justify-start gap-x-3 gap-y-2">
+                @if($article->category)
+                <a href="{{ route('articles.category', $article->category->slug) }}" class="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-emerald-900 bg-emerald-100 px-2.5 py-1 rounded-full border border-emerald-200 leading-none hover:bg-emerald-200/70 transition truncate max-w-[200px]">{{ $article->category->name }}</a>
+                @endif
+                <span class="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-slate-600 whitespace-nowrap leading-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 shrink-0"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    {{ optional($article->published_at)->format('d M Y') }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-[1.4fr_0.6fr] gap-6 md:gap-8 items-start">
+        {{-- Kiri: Gambar + Isi Artikel + Bagikan --}}
+        <div class="space-y-5 sm:space-y-6 min-w-0">
+
+            {{-- Gambar Utama --}}
+            @if($article->image && !str_ends_with($article->image, '.svg'))
+            <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+                <div class="relative aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[16/9] w-full overflow-hidden bg-white">
+                    <img src="{{ Storage::url($article->image) }}" alt="{{ $article->title }}" width="800" height="450" loading="eager"
+                         class="w-full h-full object-cover">
                 </div>
             </div>
-
-            {{-- Gambar --}}
-            @if($article->image && !str_ends_with($article->image, '.svg'))
-            <div class="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-sm ring-1 ring-gray-200/70 mb-6">
-                <img src="{{ Storage::url($article->image) }}" alt="{{ $article->title }}" width="800" height="450" loading="lazy"
-                     class="w-full aspect-[16/9] max-h-[520px] object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none"></div>
-            </div>
             @else
-            <div class="mx-auto w-full max-w-md rounded-2xl overflow-hidden mb-6 bg-gradient-to-br from-mint to-emerald-50 border border-gray-100 flex items-center justify-center aspect-[16/9]">
-                <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white/80 border border-emerald-100 shadow-sm flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#005C3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="opacity-40"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+                <div class="relative aspect-[4/3] sm:aspect-[3/2] md:aspect-[16/10] lg:aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-mint to-emerald-50 flex items-center justify-center">
+                    <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-white/80 border border-emerald-100 shadow-sm flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#005C3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="opacity-40"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    </div>
                 </div>
             </div>
             @endif
 
-            <article class="bg-white rounded-2xl p-5 md:p-8 border border-gray-100/80 shadow-sm article-content">
-                {!! $article->content !!}
+            {{-- Isi Artikel --}}
+            <article class="rounded-2xl border border-gray-200 bg-white p-4 sm:p-5 md:p-7 shadow-sm">
+                <div class="article-content text-[11.5px] sm:text-[14px] leading-6 sm:leading-7 text-justify hyphens-auto text-slate-600">
+                    {!! $article->content !!}
+                </div>
             </article>
 
             {{-- Bagikan artikel --}}
@@ -55,8 +64,8 @@
                 $shareUrl = url()->current();
                 $shareText = $article->title;
             @endphp
-            <div class="mt-5 rounded-2xl border border-gray-100 bg-white p-4 sm:p-5 shadow-sm flex items-center gap-3">
-                <p class="text-sm font-bold text-gray-900">Bagikan artikel ini</p>
+            <div class="rounded-2xl border border-gray-200 bg-white p-4 sm:p-5 shadow-sm flex items-center gap-3">
+                <p class="text-sm sm:text-[15px] font-semibold tracking-[-0.01em] text-gray-900">Bagikan artikel ini</p>
                 <div class="flex items-center gap-2 ml-auto">
                     <a href="https://wa.me/?text={{ urlencode($shareText . ' - ' . $shareUrl) }}" target="_blank" rel="noreferrer" title="Bagikan via WhatsApp"
                        class="w-9 h-9 rounded-full bg-[#25D366]/10 flex items-center justify-center text-[#075E54] hover:bg-[#25D366]/20 transition">
@@ -82,37 +91,40 @@
                 </div>
             </div>
         </div>
-        <div class="lg:col-span-1 mt-2 lg:mt-0">
-            <div class="bg-white/80 backdrop-blur-md rounded-2xl p-6 border border-gray-100/80 shadow-sm sticky top-24">
-                <h3 class="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    Artikel Terkini
-                </h3>
-                @if($recentArticles->count() > 0)
-                <div class="space-y-4">
-                    @foreach($recentArticles as $recent)
-                    <a href="{{ route('articles.show', $recent->slug) }}" class="flex gap-3 group">
-                        @if($recent->image)
-                        <img src="{{ Storage::url($recent->image) }}" alt="{{ $recent->title }}" width="48" height="48" loading="lazy" class="w-12 h-12 rounded-xl object-cover shrink-0 ring-1 ring-gray-100">
-                        @else
-                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-mint to-dark-green/5 flex items-center justify-center shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005C3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="opacity-30"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                        </div>
-                        @endif
-                        <div class="min-w-0">
-                            <p class="text-xs font-medium text-gray-900 line-clamp-2 group-hover:text-dark-green transition-colors">{{ $recent->title }}</p>
-                            <p class="text-[10px] text-gray-400 mt-1">{{ $recent->published_at ? $recent->published_at->format('d M Y') : '' }}</p>
-                        </div>
-                    </a>
-                    @endforeach
+
+        {{-- Kanan: Artikel Terkini (desktop: sticky) --}}
+        <div class="lg:sticky lg:top-20 h-fit min-w-0">
+            <div class="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+                <div class="px-4 sm:px-5 md:px-6 py-4 border-b border-slate-100 bg-slate-50">
+                    <p class="text-[10px] font-semibold uppercase tracking-[0.16em] text-gold">Artikel Terkini</p>
                 </div>
-                @else
-                <p class="text-xs text-gray-400">Belum ada artikel lain.</p>
-                @endif
-                <a href="{{ route('articles.index') }}" class="mt-5 inline-flex items-center gap-1 text-gold text-xs font-medium hover:text-amber-500 transition group">
-                    Lihat semua artikel
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-0.5 transition-transform"><path d="m9 18 6-6-6-6"/></svg>
-                </a>
+                <div class="px-4 sm:px-5 md:px-6 py-5 sm:py-6">
+                    @if($recentArticles->count() > 0)
+                    <div class="space-y-4">
+                        @foreach($recentArticles as $recent)
+                        <a href="{{ route('articles.show', $recent->slug) }}" class="flex gap-3 group">
+                            @if($recent->image)
+                            <img src="{{ Storage::url($recent->image) }}" alt="{{ $recent->title }}" width="48" height="48" loading="lazy" class="w-12 h-12 rounded-xl object-cover shrink-0 ring-1 ring-gray-100">
+                            @else
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-mint to-dark-green/5 flex items-center justify-center shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#005C3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="opacity-30"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                            </div>
+                            @endif
+                            <div class="min-w-0">
+                                <p class="text-xs font-medium text-gray-900 line-clamp-2 group-hover:text-dark-green transition-colors">{{ $recent->title }}</p>
+                                <p class="text-[10px] text-gray-400 mt-1">{{ $recent->published_at ? $recent->published_at->format('d M Y') : '' }}</p>
+                            </div>
+                        </a>
+                        @endforeach
+                    </div>
+                    @else
+                    <p class="text-xs text-gray-400">Belum ada artikel lain.</p>
+                    @endif
+                    <a href="{{ route('articles.index') }}" class="mt-5 inline-flex items-center gap-1 text-gold text-xs font-medium hover:text-amber-500 transition group">
+                        Lihat semua artikel
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-0.5 transition-transform"><path d="m9 18 6-6-6-6"/></svg>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

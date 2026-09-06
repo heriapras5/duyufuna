@@ -19,6 +19,13 @@
         str_contains($key, 'gold')     => 'crown',
         default                        => 'shield', // SILVER & lainnya
     };
+
+    // Warna tombol "Pilih ..." mengikuti tier paket (selaras ikon medali).
+    $pilihClass = match ($icon) {
+        'diamond' => 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-600/25',
+        'crown'   => 'bg-amber-600 hover:bg-amber-700 shadow-amber-600/25',
+        default   => 'bg-slate-500 hover:bg-slate-600 shadow-slate-500/25',
+    };
 @endphp
 
 <button type="button"
@@ -93,5 +100,14 @@
             </div>
         </div>
         @endif
+
+        {{-- Tombol Pilih paket (mobile saja, pojok kanan bawah kartu) --}}
+        <div class="mt-3 pt-1 flex justify-end lg:hidden">
+            <span role="button" tabindex="0"
+                  @click.stop="selected = { id: {{ $item->id }}, title: @js($item->title), price: {{ $pricePerPax ?? 'null' }} }; if (window.innerWidth < 1024) formOpen = true;"
+                  class="inline-flex h-9 items-center gap-1.5 rounded-xl {{ $pilihClass }} text-white text-xs font-bold px-4 shadow-lg active:scale-[0.98] transition-all truncate max-w-full">
+                Pilih {{ $item->title }}
+            </span>
+        </div>
     </div>
 </button>

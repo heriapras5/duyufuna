@@ -81,9 +81,9 @@
                 </div>
                 @endif
 
-                @if($category->slug === 'jastip-viral')
+                @if(in_array($category->slug, ['jastip-viral', 'catering']))
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <x-admin.input name="price" type="number" step="1" min="0" label="Harga (SAR)" :value="old('price', $item->price_per_night)" help="Harga dalam Riyal Saudi. Kosongkan jika belum ada." />
+                    <x-admin.input name="price" type="number" step="1" min="0" label="{{ $category->slug === 'catering' ? 'Harga (SAR) /pax' : 'Harga (SAR)' }}" :value="old('price', $item->price_per_night)" help="Harga dalam Riyal Saudi. Kosongkan jika belum ada." />
                 </div>
                 @endif
 

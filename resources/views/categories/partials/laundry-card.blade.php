@@ -33,8 +33,8 @@
     </div>
 
     {{-- Teks di bawah --}}
-    <div class="p-3 sm:p-3.5 flex-1 flex flex-col">
-        <h3 class="font-serif text-base md:text-lg font-bold leading-snug tracking-tight text-slate-950 break-words">{{ $item->title }}</h3>
+    <div class="p-3 sm:p-3.5 flex-1 flex flex-col text-center">
+        <h3 class="font-sans text-[17px] sm:text-base md:text-lg font-bold leading-snug tracking-[-0.01em] text-slate-950 break-words">{{ $item->title }}</h3>
         @if($item->info)
         <p class="mt-1 text-[13px] md:text-sm font-medium text-slate-700 leading-relaxed">{{ $item->info }}</p>
         @endif
@@ -47,6 +47,14 @@
             @else
             <p class="mt-1 text-[13px] md:text-sm font-semibold text-slate-700 leading-none">Hubungi kami</p>
             @endif
+        </div>
+        {{-- Tombol Pilih Paket (mobile saja, pojok kanan bawah kartu) --}}
+        <div class="mt-3 flex justify-end lg:hidden">
+            <span role="button" tabindex="0"
+                  @click.stop="selectItem({{ $item->id }}, {{ $service?->id ?? 'null' }}, @js($item->title), {{ $price ?? 'null' }}, @js($item->info))"
+                  class="inline-flex h-9 items-center gap-1.5 rounded-xl bg-[#25D366] hover:bg-[#128C7E] text-white text-xs font-bold px-4 shadow-lg shadow-[#25D366]/25 active:scale-[0.98] transition-all whitespace-nowrap">
+                Pilih Paket
+            </span>
         </div>
     </div>
 </button>

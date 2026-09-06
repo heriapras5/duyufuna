@@ -260,7 +260,7 @@ class CatalogController extends Controller
             $rules['price_text'] = 'nullable|string|max:50';
         }
 
-        if ($category->slug === 'jastip-viral') {
+        if (in_array($category->slug, ['jastip-viral', 'catering'])) {
             $rules['price'] = 'nullable|numeric|min:0';
         }
 
@@ -300,7 +300,7 @@ class CatalogController extends Controller
             $data['price_max'] = $parsed['max'];
         }
 
-        if ($category->slug === 'jastip-viral') {
+        if (in_array($category->slug, ['jastip-viral', 'catering'])) {
             $data['price_per_night'] = $validated['price'] ?? null;
         }
 
