@@ -20,57 +20,51 @@
 @endphp
 
 <article class="group overflow-hidden rounded-2xl card-glass-gold">
-    <div class="grid gap-3 sm:gap-4 p-3 sm:p-4 grid-cols-[100px_minmax(0,1fr)] sm:grid-cols-[130px_minmax(0,1fr)] lg:grid-cols-[150px_minmax(0,1fr)_180px]">
+    <div class="grid gap-3 sm:gap-4 p-3 sm:p-4 grid-cols-1 sm:grid-cols-[130px_minmax(0,1fr)] lg:grid-cols-[150px_minmax(0,1fr)_180px]">
 
-        {{-- Mobile: Judul di atas gambar + bintang + lokasi --}}
-        <div class="sm:hidden col-span-2 space-y-1.5">
+        {{-- Baris atas: badge Hotel (kiri) + bintang (kanan) — semua layar --}}
+        @if($item->star || $city)
+        <div class="col-span-full flex items-center justify-between gap-2">
             @if($city)
-            <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-gold/90 leading-none">{{ $category->name }} {{ $city }}</p>
+            <span class="inline-flex items-center rounded-full bg-emerald-600 px-2.5 py-0.5 text-[11px] font-bold text-white shadow-sm truncate">
+                Hotel {{ $city }}
+            </span>
+            @else
+            <span></span>
             @endif
-            <h3 class="font-serif text-[17px] font-bold leading-snug tracking-tight text-gray-900 break-words">{{ $item->title }}</h3>
-            @if($shortDesc)
-            <p class="mt-1 text-xs text-gray-500 leading-relaxed line-clamp-2">{{ $shortDesc }}</p>
+            @if($item->star)
+            <span class="inline-flex items-center tracking-[0.04em] text-sm font-medium leading-none select-none shrink-0" title="{{ $item->star }} dari 5 bintang">
+                <span class="text-amber-400">{{ str_repeat('★', $item->star) }}</span><span class="text-slate-300">{{ str_repeat('☆', 5 - $item->star) }}</span>
+            </span>
             @endif
-            <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
-                @if($item->star)
-                <span class="inline-flex items-center tracking-[0.04em] text-sm font-medium leading-none select-none" title="{{ $item->star }} dari 5 bintang">
-                    <span class="text-amber-400">{{ str_repeat('★', $item->star) }}</span><span class="text-slate-300">{{ str_repeat('☆', 5 - $item->star) }}</span>
-                </span>
-                @endif
-                @if($city)
-                <span class="inline-flex items-center gap-1 text-[13px] font-semibold text-slate-600 leading-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 shrink-0"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
-                    {{ $city }}
-                </span>
-                @endif
-            </div>
         </div>
+        @endif
 
-        {{-- Kolom 1: Gambar --}}
-        <a href="{{ $href }}" class="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-white shrink-0">
+        {{-- Mobile: Gambar penuh di atas (bersih, tanpa overlay) --}}
+        <a href="{{ $href }}" class="relative flex aspect-[16/10] sm:aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-xl bg-white order-1">
             @if($hasImage)
             <img src="{{ Storage::url($item->image) }}" alt="{{ $item->title }}" loading="lazy"
                  class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
             @endif
         </a>
 
+        {{-- Mobile: Teks di bawah gambar (judul, desc) --}}
+        <div class="sm:hidden space-y-1.5 order-2">
+            <h3 class="font-serif text-[17px] font-bold leading-snug tracking-tight text-gray-900 break-words">{{ $item->title }}</h3>
+            @if($shortDesc)
+            <p class="mt-1 text-xs text-gray-500 leading-relaxed line-clamp-2">{{ $shortDesc }}</p>
+            @endif
+        </div>
+
         {{-- Kolom 2: Konten --}}
-        <div class="min-w-0 flex flex-col">
+        <div class="min-w-0 flex flex-col order-3">
             <div class="hidden sm:flex flex-wrap items-start justify-between gap-2">
                 <div class="min-w-0 flex-1">
-                    @if($city)
-                    <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-gold/90 leading-none">{{ $category->name }} {{ $city }}</p>
-                    @endif
                     <h3 class="mt-1.5 font-serif text-[15px] md:text-[17px] font-bold leading-snug tracking-tight text-gray-900 break-words">{{ $item->title }}</h3>
                     @if($shortDesc)
                     <p class="mt-1 text-xs md:text-[13px] text-gray-500 leading-relaxed line-clamp-2">{{ $shortDesc }}</p>
                     @endif
                 </div>
-                @if($item->star)
-                <span class="inline-flex shrink-0 items-center tracking-[0.04em] text-[13px] bg-gold/10 px-2.5 py-1 rounded-full border border-gold/20 font-medium text-gold" title="{{ $item->star }} Bintang">
-                    {{ str_repeat('★', $item->star) }}
-                </span>
-                @endif
             </div>
 
             {{-- Spesifikasi: label di atas (lebih besar), nilai di bawah — sama untuk mobile & desktop --}}
@@ -113,7 +107,7 @@
         </div>
 
         {{-- Kolom 3: Harga + Tombol --}}
-        <div class="flex flex-col justify-between gap-2.5 rounded-xl card-glass-gold p-3 sm:p-4 col-span-2 sm:col-span-2 lg:col-span-1">
+        <div class="flex flex-col justify-between gap-2.5 rounded-xl card-glass-gold p-3 sm:p-4 order-4 sm:col-span-2 lg:col-span-1">
             <div>
                 @if($item->priceLabel())
                 <p class="text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.16em] text-gold leading-none">Harga termurah</p>
