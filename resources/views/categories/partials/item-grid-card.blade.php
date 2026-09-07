@@ -32,8 +32,8 @@
 @endphp
 
 <div class="group card-glass-gold rounded-2xl overflow-hidden flex flex-col h-full"
-     style="animation: fadeIn 0.5s ease-out {{ $index * $delay }}s both;">
-    <div class="relative aspect-[16/10] bg-white overflow-hidden">
+     style="animation: fadeIn 0.5s ease-out both;">
+    <div class="relative aspect-[16/10] bg-slate-50 overflow-hidden">
         @if($hasImage)
         <img src="{{ Storage::url($item->image) }}" alt="{{ $item->title }}" loading="lazy"
              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
@@ -85,7 +85,7 @@
                         currency: @js($currency),
                         unit_label: @js($unitLabel),
                     })"
-                    class="inline-flex h-9 items-center justify-center gap-1 rounded-xl bg-[#25D366] hover:bg-[#128C7E] text-white text-xs sm:text-[13px] font-semibold px-2.5 transition-all duration-300 whitespace-nowrap">
+                    class="inline-flex h-9 items-center justify-center gap-1 rounded-xl bg-dark-green hover:bg-masjid text-white text-xs sm:text-[13px] font-semibold px-2.5 transition-all duration-300 whitespace-nowrap">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 shrink-0"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></svg>
                 <span class="truncate">Hubungi</span>
             </button>

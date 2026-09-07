@@ -98,7 +98,7 @@
         <div class="mt-3 pt-1 flex justify-center lg:hidden">
             <span role="button" tabindex="0"
                   @click.stop="selected = { id: {{ $item->id }}, title: @js($item->title), price: {{ $pricePerPax ?? 'null' }} }; if (window.innerWidth < 1024) formOpen = true;"
-                  class="inline-flex w-full h-9 items-center justify-center gap-1.5 rounded-xl bg-[#25D366] hover:bg-[#128C7E] text-white text-xs font-bold px-4 shadow-lg shadow-[#25D366]/25 active:scale-[0.98] transition-all truncate">
+                  class="inline-flex w-full h-9 items-center justify-center gap-1.5 rounded-xl bg-dark-green hover:bg-masjid text-white text-xs font-bold px-4 shadow-lg shadow-dark-green/25 active:scale-[0.98] transition-all truncate">
                 Pilih {{ $item->title }}
             </span>
         </div>

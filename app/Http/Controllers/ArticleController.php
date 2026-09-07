@@ -17,6 +17,7 @@ class ArticleController extends Controller
     public function show($slug)
     {
         $article = Article::published()->where('slug', $slug)->firstOrFail();
+        $article->increment('views');
         $recentArticles = Article::published()->where('id', '!=', $article->id)->latest('published_at')->take(3)->get();
         $categories = ArticleCategory::where('status', true)->orderBy('sort')->get();
         return view('articles.show', compact('article', 'recentArticles', 'categories'));

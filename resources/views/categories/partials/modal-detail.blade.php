@@ -36,7 +36,7 @@
         {{-- CTA --}}
         <div class="shrink-0 px-5 md:px-6 pt-2 pb-5 md:pb-6">
             <button type="button" @click="$store.modal.gotoConsult()"
-                    class="w-full inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white font-semibold rounded-full shadow-sm hover:shadow-md active:scale-[0.98] transition-all duration-200 py-3 px-6 text-sm">
+                    class="w-full inline-flex items-center justify-center gap-2 bg-dark-green hover:bg-masjid text-white font-semibold rounded-full shadow-sm hover:shadow-md active:scale-[0.98] transition-all duration-200 py-3 px-6 text-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></svg>
                 Hubungi
             </button>

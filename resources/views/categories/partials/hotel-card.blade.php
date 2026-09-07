@@ -33,8 +33,10 @@
             <span></span>
             @endif
             @if($item->star)
-            <span class="inline-flex items-center tracking-[0.04em] text-sm font-medium leading-none select-none shrink-0" title="{{ $item->star }} dari 5 bintang">
-                <span class="text-amber-400">{{ str_repeat('★', $item->star) }}</span><span class="text-slate-300">{{ str_repeat('☆', 5 - $item->star) }}</span>
+            <span class="inline-flex items-center gap-0.5 select-none shrink-0" title="{{ $item->star }} dari 5 bintang">
+                @for($i = 1; $i <= 5; $i++)
+                <svg viewBox="0 0 24 24" class="size-3.5 {{ $i <= $item->star ? 'fill-amber-400' : 'fill-gray-300' }}"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+                @endfor
             </span>
             @endif
         </div>
@@ -134,7 +136,7 @@
                             unit_label: 'kamar',
                             extra_note: @js($item->price_max !== null ? 'Rentang harga ' . $item->priceLabel() . ' (harga final menyesuaikan)' : null),
                         })"
-                        class="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl bg-[#25D366] px-3 text-xs md:text-[13px] font-semibold text-white transition hover:bg-[#128C7E]">
+                        class="inline-flex h-9 items-center justify-center gap-1.5 rounded-xl bg-dark-green px-3 text-xs md:text-[13px] font-semibold text-white transition hover:bg-masjid">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></svg>
                     Konsultasi
                 </button>

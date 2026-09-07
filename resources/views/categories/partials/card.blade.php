@@ -80,7 +80,7 @@
                         currency: 'SAR',
                         unit_label: 'item',
                     })"
-                    class="inline-flex h-9 items-center justify-center gap-1 rounded-xl bg-[#25D366] hover:bg-[#128C7E] text-white text-xs md:text-[13px] font-semibold px-2.5 transition-all duration-300 whitespace-nowrap">
+                    class="inline-flex h-9 items-center justify-center gap-1 rounded-xl bg-dark-green hover:bg-masjid text-white text-xs md:text-[13px] font-semibold px-2.5 transition-all duration-300 whitespace-nowrap">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 shrink-0"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></svg>
                 <span class="truncate">Konsultasi</span>
             </button>

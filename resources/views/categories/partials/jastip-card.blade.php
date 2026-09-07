@@ -17,8 +17,8 @@
 
 <a href="{{ $href }}"
    class="group relative rounded-2xl overflow-hidden bg-white text-left transition-all duration-300 shadow-sm ring-1 ring-gray-100 hover:-translate-y-1 hover:shadow-lg focus:outline-none flex flex-col h-full"
-   style="animation: fadeIn 0.5s ease-out {{ $index * $delay }}s both;">
-    <div class="relative aspect-[4/3] bg-white overflow-hidden flex items-center justify-center">
+   style="animation: fadeIn 0.5s ease-out both;">
+    <div class="relative aspect-[4/3] bg-slate-50 overflow-hidden flex items-center justify-center">
         @if($hasImage)
         <img src="{{ Storage::url($service->image) }}" alt="{{ $service->title }}" loading="lazy"
              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">

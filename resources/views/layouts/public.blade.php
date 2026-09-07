@@ -230,7 +230,7 @@
     @hasSection('hero_full')
         @yield('hero_full')
     @else
-    <div class="relative aspect-[16/9] sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[420px] w-full overflow-hidden bg-masjid islamic-pattern gold-border-bottom">
+    <div class="relative aspect-[16/9] sm:aspect-auto sm:min-h-[280px] md:min-h-[340px] lg:min-h-[480px] w-full overflow-hidden bg-masjid islamic-pattern gold-border-bottom">
         @hasSection('hero_background')
             @yield('hero_background')
         @else

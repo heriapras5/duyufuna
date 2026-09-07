@@ -25,7 +25,7 @@ class PageController extends Controller
 
     public function testimoni()
     {
-        $testimonials = Testimonial::where('status', true)->latest()->get();
+        $testimonials = Testimonial::where('status', true)->latest()->paginate(12);
 
         return view('testimoni', compact('testimonials'));
     }
