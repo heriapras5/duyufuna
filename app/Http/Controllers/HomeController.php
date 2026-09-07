@@ -15,7 +15,7 @@ class HomeController extends Controller
         $banners = Banner::where('status', true)->orderBy('sort')->get();
         $categories = Category::withCount('services')->orderBy('sort')->get();
         $testimonials = Testimonial::where('status', true)->latest()->get();
-        $articles = Article::published()->orderByDesc('views')->orderByDesc('published_at')->take(4)->get();
+        $articles = Article::published()->orderByDesc('views')->orderByDesc('published_at')->take(6)->get();
         $setting = Setting::first();
 
         return view('home', compact('banners', 'categories', 'testimonials', 'articles', 'setting'));
