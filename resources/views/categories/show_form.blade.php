@@ -55,6 +55,18 @@
                      this.selectedInfo = info || '';
                      if (window.innerWidth < 1024) this.formOpen = true;
                  },
+                 fmtDate(d) {
+                     if (!d) return '';
+                     const dt = new Date(d + 'T00:00:00');
+                     if (isNaN(dt.getTime())) return d;
+                     const p = (n) => String(n).padStart(2, '0');
+                     return p(dt.getDate()) + '/' + p(dt.getMonth() + 1) + '/' + dt.getFullYear();
+                 },
+                 openPicker(refName) {
+                     const el = this.$refs[refName];
+                     if (!el) return;
+                     try { el.showPicker(); } catch (e) { el.focus(); }
+                 },
              }">
         {{-- Kolom kiri: daftar kartu muthawif (selektabel) --}}
         <div class="min-w-0">
@@ -159,20 +171,26 @@
                                 <input type="hidden" name="pickup_time" :value="laundryTime">
                                 <div class="grid grid-cols-2 gap-2">
                                     <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-300">
+                                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-300 z-10">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                                         </div>
-                                        <input type="date" x-model="laundryDate" min="{{ now()->toDateString() }}" lang="id" aria-label="Tanggal" :class="!laundryDate ? 'placeholder-empty' : ''"
-                                               class="w-full pl-10 pr-2 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white text-gray-900 text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition">
-                                        <span x-show="!laundryDate" x-cloak class="md:hidden pointer-events-none absolute inset-y-0 left-10 flex items-center text-sm text-gray-500">dd/mm/yyyy</span>
+                                        <button type="button" @click="openPicker('laundryDateInput')" aria-label="Tanggal"
+                                                class="w-full flex items-center pl-10 pr-2 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition text-left"
+                                                :class="laundryDate ? 'text-gray-900' : 'text-gray-400'">
+                                            <span x-text="laundryDate ? fmtDate(laundryDate) : 'dd/mm/yyyy'"></span>
+                                        </button>
+                                        <input type="date" x-ref="laundryDateInput" x-model="laundryDate" min="{{ now()->toDateString() }}" aria-label="Tanggal" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
                                     </div>
                                     <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-300">
+                                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-300 z-10">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                                         </div>
-                                        <input type="time" x-model="laundryTime" lang="id" aria-label="Jam" :class="!laundryTime ? 'placeholder-empty' : ''"
-                                               class="w-full pl-10 pr-2 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white text-gray-900 text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition">
-                                        <span x-show="!laundryTime" x-cloak class="md:hidden pointer-events-none absolute inset-y-0 left-10 flex items-center text-sm text-gray-500">hh:mm</span>
+                                        <button type="button" @click="openPicker('laundryTimeInput')" aria-label="Jam"
+                                                class="w-full flex items-center pl-10 pr-2 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition text-left"
+                                                :class="laundryTime ? 'text-gray-900' : 'text-gray-400'">
+                                            <span x-text="laundryTime ? laundryTime : 'hh:mm'"></span>
+                                        </button>
+                                        <input type="time" x-ref="laundryTimeInput" x-model="laundryTime" aria-label="Jam" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
                                     </div>
                                 </div>
                             </div>

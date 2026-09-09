@@ -89,7 +89,13 @@
                 if (!d) return '';
                 const dt = new Date(d + 'T00:00:00');
                 if (isNaN(dt.getTime())) return d;
-                return new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }).format(dt);
+                const p = (n) => String(n).padStart(2, '0');
+                return p(dt.getDate()) + '/' + p(dt.getMonth() + 1) + '/' + dt.getFullYear();
+            },
+            openDatePicker() {
+                const el = this.$refs.tanggalInput;
+                if (!el) return;
+                try { el.showPicker(); } catch (e) { el.focus(); }
             },
             onPickupChange() { this.dropoff = ''; },
          }">
@@ -275,8 +281,15 @@
                         </div>
                         <div>
                             <label class="block text-xs sm:text-[13px] font-semibold text-gray-700 mb-1">Tanggal Penjemputan <span class="text-red-400">*</span></label>
-                            <input type="date" x-model="tanggal" required
-                                   class="w-full px-3 sm:px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white text-gray-900 text-[13px] sm:text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition">
+                            <div class="relative">
+                                <button type="button" @click="openDatePicker()"
+                                        class="w-full flex items-center justify-between gap-2 px-3 sm:px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white text-[13px] sm:text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold outline-none transition text-left"
+                                        :class="tanggal ? 'text-gray-900' : 'text-gray-400'">
+                                    <span x-text="tanggal ? fmtDate(tanggal) : 'Pilih tanggal'"></span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-gray-400"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                </button>
+                                <input type="date" x-ref="tanggalInput" x-model="tanggal" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            </div>
                         </div>
                     </div>
                     <form method="POST" action="{{ route('customer.store') }}"

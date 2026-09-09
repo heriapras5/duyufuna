@@ -15,14 +15,13 @@
     <form method="POST" action="{{ route('admin.articles.update', $article) }}" enctype="multipart/form-data">
         @csrf @method('PUT')
         <div class="space-y-6">
-            <x-admin.form-card title="Informasi Artikel" description="Judul, kategori, dan konten artikel.">
+            <x-admin.form-card title="Informasi Artikel" description="Kategori, judul, dan konten artikel.">
                 <div class="space-y-5">
-                    <x-admin.input name="title" label="Judul" required placeholder="Contoh: Tips Persiapan Umroh" :value="$article->title" />
-                    <x-admin.slug-preview source="title" base="articles" />
                     <x-admin.select name="article_category_id" label="Kategori Artikel" placeholder="— Pilih Kategori —"
                         :options="$categories->pluck('name', 'id')->toArray()"
                         :selected="$article->article_category_id" />
-                    <x-admin.textarea name="excerpt" label="Ringkasan (Excerpt)" rows="2" placeholder="Ringkasan 2–3 kalimat" :value="$article->excerpt" />
+                    <x-admin.input name="title" label="Judul" required placeholder="Contoh: Tips Persiapan Umroh" :value="$article->title" />
+                    <x-admin.textarea name="excerpt" label="Sub Judul" rows="2" placeholder="Sub Judul artikel" :value="$article->excerpt" />
                     <x-admin.summernote name="content" label="Konten" :value="$article->content" required />
                 </div>
             </x-admin.form-card>

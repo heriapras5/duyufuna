@@ -11,11 +11,11 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::updateOrCreate(
-            ['username' => 'admin'],
+            ['email' => 'superadmin@duyufuna.com'],
             [
-                'name' => 'Admin',
-                'email' => 'admin@duyufuna.com',
-                'password' => bcrypt('password'),
+                'name' => 'Super Admin',
+                'username' => 'superadmin',
+                'password' => bcrypt('admin123'),
                 'is_admin' => true,
                 'role' => 'super_admin',
             ]
