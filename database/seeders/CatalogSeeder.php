@@ -18,11 +18,6 @@ class CatalogSeeder extends Seeder
             ['title' => 'Mövenpick Anwar Al Madinah', 'description' => '<p>Hotel bintang 5 di seberang Masjid Nabawi, setiap kamar menghadap ke kompleks masjid. Berdekatan dengan area ziarah utama.</p>'],
             ['title' => 'Dar Al Taqwa', 'description' => '<p>Hotel bintang 5 berada tepat di halaman Masjid Nabawi, akses paling mudah untuk menunaikan shalat berjamaah dan ziarah.</p>'],
         ],
-        'hotel-jeddah' => [
-            ['title' => 'Rosewood Jeddah', 'description' => '<p>Hotel mewah di tepi Laut Merah Jeddah, nyaman untuk transit sebelum melanjutkan perjalanan ke Makkah atau Madinah.</p>'],
-            ['title' => 'Radisson Blu Jeddah', 'description' => '<p>Hotel bintang 5 dekat Corniche Jeddah dengan fasilitas spa, kolam renang, dan restoran internasional untuk kenyamanan transit.</p>'],
-            ['title' => 'Novotel Jeddah', 'description' => '<p>Hotel bintang 4 modern dengan harga terjangkau, cocok untuk transit singkat dengan fasilitas lengkap dan lokasi strategis.</p>'],
-        ],
         'transportasi-bus-shalawat' => [
             ['title' => 'Shalawat Pagi', 'description' => '<p>Antar-jemput bus dari hotel ke Masjidil Haram setiap pagi dengan armada nyaman dan berpendingin.</p>'],
             ['title' => 'Shalawat Malam', 'description' => '<p>Layanan bus antar-jemput pada waktu shalat malam, memudahkan jamaah menjangkau Masjidil Haram dengan aman.</p>'],

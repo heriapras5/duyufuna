@@ -12,7 +12,7 @@ class MenuSeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Hotel', 'slug' => 'hotel', 'icon' => '🏨', 'subtitle' => 'Akomodasi terbaik', 'sort' => 1, 'description' => 'Pilihan hotel terbaik di Mekkah, Madinah, dan Jeddah untuk kenyamanan ibadah Anda.', 'meta_title' => 'Hotel Umroh Mekkah Madinah Jeddah', 'meta_description' => 'Pilih hotel terbaik di area Masjidil Haram, Masjid Nabawi, dan Jeddah untuk perjalanan umroh Anda.', 'meta_keywords' => 'hotel umroh, hotel mekkah, hotel madinah, hotel jeddah'],
+            ['name' => 'Hotel', 'slug' => 'hotel', 'icon' => '🏨', 'subtitle' => 'Akomodasi terbaik', 'sort' => 1, 'description' => 'Pilihan hotel terbaik di Mekkah dan Madinah untuk kenyamanan ibadah Anda.', 'meta_title' => 'Hotel Umroh Mekkah Madinah', 'meta_description' => 'Pilih hotel terbaik di area Masjidil Haram dan Masjid Nabawi untuk perjalanan umroh Anda.', 'meta_keywords' => 'hotel umroh, hotel mekkah, hotel madinah'],
             ['name' => 'Visa', 'slug' => 'visa', 'icon' => '📋', 'subtitle' => 'Proses cepat & aman', 'sort' => 2, 'description' => 'Pengurusan visa umroh yang cepat, aman, dan terpercaya.', 'meta_title' => 'Visa Umroh', 'meta_description' => 'Pengurusan visa umroh cepat dan terpercaya.', 'meta_keywords' => 'visa umroh, paspor umroh, syarat visa'],
             ['name' => 'Transportasi', 'slug' => 'transportasi', 'icon' => '🚐', 'subtitle' => 'Nyaman & terpercaya', 'sort' => 3, 'description' => 'Armada transportasi nyaman untuk seluruh rute perjalanan umroh Anda.', 'meta_title' => 'Transportasi Umroh', 'meta_description' => 'Sewa transportasi umroh dengan armada nyaman dan terpercaya.', 'meta_keywords' => 'transportasi umroh, sewa bus umroh, travel umroh'],
             ['name' => 'Handling', 'slug' => 'handling', 'icon' => '🛎️', 'subtitle' => 'Layanan profesional', 'sort' => 4, 'description' => 'Layanan handling bandara kedatangan dan kepulangan serta handling hotel check-in dan check-out yang profesional.', 'meta_title' => 'Handling Umroh', 'meta_description' => 'Layanan handling bandara dan hotel untuk jamaah umroh.', 'meta_keywords' => 'handling bandara, handling hotel, check in umroh, check out umroh'],
@@ -30,7 +30,6 @@ class MenuSeeder extends Seeder
             'hotel' => [
                 ['title' => 'Mekkah', 'slug' => 'hotel-mekkah', 'short_description' => 'Rekomendasi hotel untuk jamaah umroh di area Masjidil Haram', 'icon' => '🏨'],
                 ['title' => 'Madinah', 'slug' => 'hotel-madinah', 'short_description' => 'Rekomendasi hotel untuk jamaah umroh di area Masjid Nabawi', 'icon' => '🕌'],
-                ['title' => 'Jeddah', 'slug' => 'hotel-jeddah', 'short_description' => 'Rekomendasi hotel transit untuk jamaah umroh di Jeddah', 'icon' => '🌆'],
             ],
             'visa' => [
                 ['title' => 'Visa Umroh', 'slug' => 'visa-umroh', 'short_description' => 'Pengurusan visa umroh cepat & terpercaya', 'icon' => '📋'],

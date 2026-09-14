@@ -15,7 +15,6 @@ class FrontendDummySeeder extends Seeder
     protected array $accentGroups = [
         'mekkah' => ['#0B3D2E', '#2DD4BF'],
         'madinah' => ['#0F766E', '#5EEAD4'],
-        'jeddah' => ['#134E4A', '#38BDF8'],
         'hotel' => ['#065F46', '#34D399'],
         'visa' => ['#1E3A8A', '#38BDF8'],
         'transportasi' => ['#92400E', '#F59E0B'],
@@ -33,7 +32,6 @@ class FrontendDummySeeder extends Seeder
     protected array $serviceKeywords = [
         'mekkah' => 'kaaba masjid haram makkah',
         'madinah' => 'masjid nabawi madinah mosque',
-        'jeddah' => 'jeddah mosque city',
         'visa-umroh' => 'passport visa stamp',
         'transportasi-bus-shalawat' => 'shuttle bus group travel',
         'transportasi-bus-24jam' => 'tourist bus travel',

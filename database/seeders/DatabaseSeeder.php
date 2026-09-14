@@ -28,18 +28,18 @@ class DatabaseSeeder extends Seeder
                 'tagline' => 'MELAYANI TAMU ALLAH, SEPENUH HATI',
                 'whatsapp' => '6281293679502',
                 'email' => 'info@duyufuna.com',
-                'address' => 'Jakarta, Indonesia',
+                'address' => 'Jepara, Indonesia',
             ]
         );
 
         $this->call(MenuSeeder::class);
         $this->call(ArticleCategorySeeder::class);
+        $this->call(TransportPriceSeeder::class);
 
-        $this->call(DemoSeeder::class);
-        $this->call(CategoryContentSeeder::class);
-        $this->call(CatalogSeeder::class);
-        $this->call(FrontendDummySeeder::class);
-        // Terakhir: menimpa placeholder fotografer dengan 9 kegiatan final (harga = price list + 50 SAR).
-        $this->call(FotograferSeeder::class);
+        // Sumber kebenaran konten = produksi (duyufuna.com).
+        // Seeder lama (DemoSeeder, CategoryContentSeeder, CatalogSeeder,
+        // FrontendDummySeeder, FotograferSeeder) tidak lagi dipanggil —
+        // isinya dummy/placeholder yang seluruhnya digantikan ProductionSyncSeeder.
+        $this->call(ProductionSyncSeeder::class);
     }
 }

@@ -126,10 +126,23 @@ class ServiceItem extends Model
             return $this->map_link;
         }
 
-        $city = $this->service?->title ?: 'Makkah';
+        $service = $this->service;
+
+        // Kota Jeddah untuk sementara dihapus — fokus Mekkah & Madinah.
+        if ($service && $service->hotelCity() === 'Jeddah') {
+            return null;
+        }
+
+        if ($service && $service->isMadinah()) {
+            $city = 'Madinah';
+            $destination = 'Masjid Nabawi, Madinah';
+        } else {
+            $city = $service?->hotelCity() ?: ($service?->title ?: 'Makkah');
+            $destination = 'Masjid al-Haram, Makkah';
+        }
 
         return 'https://www.google.com/maps/dir/?api=1&origin=' . urlencode($this->title . ', ' . $city . ', Saudi Arabia')
-            . '&destination=' . urlencode('Masjid al-Haram, Makkah')
+            . '&destination=' . urlencode($destination)
             . '&travelmode=walking';
     }
 

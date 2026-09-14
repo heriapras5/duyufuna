@@ -24,7 +24,6 @@ class CategoryContentSeeder extends Seeder
     protected array $services = [
         60 => ['Mekkah', '🕋', 0],
         61 => ['Madinah', '🕌', 1],
-        62 => ['Jeddah', '🌆', 2],
         71 => ['Kedatangan', '🛬', 3],
         72 => ['Kepulangan', '🛫', 4],
         75 => ['Tumbler Tanah Suci', '🥤', 5],
@@ -36,7 +35,6 @@ class CategoryContentSeeder extends Seeder
     protected array $itemEmojis = [
         60 => '🏨',
         61 => '🏨',
-        62 => '🏨',
         71 => '🍽️',
         72 => '🍽️',
     ];

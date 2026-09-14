@@ -1,0 +1,160 @@
+#!/usr/bin/env bash
+# Unduh semua aset gambar dari produksi (https://duyufuna.com) ke storage/app/public
+# sehingga path DB lokal identik dengan produksi.
+set -u
+
+BASE_URL="https://duyufuna.com/storage"
+DEST="storage/app/public"
+LIST="$(mktemp)"
+trap 'rm -f "$LIST"' EXIT
+
+cat > "$LIST" <<'EOF'
+testimonials/twGrsH3tdPZOSjKBSXEoZFYurE8bY7HPDaGSp4di.webp
+testimonials/5HTvSGTjclDfgVFLwcUoxH1I73XDpYhdqHEDl66c.webp
+testimonials/azhsGhcKIllP3iFSml3ZapWQL3PFa5WCwtRoSTx1.webp
+testimonials/9loPaexAtZclpLSpWxViOZDGhRaoeifmwgL9IxXU.webp
+testimonials/U4kDMs3fpMRwFaQWu1O7Ajf5tSPjTHIZvTA2y3W1.webp
+galleries/t1T7n5B3EBi2cMhT3JlTu6NISMu5V1nZYnCipkZJ.jpeg
+galleries/g7N3SehFq2G6NUOKLBgXISuDkTJebHK4xQG9X4zb.jpeg
+galleries/Cdzycq0UehRLfgkFnWR5x3bZYS3JfkzSUDM3xTWO.jpeg
+galleries/7yK00hWFFwzzoQJXyxaQMXtXgv3ZYJIJcPZmjzHm.jpg
+galleries/pIHZfQFpKyHoSJ2eruDGCFFHtXDnql2hj2IrcuD3.jpeg
+galleries/lzLJYxJv9xmqpScSOedKFeyaQ8HMQHM32FdX2g6h.jpg
+galleries/TrUlqlamR5ygOqK8pPoAk6ZOXJY68Y5464siasol.jpeg
+galleries/6HqMvJeKKZtvOdwUIINse4JxRVDdjRk9FuQO51Hs.jpg
+galleries/tL9TboHWeR7JqjazYC8rUd0TPde1wsjlpGx9eQ2m.jpg
+galleries/sliln1Ai76BjPcyOPU379QpYqYGSzTft4wpTKsUJ.jpg
+galleries/kfGZx76MSAuyf8dAUCqQud3xVakKpjs1UslmSEeu.jpg
+galleries/deB8FxF91aec9jPd1a8UYAXfo7lMjkSOOo1lVAbC.jpg
+galleries/oXUzqmgVAWy7HIOhc23fdiMbLNaeB0XTjbiho03S.jpg
+galleries/OaihuDf1HkCbrX4hYoNqznaUtmjqywa54Y2G71OI.jpg
+galleries/MJXJnECQzXbzlmfbnqITyGvNiozC9kSi10aXX7dO.jpg
+galleries/CSh29lbvdiA4m7fdW5gxj0B6SXvAVgQDVTqnCmeV.jpg
+galleries/H1XFvz0Q0K4UlTAZxHAwusOFLEddQnTNLj0C3ZzE.jpg
+galleries/mka84ZLJBaHiuA2qCEYzPahasewug4OQPMknuRdM.jpg
+galleries/JfUkAgoBdPKH37bflxXQuLbVFLwjgrrcwhCtJxO8.jpg
+galleries/F8krda6o3DPHRG9gx6cCs1x34AyKDHamtugfJW74.jpg
+galleries/BIcz9guxI19QzBr4mcufEqfgp7EG9dXW5Su7pq0R.jpg
+galleries/bWubDjikEJ31er19n8Tb6Xb7wgekPyADBXUO1hbd.jpg
+galleries/BJgcCZpECJIZFrD2A15H5pIouWkGX7W6B1xmltQw.jpg
+galleries/WrDAUUiRwqRCaO9mY1k7oUt3WXrw6YjcDeqyiuan.jpg
+galleries/uFY7AemotXBbFXUn5Fbq7e9ERHtUHG45hXX0I9kQ.jpg
+galleries/GPxLimiZkQ0fU59G23ktmxeoBHfcUlqViI69dTTn.jpg
+galleries/Ygf3EHjvxAEwVV6L04JUAJ10nI1z4bRaFvszaVTZ.jpg
+galleries/K8RuA8EBo2KwdimlWr3LiufOMLK6PPOqR2xbDw0Q.jpg
+galleries/75R4IeNX1QLKoe3yd8BiphKfW0J8RNbljgAyGqu6.jpg
+galleries/XEsZK6Br1Vn0WZgZasTZhGzY55zCf9XUEyZvKrRC.jpg
+galleries/imrVQTlDt59gdIWoKzkBM2vAK4EId97Uw35zvBxF.jpg
+galleries/A8h3Lg9Nisjat20AjIo1HQMxguMeZTXTCKj8mI9h.jpg
+galleries/y1aqxc2vqvcGXbcAisAA2uf2kQwHVb8vWglfujAD.jpg
+galleries/eWtGDfRjt727qT1j7G9dYcyWSUZfWODVdiobwPPk.jpg
+galleries/jrbgECC6uLIkZIFbQirKCPddN16Hv8Tmbt6vT5DO.jpg
+galleries/cF2tMn55ehUOHQSZvqm4MExF0CQwGVmUFRgC2lgX.jpg
+galleries/1By1KPESdpXSRNJo4LjLbVZks4L2YHYBfO2ISqLs.jpg
+galleries/pH5TJ9TINYbmo6OKkx83Putcc7QPxil5Oxq4GDMg.jpg
+galleries/lT5XRhGvaoS8b9JT5Lrh1632WGWmlaIEld0YzuFk.jpg
+galleries/vjMtrd5ITzmhJrLUOoNYnSAdQ6JBWqrnIHtfWo1p.jpg
+galleries/VpY48CXiU1eYM82eatQceOUzZ8uLETDp1EUa1xne.jpg
+galleries/t6tuqyF3CxMWttU8G5qAJQtZ4NIkq21cQVWOAcDh.jpg
+galleries/WRoie1amSnWUFKPZyA6nc3eaTy89Y1IFxwLF3VpL.jpg
+galleries/NIOQA9w0nijSz9zgk6cy8AX4xjtctfHEfW6JE92L.jpg
+galleries/8YyNPmzTEGD9KfNGnYRiiq61urKsQxU4jKGP7ZCm.jpg
+galleries/hByEHO6ee6oj7smvQEXXRw1vg2kKdmhXosPSePLA.jpg
+galleries/o0xVFSy7Ny8NYH0zuBnxYxzJO7782PtU0VYiG799.jpg
+galleries/lBOARdYCocVlZ1rYGtufRWu2r5PZ4o6GSWHdRBqw.jpg
+galleries/HuXZR4rfVnpaicuhcglEL3vh1NvzllVx4PfDbPgi.jpg
+galleries/NdPDBf66RK0hvVo9VVcZmyfWSg3dd3T5VnjJtdn7.jpg
+galleries/vXLeLGpDeq0xNWnwYBV4ZgeJgDnCrOi79kZALUvu.jpg
+galleries/Sp9loFZ2uQHG352uMBQ71yrPmd8T4uQRf2WaOUiw.jpg
+galleries/7Jb1Uoe6aSWx5SISejIfeiYRpL0CDQp7kr2eJpEc.jpg
+service-items/00akaUGZqtJT75ktCnC9Vz533MwAlZfXv9aqnVHm.jpg
+service-items/Vp6O8abjkbfQlTmE3EYiLSpnzQNhTNs9JbHEguAv.jpg
+service-items/yJuVflIBkTDeEFhd6ThJKDnVvmWwu3nld4WCyCSX.jpg
+service-items/hNKi0pwXrgqRZGey9pRSPokFXbH72sduk86TAzIa.jpg
+service-items/YXMXqPWVGy7HxAhdWcrQXbtQTboDeUPaAlo3gOIZ.jpg
+service-items/dOIfDd2X2G9TBk2tqccut4m6RZZXveAUa43fUHwg.jpg
+service-items/727Nsu4g9gieruZIHaWVrPDeg5Vol4AuBpYzX8Ag.jpg
+service-items/D3F19zzzi46Vgs2oasVDkoZfqTVg6N9UJ6MUD0Y5.jpg
+service-items/dI6CKhdTLcqpZypCmfe9KLhABMV8FsM0S58rO2gf.jpg
+service-items/R8LVmZHdKaP1jNw1rgDYF2tn9cnpGmAK7sbjX11c.jpg
+service-items/cBnDgb5XgyaSljcXrYISEgM23dfjEmwchcqkusVX.jpg
+service-items/OaYHJpn9Lja37ulZmJpJ7Lb6UkItVhaFKQksgRJE.jpg
+service-items/E4DNvUM5jMPzSQRbBHA7q772msufsqKpGJGfwVsa.jpg
+service-items/Duq2jsD9RRxKxIxHnbAl2a1UUMd24A5Z5SVZo9q5.jpg
+service-items/LtwjR3FBghhyr24ImtILk00fK1zwatZE791YpiEr.jpg
+service-items/nI0w83XidyES7pXjvRePdXUS8aEc4m1xMVbgDwme.jpg
+service-items/u16G6Xs319fPwM8fHJ7UFK5oTXZocHXaThUAAGRX.jpg
+service-items/58Flq7BIlwXdxHdVFe1BqLA6j0zNhgBcD9v14yEI.jpg
+service-items/GNtWq11InPMINXRRn91XFkkLE3SFLNet8G61C0KU.jpg
+service-items/s8nZpbIlIKTvvoAZEpQ1CFn0FudeZl5WPvkmHlGo.jpg
+service-items/zM6L1Xve1iPc62sxMXHz1ayMz8l26e2KBGLwJDa6.jpg
+service-items/4XfbNRrhiqD7JwYK0WDe3tJgaTxZVRr5kWaSFZCQ.jpg
+service-items/NOFZXiijTIi9n8slgjKUmxss3piuWcXZCasdje6w.jpg
+service-items/imf2ops4CuIOyEvJkRWEtTNN4pDbuQyR7hgx6Ved.jpg
+service-items/n10SdJHQmCmXw8ATVkOA6VHpR2ntZb2f4simujBE.jpg
+service-items/4A1YWCA36DdX4l29C8RMTxckOb82JpVN7xZWgFAm.jpg
+service-items/HiYjToxFIWfGLjPyPm3wzgReiRphBgvmVSr7sgHs.jpg
+service-items/wzj0LyjyP0k84WBMAu5L3pOAP6SDKKiGWH5Dlmbi.jpg
+service-items/8SKnIRBCglP27zTgAe0bbgWtamFTyCXtBkP2uJh4.jpg
+service-items/M1cDzR6IxBUsINxogOkBzI0CQJZeHQqu6auPlnZF.jpg
+service-items/isSOOl4r9reWNwCi3usJT6OVv6B21mXpRZ3CMmIn.jpg
+service-items/AsqlB4HLL2VT1BzUMU6KyLQxXe6YTsmPaFHEKTNh.jpg
+service-items/eon2RQl2DTDbqxmWaqU4IJwoHL2D9uL2r4PquPi3.jpg
+service-items/Qscwi7p3EfNfIsBjVMCuNqws5Kx2CaxhcWtonL4Y.jpg
+service-items/6VM84CgIWAE5AO68eqo1IaC7h30lcSjO4VftHUu5.jpg
+service-items/kHZJsB0tuOhksVBBfjIh1VaWDNCdgPhT0c7S8skj.jpg
+service-items/rR4x1f8o5WfiKeWoluefk4bXURDNpIKIvwTNoV2Q.jpg
+service-items/NlPIAeD3UFujmJmNgxhV8ewxXaUGZmYHo338jv3T.jpg
+service-items/6jZEL6FjvsdnbVwZMH6eKVZT3e7oq8copqjyaDuI.jpg
+service-items/tIKZ05nHkZT4u4uUnSGBkVI07ZEcTgPf4lQPtg2r.jpg
+service-items/doCCuMW7CLenTouavpfMpOE6xMDJ3xCpdT3cvkIj.jpg
+service-items/anMAu0oxc33Hewh8Gw9FIH0pTGyoqSlEDZ9CxmBq.jpg
+service-items/mKHaw8gcm3u67nJeijmaLfQRbIHAbzmE8wxuyyGi.jpg
+service-items/AgJyKtOZduptUlLVA4FWk07t43HvIAUZreqsAqiL.jpg
+service-items/kUDwOwJRxb3DUEE0TUgUljmm7a5538sq48R4XWxp.jpg
+service-items/IqioBy2vlkHRaEMvy8BSgpBGmKSQ2f7jGPOSISIH.jpg
+service-items/cm9pr3DDJTliO6bAvqMN9XVdSGxdA03djSzYJE0r.jpg
+service-items/Vj3TMJycSiz210Olb7xgvgfXfb88ARPYEOxhsOSk.jpg
+service-items/Qtdfx2uqfPQ34qMdAclnvVwOnCQ3bl9S3JJIbc1O.jpg
+service-items/0hKI3g8Qhr0ZNWGBtSoXZrSpGEMp08KOAO0q21K9.jpg
+service-items/xreJrAuhpIllBrlgUaziZe0pcgKvIrl4MaX53SXm.jpg
+service-items/UAWy8djGUGYFtUwqd7QOdFP1hSt0Vv2D4t0sBCQU.jpg
+service-items/wpgr5s1JIfVIvTPAZbBtKqqbJ5p7ODEzy1YTnBIM.jpg
+service-items/PFEdFt949dBPFaxptf8UceLIOdHVRbfBG2clQCdV.jpg
+service-items/teKNwWuMScYlhOeVFhaE9aCskgVnO4wBoY0YbwHk.jpg
+service-items/HPG3PQJPiIRIBT1IdbxZe1vWVKSLWWtekreBk4lC.jpg
+service-items/UL9WGGjK8rHIgDHMLoBUvV9WGzwqDRvCq4gXW1gp.jpg
+service-items/SLlolVVI53ifVWWg6rJE8rDutaYv1ZeFz9QlDp7M.jpeg
+service-items/olmoiM1b4kYmmNLLKjyvTNltvslJEQdQAxh9wO4Y.jpeg
+service-items/GUZEyZRpEuXIbRp5jb2j5c8fI6sSbMBtkcf0BoK8.jpeg
+service-items/trqoDzqx8vLto9zQn963aLhzJ7GP4py4xhG0MNUp.jpeg
+service-items/XloqAuNCu3O3cWSHGOsySuEUYxlhd7zQFtKSMdlZ.jpeg
+service-items/iEJCcaeu0mH0iG1qJZSOsgQDGh1MtRCgsszKd9Ri.jpeg
+service-items/KcOkp4yNivk3eT5Snltl5KZQtPSTINDsYurBkmva.jpg
+service-items/n1Qq86Kx0HW55EKl4X6tZUrfeTAR3CFdotQG5H49.jpeg
+service-items/zEykRxGGxEG3Ndrrhc8bCwmvvQY8uAvtL50y6JTU.jpg
+service-items/ORDCnxQBx6bgenh8hCzkN8RW2CVjRb6XaxCo0a1T.jpg
+settings/6LKAECp0CQRlRTwFMAEFWLjpEJzuvHaAHUvxDVEC.webp
+settings/o4uUxGyBLqVgbMJPTppnp20VeyQmy37iUDlpp0B9.webp
+banners/habByeocLVPiKiaVy8irEq76j3OvReK3GYomRr6m.webp
+banners/RF2HZi3D9GCfUUj9CWY9xFxAnw4GLyfwgFOQJvlV.webp
+banners/jyatSoQNDf3bwPmIzmGZCBlWRK0OpsOL08lqS6TJ.webp
+EOF
+
+ok=0; fail=0; skip=0
+while IFS= read -r rel; do
+    [ -z "$rel" ] && continue
+    out="$DEST/$rel"
+    if [ -s "$out" ]; then skip=$((skip+1)); continue; fi
+    mkdir -p "$(dirname "$out")"
+    if curl -fsSL --retry 3 --retry-delay 2 -o "$out" "$BASE_URL/$rel"; then
+        ok=$((ok+1))
+    else
+        echo "GAGAL: $rel"
+        rm -f "$out"
+        fail=$((fail+1))
+    fi
+done < "$LIST"
+
+echo "Selesai: $ok diunduh, $skip sudah ada, $fail gagal (total $(wc -l < "$LIST") file)."
+[ "$fail" -eq 0 ]

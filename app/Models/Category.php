@@ -91,7 +91,7 @@ class Category extends Model
     public static function placeholderFor(string $label): string
     {
         return match (mb_strtolower(trim($label))) {
-            'kota' => 'Contoh: Makkah, Madinah, Jeddah',
+            'kota' => 'Contoh: Makkah, Madinah',
             'hotel' => 'Contoh: Mercure Hotel',
             'jenis' => 'Contoh: Visa Umroh, Visa Bisnis',
             'paket' => 'Contoh: Paket Hemat 12 Hari',

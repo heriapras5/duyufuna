@@ -79,7 +79,7 @@
                 @endif
                 @if($item->distanceLabel())
                 <div class="flex flex-col gap-y-1 rounded-lg bg-gray-50 border border-gray-100 px-2.5 py-2 sm:rounded-xl sm:bg-white sm:border-gray-200 sm:shadow-sm sm:px-3">
-                    <span class="shrink-0 text-[13px] md:text-sm font-bold text-gray-900 leading-tight">Jarak</span>
+                    <span class="shrink-0 text-[13px] md:text-sm font-bold text-gray-900 leading-tight">{{ $service?->distanceLabel() ?? 'Jarak' }}</span>
                     <p class="text-xs md:text-[13px] font-medium text-slate-700 leading-snug break-words">{{ $item->distanceLabel() }}</p>
                 </div>
                 @endif
