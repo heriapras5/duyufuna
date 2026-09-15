@@ -11,7 +11,9 @@
     $href = $item->slug
         ? route('detail.show', $item->slug)
         : route('category.service', [$category?->slug, $service?->slug]);
-    $hasImage = $item->image && !str_ends_with($item->image, '.svg');
+    $cover = $item->image
+        ?: (is_array($item->gallery) ? ($item->gallery[0] ?? null) : null);
+    $hasImage = $cover && !str_ends_with($cover, '.svg');
     $roomTypes = array_filter(array_map('trim', explode(',', (string) $item->room_types)));
     $shortDesc = trim((string) ($item->tagline ?? ''))
         ?: trim(strip_tags((string) $item->description));
@@ -45,7 +47,7 @@
         {{-- Mobile: Gambar penuh di atas (bersih, tanpa overlay) --}}
         <a href="{{ $href }}" class="relative flex aspect-[16/10] sm:aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-xl bg-white order-1">
             @if($hasImage)
-            <img src="{{ Storage::url($item->image) }}" alt="{{ $item->title }}" loading="lazy"
+            <img src="{{ Storage::url($cover) }}" alt="{{ $item->title }}" loading="lazy"
                  class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
             @endif
         </a>

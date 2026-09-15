@@ -36,6 +36,9 @@
 
             <div class="p-5 flex flex-col flex-1">
                 <h3 class="font-bold text-gray-900 text-base leading-snug break-words">{{ $item->title }}</h3>
+                @if(trim((string) ($item->tagline ?? '')) !== '')
+                <p class="mt-1.5 text-xs text-gray-500 leading-relaxed">{{ $item->tagline }}</p>
+                @endif
                 @if($item->info)
                 <p class="mt-1.5 text-xs text-gray-500 leading-relaxed line-clamp-2">{{ $item->info }}</p>
                 @endif

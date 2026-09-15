@@ -80,6 +80,12 @@ class ProductionSyncSeeder extends Seeder
         ServiceItem::where('service_id', $service->id)->delete();
 
         foreach ($rows as $i => $row) {
+            // Cover kartu = foto pertama galeri bila image tidak diisi
+            // (item hotel hanya punya gallery; produksi menampilkan foto
+            // pertama sebagai cover kartu).
+            if (empty($row['image']) && !empty($row['gallery'][0]) && is_string($row['gallery'][0])) {
+                $row['image'] = $row['gallery'][0];
+            }
             ServiceItem::create(array_merge($row, [
                 'service_id' => $service->id,
                 'sort' => $i + 1,
@@ -98,7 +104,8 @@ class ProductionSyncSeeder extends Seeder
             'address' => 'Jepara, Indonesia',
             'wa_message' => "Assalamu'alaikum,\nSaya ingin berkonsultasi.",
             'footer_text' => 'Layanan perjalanan umroh dan haji yang membantu setiap langkah perjalanan menuju Tanah Suci dengan mudah, nyaman, dan terpercaya.',
-            'logo' => 'settings/JES8f7juDQDiQsMEIM2CUgjwMYvjaNzNApTbdgtX.png',
+            'logo' => 'settings/6LKAECp0CQRlRTwFMAEFWLjpEJzuvHaAHUvxDVEC.webp',
+            'about_image' => 'settings/Hb985l3DWV3dUoHMM1cYnavXuErjEStvdzK3KSKW.webp',
 
             'seo_description' => 'Platform layanan umroh, haji, hotel, dan transportasi di tanah suci. Mudah, amanah, berkah.',
             'seo_keywords' => 'umroh, haji, travel umroh, hotel mekkah, hotel madinah',
@@ -116,7 +123,7 @@ class ProductionSyncSeeder extends Seeder
             'greeting_title' => "Assalamu'alaikum",
             'greeting_subtitle' => 'Selamat datang di Duyufuna',
             'greeting_text' => 'Temukan berbagai layanan umroh dan haji untuk menemani perjalanan ibadah Anda dengan lebih mudah, nyaman, dan tenang menuju Tanah Suci.',
-            'greeting_image' => 'settings/o4uUxGyBLqVgbMJPTppnp20VeyQmy37iUDlpp0B9.webp',
+            'greeting_image' => 'settings/aDkXS8czm0NiRg7UBZ7XhbgNkygLpl1g0xDMDrVN.webp',
 
             'why_label' => 'Mengapa Kami',
             'why_title' => 'Kenapa Memilih <span class="text-gradient-gold">DUYUFUNA</span> ?',
@@ -252,6 +259,7 @@ class ProductionSyncSeeder extends Seeder
                 'title' => 'Mengenal Perjalanan Haji',
                 'category' => $cat('seputar-haji'),
                 'excerpt' => 'Dari Arafah, Muzdalifah hingga Mina',
+                'image' => 'articles/RnvHgLs9NecUEPXMkxo0oWq1oixmtCOKm5HKVXjW.jpeg',
                 'views' => 32,
                 'content' => [
                     'Ibadah haji memiliki rangkaian perjalanan yang berbeda dengan umroh. Salah satu bagian terpentingnya adalah perjalanan jamaah menuju Arafah, Muzdalifah, dan Mina yang berlangsung dalam rangkaian waktu dan ketentuan tertentu. Arafah menjadi salah satu tempat yang sangat penting dalam pelaksanaan haji, kemudian jamaah melanjutkan perjalanan menuju Muzdalifah dan Mina sesuai dengan rangkaian manasik yang telah ditetapkan.',
@@ -265,6 +273,7 @@ class ProductionSyncSeeder extends Seeder
                 'title' => 'Mengapa Madinah Menjadi Bagian Penting dalam Perjalanan Umroh?',
                 'category' => $cat('seputar-madinah'),
                 'excerpt' => null,
+                'image' => 'articles/Or2B5A7pOdrBngKW268UPlMfplbPT2zZNCVj6pMY.jpeg',
                 'views' => 14,
                 'content' => [
                     'Madinah memiliki tempat yang sangat istimewa dalam perjalanan spiritual umat Islam. Di kota inilah terdapat Masjid Nabawi, salah satu masjid yang memiliki kedudukan utama dalam Islam. Bagi banyak jamaah umroh, perjalanan ke Madinah menjadi kesempatan untuk memperbanyak ibadah, mengunjungi Masjid Nabawi, serta mengenal lebih dekat sejarah Rasulullah SAW dan para sahabat.',
@@ -278,6 +287,7 @@ class ProductionSyncSeeder extends Seeder
                 'title' => 'Panduan Persiapan Umroh',
                 'category' => $cat('panduan-umroh'),
                 'excerpt' => 'Hal Penting yang Perlu Disiapkan Sebelum Berangkat',
+                'image' => 'articles/wX70HQSuCcZDoU3Uxl856OAptw5ldS8ahT0OMCb8.jpeg',
                 'views' => 14,
                 'content' => [
                     'Menunaikan ibadah umroh merupakan perjalanan yang membutuhkan persiapan, bukan hanya secara fisik tetapi juga dari sisi administrasi, perlengkapan, pengetahuan ibadah, dan kesiapan mental. Persiapan yang baik akan membantu jamaah menjalani perjalanan dengan lebih tenang sejak keberangkatan hingga kembali ke tanah air.',
@@ -290,6 +300,7 @@ class ProductionSyncSeeder extends Seeder
                 'title' => 'Memilih Hotel di Mekkah',
                 'category' => $cat('tips-perjalanan'),
                 'excerpt' => 'Dekat Masjidil Haram atau Lebih Ekonomis?',
+                'image' => 'articles/oJCGOjv1UT7dvkxTFNbVjIH3I6Nq6sDaa96gB5YQ.jpeg',
                 'views' => 11,
                 'content' => [
                     'Pemilihan hotel menjadi salah satu hal yang perlu diperhatikan ketika merencanakan perjalanan umroh. Di Mekkah, perbedaan lokasi hotel dapat memberikan pengalaman yang cukup berbeda bagi jamaah. Hotel yang berada dekat Masjidil Haram biasanya memberikan kemudahan akses untuk melaksanakan shalat dan ibadah lainnya, tetapi umumnya memiliki harga yang lebih tinggi dibandingkan hotel yang berada lebih jauh.',
@@ -306,6 +317,7 @@ class ProductionSyncSeeder extends Seeder
                 [
                     'title' => $row['title'],
                     'excerpt' => $row['excerpt'],
+                    'image' => $row['image'] ?? null,
                     'content' => implode("\n\n", array_map(fn ($p) => '<p>' . $p . '</p>', $row['content'])),
                     'article_category_id' => $row['category']->id,
                     'published_at' => '2026-08-07 07:00:00',
@@ -324,13 +336,20 @@ class ProductionSyncSeeder extends Seeder
         $category->update(['page_type' => 'catalog', 'group_label' => 'Kota', 'item_label' => 'Hotel']);
 
         // Slug mengikuti produksi: /service/mekkah & /service/madinah.
+        // Duplikat lama hotel-mekkah / hotel-madinah (0 item) dihapus agar
+        // tidak muncul sebagai grup kosong.
+        Service::where('category_id', $category->id)
+            ->whereIn('slug', ['hotel-mekkah', 'hotel-madinah'])
+            ->delete();
         $mekkah = $this->service($category, 'mekkah', [
             'title' => 'Mekkah',
             'short_description' => 'Rekomendasi hotel untuk jamaah umroh di area Masjidil Haram',
+            'image' => 'services/KamntboD66qClN4oQPpSg2Miut9dr9L8m1jL2quQ.jpg',
         ]);
         $madinah = $this->service($category, 'madinah', [
             'title' => 'Madinah',
             'short_description' => 'Rekomendasi hotel untuk jamaah umroh di area Masjid Nabawi',
+            'image' => 'services/OA4Aci4lNwexvir8JqX1wSSh8SjC4nCHVJMOry1X.jpg',
         ]);
 
         $this->replaceItems($mekkah, $this->hotelMekkah());
@@ -511,25 +530,22 @@ class ProductionSyncSeeder extends Seeder
         $this->dropServices($category);
 
         $vehicles = [
-            ['title' => 'Camry', 'slug' => 'camry', 'price_sar' => 210],
-            ['title' => 'Ford', 'slug' => 'ford', 'price_sar' => 310],
-            ['title' => 'Lexus', 'slug' => 'lexus', 'price_sar' => 360],
-            ['title' => 'Traverse', 'slug' => 'traverse', 'price_sar' => 360],
-            ['title' => 'GMC', 'slug' => 'gmc', 'price_sar' => 360],
-            ['title' => 'Staria', 'slug' => 'staria', 'price_sar' => 310],
-            ['title' => 'Hiace', 'slug' => 'hiace', 'price_sar' => 310],
-            ['title' => 'Coaster', 'slug' => 'coaster', 'price_sar' => 310],
-            ['title' => 'Bus', 'slug' => 'bus', 'price_sar' => 260],
+            ['title' => 'Camry', 'slug' => 'camry', 'price_sar' => 210, 'image' => 'services/tpUpbntPKHxe4jI2a4e5tcoDw5vFwFBVJFyp49tF.png'],
+            ['title' => 'Ford', 'slug' => 'ford', 'price_sar' => 310, 'image' => 'services/1DJZ7WPqocLmxjQWNHjbZjqTbaImrkzwszDeWx9g.jpg'],
+            ['title' => 'Lexus', 'slug' => 'lexus', 'price_sar' => 360, 'image' => 'services/A3TNoXovad8dzJP192PAtC1v5SsHDuCet24l5KNH.png'],
+            ['title' => 'Traverse', 'slug' => 'traverse', 'price_sar' => 360, 'image' => 'services/jcgwEVgf37HBhELkxPJmUx9qZJAQFANcOKFNTqw9.jpg'],
+            ['title' => 'GMC', 'slug' => 'gmc', 'price_sar' => 360, 'image' => 'services/wSqOQLLWg7UAajDlMIJKw1agzFy66RZMwCbHjuFN.jpg'],
+            ['title' => 'Staria', 'slug' => 'staria', 'price_sar' => 310, 'image' => 'services/4mvsxhtEZPJ5ZPLGQ45UhHL458pd1rKWweF72QNz.jpg'],
+            ['title' => 'Hiace', 'slug' => 'hiace', 'price_sar' => 310, 'image' => 'services/xcjGftKaJa7XfgoKRXdc6W5z83GftNRIG47IbC0j.png'],
+            ['title' => 'Coaster', 'slug' => 'coaster', 'price_sar' => 310, 'image' => 'services/XcnUtpEo5IMPNQAqcLqNMKqPGxDjHgDfEpl9xJTl.jpg'],
+            ['title' => 'Bus', 'slug' => 'bus', 'price_sar' => 260, 'image' => 'services/MZBRs37IDYDksJv3nLICEeYZDi5d4m0NFPjAfg4Y.jpg'],
         ];
 
         foreach ($vehicles as $v) {
-            Service::create([
-                'category_id' => $category->id,
-                'title' => $v['title'],
-                'slug' => $v['slug'],
-                'price_sar' => $v['price_sar'],
-                'status' => true,
-            ]);
+            Service::updateOrCreate(
+                ['category_id' => $category->id, 'slug' => $v['slug']],
+                array_merge(['status' => true], $v)
+            );
         }
     }
 
@@ -543,10 +559,12 @@ class ProductionSyncSeeder extends Seeder
         $kedatangan = $this->service($category, 'kedatangan', [
             'title' => 'Kedatangan',
             'short_description' => 'Hidangan siap santap untuk menyambut jamaah setelah tiba di Indonesia.',
+            'image' => 'services/EynihUJqOxFyDvTutSVGVrRoKo5AF9OsW5pf6WPt.jpg',
         ]);
         $kepulangan = $this->service($category, 'kepulangan', [
             'title' => 'Kepulangan',
             'short_description' => 'Bekal makanan praktis untuk menemani jamaah sebelum perjalanan menuju Tanah Suci.',
+            'image' => 'services/c7HahG20dUiS7jrlVI61SyPBrpGPFMwKFuMCWpUU.jpg',
         ]);
 
         // Slug mengikuti produksi (hasil rename historis, auto-slug unik).
@@ -619,6 +637,8 @@ class ProductionSyncSeeder extends Seeder
     protected function syncLaundry(): void
     {
         $category = $this->category('laundry');
+        // Produksi /category/laundry = kartu Paket 1/2 + form (show_form).
+        $category->update(['page_type' => 'form']);
         // Slug mengikuti produksi: /service/laundry (form konsultasi + item Paket 1/2).
         Service::where('category_id', $category->id)
             ->where('slug', 'laundry-kilat')
@@ -629,44 +649,50 @@ class ProductionSyncSeeder extends Seeder
         ]);
 
         $this->replaceItems($service, [
-            ['slug' => 'paket-1', 'title' => 'Paket 1', 'tagline' => '1-5 Kg', 'price_per_night' => 15, 'info' => 'Waktu pengerjaan ± 24 jam · Antar-jemput ke kamar hotel'],
-            ['slug' => 'paket-2', 'title' => 'Paket 2', 'tagline' => '5-10 Kg', 'price_per_night' => 13, 'info' => 'Waktu pengerjaan ± 24 jam · Antar-jemput ke kamar hotel'],
+            ['slug' => 'paket-1', 'title' => 'Paket 1', 'tagline' => '1-5 Kg', 'price_per_night' => 15, 'image' => 'service-items/RwbI4k8TkzyOT0q3C4F8x1DNBpL2hXq65hdIy8zf.jpg'],
+            ['slug' => 'paket-2', 'title' => 'Paket 2', 'tagline' => '5-10 Kg', 'price_per_night' => 13, 'image' => 'service-items/qTC9YOGkrH5gEJVYgLgBBwjbjPPxSWSDywvPSNzH.jpg'],
         ]);
     }
 
     protected function syncBuggy(): void
     {
         $category = $this->category('buggy-car');
+        // Produksi /category/buggy-car = kartu item + form (show_form).
+        $category->update(['page_type' => 'form']);
         $service = $this->service($category, 'buggy-car-haram', [
             'title' => 'Buggy Car Area Haram',
             'short_description' => 'Antar-jemput buggy di sekitar Masjidil Haram',
         ]);
 
         $this->replaceItems($service, [
-            ['slug' => 'tawaf', 'title' => 'Tawaf', 'price_per_night' => 110, 'info' => 'Layanan buggy antar-jemput mengelilingi Ka\'bah'],
-            ['slug' => 'sai', 'title' => 'Sa\'i', 'price_per_night' => 110, 'info' => 'Layanan buggy antar-jemput Safa–Marwah'],
-            ['slug' => 'umroh-tawaf-sai', 'title' => 'Umroh (Tawaf + Sa\'i)', 'price_per_night' => 220, 'info' => 'Paket lengkap Tawaf + Sa\'i, lebih hemat'],
+            ['slug' => 'tawaf', 'title' => 'Tawaf', 'price_per_night' => 110, 'info' => 'Layanan buggy antar-jemput mengelilingi Ka\'bah', 'image' => 'service-items/QEOv9UgB1w7tvAKED5jSDN9Jll3Rkh6SjXpB7jph.jpg'],
+            ['slug' => 'sai', 'title' => 'Sa\'i', 'price_per_night' => 110, 'info' => 'Layanan buggy antar-jemput Safa–Marwah', 'image' => 'service-items/kUhk6jjvZJon3YjAZ31wJt5pH6FaKHOVjChsGIoR.jpg'],
+            ['slug' => 'umroh-tawaf-sai', 'title' => 'Umroh (Tawaf + Sa\'i)', 'price_per_night' => 220, 'info' => 'Paket lengkap Tawaf + Sa\'i, lebih hemat', 'image' => 'service-items/OqDfszIsOyih2wDdfQifVCUphFFpx5MsUfU2t0tj.jpg'],
         ]);
     }
 
     protected function syncKursiRoda(): void
     {
         $category = $this->category('kursi-roda-umroh');
+        // Produksi /category/kursi-roda-umroh = kartu item + form (show_form).
+        $category->update(['page_type' => 'form']);
         $service = $this->service($category, 'kursi-roda-sewa', [
             'title' => 'Sewa Kursi Roda',
             'short_description' => 'Sewa kursi roda untuk jamaah lansia / berkebutuhan khusus',
         ]);
 
         $this->replaceItems($service, [
-            ['slug' => 'tawaf', 'title' => 'Tawaf', 'price_per_night' => 150, 'info' => 'Didorong petugas berpengalaman mengelilingi Ka\'bah'],
-            ['slug' => 'sai', 'title' => 'Sa\'i', 'price_per_night' => 150, 'info' => 'Didorong petugas via jalur Safa–Marwah'],
-            ['slug' => 'umroh-tawaf-sai', 'title' => 'Umroh (Tawaf + Sa\'i)', 'price_per_night' => 350, 'info' => 'Paket lengkap dengan pendampingan petugas'],
+            ['slug' => 'tawaf', 'title' => 'Tawaf', 'price_per_night' => 150, 'info' => 'Didorong petugas berpengalaman mengelilingi Ka\'bah', 'image' => 'service-items/6XFExiuiXLopEzNcXHPyC4ArX8zpgSunqWzY1wEe.jpg'],
+            ['slug' => 'sai', 'title' => 'Sa\'i', 'price_per_night' => 150, 'info' => 'Didorong petugas via jalur Safa–Marwah', 'image' => 'service-items/z5ucApID1W70NIi2auFvyA97F2n6giSRJ81K4az3.jpg'],
+            ['slug' => 'umroh-tawaf-sai', 'title' => 'Umroh (Tawaf + Sa\'i)', 'price_per_night' => 350, 'info' => 'Paket lengkap dengan pendampingan petugas', 'image' => 'service-items/y4CVbrCAXHhgb01B9HjYYwuCa8ps2fA9Uo9BcFip.jpg'],
         ]);
     }
 
     protected function syncMuthawif(): void
     {
         $category = $this->category('muthawif');
+        // Produksi /category/muthawif = kartu item + form (show_form).
+        $category->update(['page_type' => 'form']);
         // Slug mengikuti produksi: /service/muthawif (3 orang; Faqih tidak ada di produksi).
         Service::where('category_id', $category->id)
             ->where('slug', 'muthawif-per-hari')
@@ -676,12 +702,18 @@ class ProductionSyncSeeder extends Seeder
             'short_description' => 'Pembimbing ibadah muthawif selama di Tanah Suci',
         ]);
 
+        $images = [
+            'Mohammad Jadid' => 'service-items/LT51j5WzebOsEZEDZLeQ2O7vVzGxNQ6MrGM3DVJ4.jpg',
+            'A. Najian Muzaki' => 'service-items/QpbJPSFdCK9Wxdmj3CpybACc9B7zvgO3dSCMkBEB.jpg',
+            'Asep Saepuloh' => 'service-items/V63D6vH1fRmqsxI3zKUcgemcKe5KTM8pRsxIIsii.jpg',
+        ];
         $rows = [];
         foreach (['Mohammad Jadid', 'A. Najian Muzaki', 'Asep Saepuloh'] as $name) {
             $rows[] = [
                 'slug' => \Illuminate\Support\Str::slug($name),
                 'title' => $name,
                 'price_per_night' => 300,
+                'image' => $images[$name],
                 'description' => '<p>Muthawif Harian, Mingguan &amp; Bulanan</p>',
             ];
         }
@@ -714,6 +746,7 @@ class ProductionSyncSeeder extends Seeder
             [
                 'title' => 'Oleh-Oleh Khas Arab Saudi',
                 'slug' => 'oleh-oleh-khas-arab-saudi',
+                'image' => 'services/eehpAmcdZvKnc71f1X34ZBB4REJZhP9pf702HoMv.jpeg',
                 'short_description' => 'Berbagai oleh-oleh khas Tanah Suci yang populer dibawa pulang oleh jamaah.',
                 'items' => [
                     ['slug' => 'kurma-ajwa', 'title' => 'Kurma Ajwa', 'image' => 'service-items/UL9WGGjK8rHIgDHMLoBUvV9WGzwqDRvCq4gXW1gp.jpg', 'description' => 'Kurma Ajwa dari Madinah yang menjadi salah satu oleh-oleh favorit jamaah untuk dibawa pulang sebagai buah tangan bagi keluarga dan kerabat di Indonesia.'],
@@ -724,6 +757,7 @@ class ProductionSyncSeeder extends Seeder
             [
                 'title' => 'Oleh-Oleh Islami',
                 'slug' => 'oleh-oleh-islami',
+                'image' => 'services/8ZVoFXQgcIQu089rrQDqSXxXt4T8TmVlwGpm8Lj3.jpeg',
                 'short_description' => 'Pilihan perlengkapan dan cendera mata bernuansa Islami dari Tanah Suci.',
                 'items' => [
                     ['slug' => 'tasbih', 'title' => 'Tasbih', 'image' => 'service-items/GUZEyZRpEuXIbRp5jb2j5c8fI6sSbMBtkcf0BoK8.jpeg', 'description' => 'Tasbih dengan berbagai pilihan bahan, warna, dan model yang cocok sebagai oleh-oleh untuk keluarga maupun kerabat.'],
@@ -734,6 +768,7 @@ class ProductionSyncSeeder extends Seeder
             [
                 'title' => 'Produk Viral & Populer',
                 'slug' => 'produk-viral-populer',
+                'image' => 'services/OEecHtpBDXz0yMMKOGlkvPV94WzXMWkjEBdHYUCz.jpg',
                 'short_description' => 'Membantu mendapatkan berbagai produk yang sedang populer dan banyak dicari dari Arab Saudi.',
                 'items' => [
                     ['slug' => 'camilan-makanan-populer', 'title' => 'Camilan & Makanan Populer', 'image' => 'service-items/iEJCcaeu0mH0iG1qJZSOsgQDGh1MtRCgsszKd9Ri.jpeg', 'description' => 'Berbagai camilan, makanan ringan, dan produk makanan populer yang dapat dititipkan sesuai ketersediaan dan ketentuan pengiriman.'],

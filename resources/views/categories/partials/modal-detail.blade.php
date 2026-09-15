@@ -3,15 +3,17 @@
      class="fixed inset-0 z-[999] flex items-center justify-center p-4 sm:p-6"
      @keydown.escape.window="$store.modal.closeDetail()">
     <div class="absolute inset-0 bg-black/40 backdrop-blur-md" @click="$store.modal.closeDetail()"></div>
-    <div class="relative w-full max-w-lg lg:max-w-xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden max-h-[88vh] sm:max-h-[90vh] flex flex-col">
-        {{-- Tombol tutup (pojok kanan atas kartu) --}}
+    <div class="relative w-full max-w-lg lg:max-w-xl">
+        {{-- Tombol tutup (menempel sudut luar kanan atas kartu) --}}
         <button type="button" @click="$store.modal.closeDetail()" aria-label="Tutup"
-                class="absolute top-3 right-3 z-10 w-7 h-7 rounded-full bg-white/95 backdrop-blur shadow-md flex items-center justify-center text-gray-600 hover:text-red-500 transition-colors duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                class="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 z-10 w-9 h-9 rounded-full bg-white shadow-lg ring-1 ring-gray-200 flex items-center justify-center text-gray-500 hover:text-red-500 hover:rotate-90 transition-all duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
+    <div class="bg-white rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden max-h-[88vh] sm:max-h-[90vh] flex flex-col">
 
         {{-- Isi: gambar + teks dalam satu area scroll (deskripsi tidak terhimpit) --}}
-        <div class="flex-1 min-h-0 overflow-y-auto px-5 md:px-6 pt-5 pb-2 space-y-3">
+        @php $modalCat = ($category->slug ?? null) ?? ($service->category->slug ?? null) ?? ''; @endphp
+        <div class="flex-1 min-h-0 overflow-y-auto px-5 md:px-6 pt-5 pb-2 space-y-3 {{ in_array($modalCat, ['jastip-viral', 'catering']) ? 'modal-scroll' : '' }}">
             {{-- Bingkai gambar: rasio tetap 4:2, foto memenuhi bingkai --}}
             <div class="relative w-full aspect-[4/2] bg-slate-100 overflow-hidden rounded-xl ring-1 ring-gray-100 shadow-sm">
                 <img x-show="$store.modal.detail.image" x-cloak :src="$store.modal.detail.image" :alt="$store.modal.detail.title" loading="lazy"
@@ -41,5 +43,6 @@
                 Hubungi
             </button>
         </div>
+    </div>
     </div>
 </div>

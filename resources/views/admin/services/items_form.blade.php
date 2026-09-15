@@ -21,14 +21,19 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
             </x-slot:icon>
             <div class="space-y-5">
-                <x-admin.input name="title" label="Nama {{ $category->itemLabel() }}" required placeholder="{{ $category->itemPlaceholder() }}" :value="old('title', $item->title)" />
+                <x-admin.input name="title" label="{{ $category->slug === 'laundry' ? 'Nama Paket' : 'Nama ' . $category->itemLabel() }}" required placeholder="{{ $category->itemPlaceholder() }}" :value="old('title', $item->title)" />
+
+                @if($category->slug === 'laundry')
+                <x-admin.input name="tagline" label="Keterangan" placeholder="cth: 1-5 Kg" :value="old('tagline', $item->tagline)"
+                    help="Keterangan berat paket, tampil di bawah nama paket pada kartu publik." />
+                @endif
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <x-admin.input name="price" type="number" step="1" min="0" label="{{ $category->slug === 'muthawif' ? 'SAR' : 'Harga (SAR)' }}" placeholder="cth: 110" :value="old('price', $item->price_per_night)" help="Harga dalam Riyal Saudi. Kosongkan jika belum ada." />
                     <x-admin.select name="status" label="Status" :options="[1 => 'Aktif', 0 => 'Nonaktif']" :selected="old('status', $item->status)" />
                 </div>
 
-                @if($category->slug !== 'fotografer')
+                @if($category->slug !== 'fotografer' && $category->slug !== 'laundry')
                 <x-admin.textarea name="info" label="Info Singkat" rows="3" :value="old('info', $item->info)"
                     placeholder="Contoh: Waktu pengerjaan ± 24 jam · Antar-jemput ke kamar hotel"
                     help="Teks singkat yang tampil di kartu pemilih di halaman publik." />

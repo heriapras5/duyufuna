@@ -35,7 +35,9 @@
     {{-- Teks di bawah --}}
     <div class="p-3 sm:p-3.5 flex-1 flex flex-col text-center">
         <h3 class="font-sans text-[17px] sm:text-base md:text-lg font-bold leading-snug tracking-[-0.01em] text-slate-950 break-words">{{ $item->title }}</h3>
-        @if($item->info)
+        @if(trim((string) ($item->tagline ?? '')) !== '')
+        <p class="mt-1 text-[13px] md:text-sm font-medium text-slate-700 leading-relaxed">{{ $item->tagline }}</p>
+        @elseif($item->info)
         <p class="mt-1 text-[13px] md:text-sm font-medium text-slate-700 leading-relaxed line-clamp-3">{{ $item->info }}</p>
         @endif
         <div class="mt-auto pt-2">

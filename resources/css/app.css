@@ -1489,6 +1489,22 @@
         scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
     }
 
+    /* Scrollbar popup Detail (jastip & catering) — hijau khas tema */
+    .modal-scroll::-webkit-scrollbar { width: 8px; }
+    .modal-scroll::-webkit-scrollbar-track { background: transparent; }
+    .modal-scroll::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, var(--color-primary), var(--color-dark-green));
+        border-radius: 999px;
+        border: 2px solid #ffffff;
+    }
+    .modal-scroll::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, var(--color-dark-green), var(--color-masjid));
+    }
+    .modal-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-dark-green) transparent;
+    }
+
     /* ============================================
        ADMIN DESIGN SYSTEM — REFINEMENTS (Premium)
        ============================================ */

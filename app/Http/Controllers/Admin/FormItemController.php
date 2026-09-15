@@ -42,11 +42,13 @@ class FormItemController extends Controller
         abort_unless($category->pageType() === 'form', 404);
 
         $isFotografer = $category->slug === 'fotografer';
+        $isLaundry = $category->slug === 'laundry';
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'price' => 'nullable|numeric|min:0',
             'info' => $isFotografer ? 'nullable' : 'nullable|string|max:500',
+            'tagline' => $isLaundry ? 'nullable|string|max:255' : 'nullable',
             'image' => $isFotografer ? 'nullable' : 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'gallery' => 'nullable|array|max:8',
             'gallery.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
@@ -65,7 +67,11 @@ class FormItemController extends Controller
             'sort' => $service->serviceItems()->max('sort') + 1,
         ];
 
-        if (! $isFotografer) {
+        if ($isLaundry) {
+            // Keterangan berat paket (cth: 1-5 Kg) — tampil di kartu publik.
+            $data['tagline'] = trim((string) ($validated['tagline'] ?? '')) ?: null;
+            $data['info'] = null;
+        } elseif (! $isFotografer) {
             $data['info'] = trim((string) ($validated['info'] ?? '')) ?: null;
         }
 
@@ -106,11 +112,13 @@ class FormItemController extends Controller
         abort_unless($category->pageType() === 'form', 404);
 
         $isFotografer = $category->slug === 'fotografer';
+        $isLaundry = $category->slug === 'laundry';
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'price' => 'nullable|numeric|min:0',
             'info' => $isFotografer ? 'nullable' : 'nullable|string|max:500',
+            'tagline' => $isLaundry ? 'nullable|string|max:255' : 'nullable',
             'image' => $isFotografer ? 'nullable' : 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'gallery' => 'nullable|array|max:8',
             'gallery.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
@@ -128,9 +136,15 @@ class FormItemController extends Controller
             'wa_message' => $validated['wa_message'] ?? null,
         ];
 
-        if (! $isFotografer) {
+        if ($isLaundry) {
+            // Keterangan berat paket (cth: 1-5 Kg) — tampil di kartu publik.
+            $data['tagline'] = trim((string) ($validated['tagline'] ?? '')) ?: null;
+            $data['info'] = null;
+        } elseif (! $isFotografer) {
             $data['info'] = trim((string) ($validated['info'] ?? '')) ?: null;
+        }
 
+        if (! $isFotografer) {
             if ($request->hasFile('image')) {
                 $data['image'] = app(ImageService::class)->processAndStore($request->file('image'), 'service-items', 1200);
                 if ($item->image) {
